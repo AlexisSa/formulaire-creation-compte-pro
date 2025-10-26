@@ -155,8 +155,92 @@ npm run build
 3. Nettoyez le cache : `rm -rf .next node_modules/.cache`
 4. Vérifiez que `next.config.js` contient bien les modifications
 
+---
+
+## 🚨 Erreur 2 : `MIDDLEWARE_INVOCATION_FAILED` (Edge Runtime)
+
+### Problème
+
+```
+500: INTERNAL_SERVER_ERROR
+Code: MIDDLEWARE_INVOCATION_FAILED
+```
+
+### Cause
+
+Le middleware utilise des **APIs Node.js** incompatibles avec **Edge Runtime** de Vercel.
+
+**APIs interdites dans Edge Runtime :**
+- ❌ `fs`, `path`, `crypto`, `Buffer` (APIs Node.js)
+- ❌ `process.env` (lecture directe)
+- ❌ `__dirname`, `__filename`
+- ❌ `require()` dynamique
+
+**APIs autorisées (Web APIs) :**
+- ✅ `fetch`, `Request`, `Response`
+- ✅ `Headers`, `URL`, `URLSearchParams`
+- ✅ `TextEncoder`, `TextDecoder`
+- ✅ APIs Web standards
+
+### Solution
+
+**Middleware Edge-compatible :**
+
+```typescript
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+/**
+ * Edge-compatible middleware
+ * Only uses Web APIs available in Edge Runtime
+ */
+export function middleware(request: NextRequest) {
+  // Create response
+  const response = NextResponse.next()
+
+  // Add security headers (Edge-compatible)
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('X-Frame-Options', 'DENY')
+  
+  return response
+}
+
+export const config = {
+  matcher: [
+    '/((?!_next/static|_next/image|api|favicon.ico|.*\\.).*)',
+  ],
+}
+```
+
+### Règles à respecter
+
+1. ❌ **Ne PAS utiliser Node.js APIs** (`fs`, `path`, `crypto`, etc.)
+2. ❌ **Ne PAS lire `process.env` directement**
+3. ✅ **Utiliser uniquement Web APIs** standard
+4. ✅ **Utiliser `Headers` au lieu de manipulation manuelle**
+5. ✅ **Tester le middleware en production** (pas seulement en dev)
+
+### Alternative : Routes API au lieu du Middleware
+
+Si vous avez besoin de logique complexe, utilisez des **Routes API** (Node.js Runtime) :
+
+```typescript
+// app/api/middleware-check/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import fs from 'fs' // ✅ OK ici (Node.js Runtime)
+
+export async function POST(request: NextRequest) {
+  // Logique complexe avec APIs Node.js ici
+  return NextResponse.json({ success: true })
+}
+```
+
+---
+
 ## 🔗 Références
 
-- [Next.js - Code Splitting](https://nextjs.org/docs/pages/building-your-application/optimizing/code-splitting)
+- [Next.js - Middleware](https://nextjs.org/docs/app/building-your-application/routing/middleware)
+- [Next.js - Edge Runtime](https://nextjs.org/docs/app/api-reference/edge)
 - [Webpack - Externals](https://webpack.js.org/configuration/externals/)
 - [Vercel - Deploy Next.js](https://vercel.com/docs/frameworks/nextjs)
+- [Vercel - Edge Middleware](https://vercel.com/docs/functions/edge-functions)
