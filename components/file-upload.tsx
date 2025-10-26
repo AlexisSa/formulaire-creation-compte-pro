@@ -36,6 +36,12 @@ export function FileUpload({
   value,
   className,
 }: FileUploadProps) {
+  const formatFileSize = useCallback((bytes: number): string => {
+    if (bytes < 1024) return bytes + ' B'
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+  }, [])
+
   const onDropAccepted = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
@@ -82,12 +88,6 @@ export function FileUpload({
   const handleRemove = () => {
     onFileChange?.(null)
   }
-
-  const formatFileSize = useCallback((bytes: number): string => {
-    if (bytes < 1024) return bytes + ' B'
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
-  }, [])
 
   return (
     <div className={cn('space-y-2', className)}>
