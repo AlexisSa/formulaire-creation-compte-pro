@@ -248,12 +248,36 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
         new Date().toISOString().split('T')[0]
       }.pdf`
 
+      // Vérifier la taille du PDF généré (max 10 MB non compressé)
+      const pdfSizeMB = pdfBlob.size / 1024 / 1024
+      if (pdfSizeMB > 10) {
+        throw new Error(
+          `Le PDF généré est trop volumineux (${pdfSizeMB.toFixed(
+            2
+          )} MB). Taille maximum : 10 MB.`
+        )
+      }
+
+      console.log(`📄 PDF: ${pdfFileName}, Taille: ${pdfSizeMB.toFixed(2)} MB`)
+
       // Convertir et compresser le fichier KBIS
       let kbisBase64 = ''
       let kbisFileName = ''
       if (data.legalDocument) {
+        // Vérifier la taille du KBIS (max 5 MB non compressé)
+        const kbisSizeMB = data.legalDocument.size / 1024 / 1024
+        if (kbisSizeMB > 5) {
+          throw new Error(
+            `Le fichier KBIS est trop volumineux (${kbisSizeMB.toFixed(
+              2
+            )} MB). Taille maximum : 5 MB.`
+          )
+        }
+
         kbisFileName = data.legalDocument.name
         kbisBase64 = await compressData(data.legalDocument)
+
+        console.log(`📎 KBIS: ${kbisFileName}, Taille: ${kbisSizeMB.toFixed(2)} MB`)
       }
 
       // Envoyer les emails
@@ -279,16 +303,20 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
         }
 
         const payloadSize = new Blob([JSON.stringify(emailPayload)]).size
-        console.log(
-          `📦 [CLIENT] Payload size: ${(payloadSize / 1024 / 1024).toFixed(2)} MB`
-        )
+        const payloadSizeMB = payloadSize / 1024 / 1024
+        console.log(`📦 [CLIENT] Payload size: ${payloadSizeMB.toFixed(2)} MB`)
 
-        // Vérification de taille (limite Vercel: ~4.5 MB mais on accepte jusqu'à 15 MB via bodyParser config)
-        // Les emails seront envoyés séparément donc on peut accepter plus
-        if (payloadSize > 15 * 1024 * 1024) {
-          console.error('❌ [CLIENT] Payload too large! Size:', payloadSize, 'bytes')
+        // Vérification de taille finale après compression (limite : 8 MB)
+        if (payloadSize > 8 * 1024 * 1024) {
+          console.error(
+            '❌ [CLIENT] Payload too large after compression!',
+            payloadSize,
+            'bytes'
+          )
           throw new Error(
-            'Les fichiers sont trop volumineux. Veuillez réduire la taille des fichiers.'
+            `Les fichiers sont trop volumineux (${payloadSizeMB.toFixed(
+              2
+            )} MB). Taille maximum après compression : 8 MB. Veuillez réduire la taille des fichiers.`
           )
         }
 

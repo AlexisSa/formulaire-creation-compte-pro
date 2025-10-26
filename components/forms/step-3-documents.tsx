@@ -36,7 +36,7 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
 
         <p className="text-sm text-gray-600">
           Kbis de moins de 3 mois, statuts, ou inscription au registre des métiers • PDF,
-          PNG, JPG • Max 10 MB
+          PNG, JPG • Max 5 MB
         </p>
 
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-2">
@@ -78,6 +78,7 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
             setValue('legalDocument', file as any, { shouldValidate: true })
           }}
           error={errors.legalDocument?.message}
+          maxSize={5 * 1024 * 1024} // 5 MB
         />
       </div>
 
