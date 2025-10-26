@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Ne pas initialiser Resend au chargement du module (évite l'erreur de build)
+// Il sera initialisé dans la fonction POST seulement quand nécessaire
 
 interface EmailPayload {
   companyName: string
@@ -32,6 +33,21 @@ interface EmailPayload {
  */
 export async function POST(request: NextRequest) {
   try {
+    // Initialiser Resend ici pour éviter l'erreur lors du build
+    const resendApiKey = process.env.RESEND_API_KEY
+    
+    if (!resendApiKey) {
+      console.error('RESEND_API_KEY is not configured')
+      return NextResponse.json(
+        {
+          error: 'Configuration manquante',
+          message: 'La clé API Resend n\'est pas configurée',
+        },
+        { status: 500 }
+      )
+    }
+
+    const resend = new Resend(resendApiKey)
     const body: EmailPayload = await request.json()
 
     // Préparer les pièces jointes (KBIS + PDF récapitulatif)
