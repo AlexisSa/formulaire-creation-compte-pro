@@ -36,17 +36,12 @@ export function middleware(request: NextRequest) {
 
 /**
  * Configuration du middleware
- * Applique le middleware à toutes les routes sauf les fichiers statiques
+ * TEMPORAIREMENT DÉSACTIVÉ pour diagnostic
  */
 export const config = {
   matcher: [
-    /*
-     * Appliquer le middleware à toutes les routes sauf :
-     * - _next/static (fichiers statiques)
-     * - _next/image (optimisation d'images)
-     * - favicon.ico (icône de site)
-     * - api routes (gérées séparément)
-     */
-    '/((?!_next/static|_next/image|favicon.ico|api).*)',
+    // Middleware désactivé pour éviter les erreurs Edge Runtime
+    // Réactiver une fois le problème identifié
+    '/',
   ],
 }
