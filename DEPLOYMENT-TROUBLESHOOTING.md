@@ -235,6 +235,59 @@ export async function POST(request: NextRequest) {
 }
 ```
 
+### ✅ Solution Ultime : Supprimer le Middleware
+
+**Si vous n'avez pas besoin de logique complexe dans le middleware**, la meilleure solution est de **supprimer complètement le middleware** et utiliser la configuration `headers()` dans `next.config.js`.
+
+**Pourquoi ?**
+- ✅ Plus simple et plus robuste
+- ✅ Pas d'erreurs Edge Runtime
+- ✅ Même fonctionnalité (headers de sécurité)
+- ✅ Moins de complexité
+
+**Avant (middleware.ts) :**
+```typescript
+// middleware.ts
+export function middleware(request: NextRequest) {
+  const response = NextResponse.next()
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('X-Frame-Options', 'DENY')
+  return response
+}
+```
+
+**Après (next.config.js) :**
+```javascript
+// next.config.js
+async headers() {
+  return [
+    {
+      source: '/(.*)',
+      headers: [
+        {
+          key: 'X-Content-Type-Options',
+          value: 'nosniff',
+        },
+        {
+          key: 'X-Frame-Options',
+          value: 'DENY',
+        },
+        {
+          key: 'X-XSS-Protection',
+          value: '1; mode=block',
+        },
+      ],
+    },
+  ]
+}
+```
+
+**Résultat :**
+- ✅ Même sécurité
+- ✅ Pas d'erreur `MIDDLEWARE_INVOCATION_FAILED`
+- ✅ Build plus rapide
+- ✅ Code plus maintenable
+
 ---
 
 ## 🔗 Références
