@@ -36,7 +36,7 @@ export function FileUpload({
   value,
   className,
 }: FileUploadProps) {
-  const onDrop = useCallback(
+  const onDropAccepted = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0]
@@ -53,8 +53,25 @@ export function FileUpload({
     [onFileChange, onFileSelect]
   )
 
+  const onDropRejected = useCallback((fileRejections: any[]) => {
+    if (fileRejections.length > 0) {
+      const rejection = fileRejections[0]
+      if (rejection.errors) {
+        const error = rejection.errors[0]
+        if (error.code === 'file-too-large') {
+          alert(`⚠️ Le fichier est trop volumineux. Taille maximum : ${formatFileSize(maxSize)}`)
+        } else if (error.code === 'file-invalid-type') {
+          alert('⚠️ Type de fichier non autorisé. Formats acceptés : PDF, PNG, JPG')
+        } else {
+          alert(`⚠️ ${error.message || 'Erreur lors de l\'upload du fichier'}`)
+        }
+      }
+    }
+  }, [maxSize, formatFileSize])
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+    onDropAccepted,
+    onDropRejected,
     accept,
     maxSize,
     multiple: false,
@@ -66,11 +83,11 @@ export function FileUpload({
     onFileChange?.(null)
   }
 
-  const formatFileSize = (bytes: number) => {
+  const formatFileSize = useCallback((bytes: number): string => {
     if (bytes < 1024) return bytes + ' B'
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
-  }
+  }, [])
 
   return (
     <div className={cn('space-y-2', className)}>
