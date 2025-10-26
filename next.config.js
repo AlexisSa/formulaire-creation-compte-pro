@@ -1,14 +1,5 @@
 /** @type {import('next').NextConfig} */
 
-// CRITIQUE: Définir self AVANT que Next.js charge les modules
-// Cela doit être la première chose dans ce fichier
-if (typeof global !== 'undefined') {
-  global.self = global.self || global
-  if (typeof global.self === 'undefined') {
-    global.self = {}
-  }
-}
-
 const nextConfig = {
   reactStrictMode: true,
   env: {
