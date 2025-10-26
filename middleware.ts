@@ -3,17 +3,23 @@ import type { NextRequest } from 'next/server'
 
 /**
  * Edge-compatible middleware
- * Only uses Web APIs available in Edge Runtime
+ * CRITICAL: Cannot import ANY Node.js APIs (fs, crypto, path, etc.)
+ * Only Web APIs are available: fetch, Headers, URL, etc.
  */
 export function middleware(request: NextRequest) {
-  // Create response
-  const response = NextResponse.next()
+  try {
+    // Create response
+    const response = NextResponse.next()
 
-  // Add security headers (Edge-compatible)
-  response.headers.set('X-Content-Type-Options', 'nosniff')
-  response.headers.set('X-Frame-Options', 'DENY')
-  
-  return response
+    // Add security headers (Edge-compatible)
+    response.headers.set('X-Content-Type-Options', 'nosniff')
+    response.headers.set('X-Frame-Options', 'DENY')
+
+    return response
+  } catch (error) {
+    // Fallback: return basic response if anything fails
+    return NextResponse.next()
+  }
 }
 
 export const config = {
