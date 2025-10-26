@@ -272,7 +272,9 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
           `📦 [CLIENT] Payload size: ${(payloadSize / 1024 / 1024).toFixed(2)} MB`
         )
 
-        if (payloadSize > 4 * 1024 * 1024) {
+        // Vérification de taille (limite Vercel: ~4.5 MB mais on accepte jusqu'à 15 MB via bodyParser config)
+        // Les emails seront envoyés séparément donc on peut accepter plus
+        if (payloadSize > 15 * 1024 * 1024) {
           console.error('❌ [CLIENT] Payload too large! Size:', payloadSize, 'bytes')
           throw new Error(
             'Les fichiers sont trop volumineux. Veuillez réduire la taille des fichiers.'
