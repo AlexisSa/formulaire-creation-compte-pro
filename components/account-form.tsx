@@ -211,6 +211,19 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
 
+      // Convertir le PDF en base64 pour l'email
+      const pdfBase64 = await pdfBlob.arrayBuffer().then((buffer) => {
+        const bytes = new Uint8Array(buffer)
+        let binary = ''
+        for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i])
+        }
+        return btoa(binary)
+      })
+      const pdfFileName = `recapitulatif-${data.companyName || 'xeilom'}-${
+        new Date().toISOString().split('T')[0]
+      }.pdf`
+
       // Convertir le fichier KBIS en base64
       let kbisBase64 = ''
       let kbisFileName = ''
@@ -242,6 +255,8 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
             phone: data.phone,
             kbisFile: kbisBase64,
             kbisFileName: kbisFileName,
+            pdfFile: pdfBase64,
+            pdfFileName: pdfFileName,
             signature: data.signature,
             companyInfo: {
               siren: data.siren,

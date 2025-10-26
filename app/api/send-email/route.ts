@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { generateAccountPDF } from '@/lib/pdf-generator'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -10,6 +9,8 @@ interface EmailPayload {
   phone: string
   kbisFile?: string // Base64 du fichier KBIS
   kbisFileName?: string
+  pdfFile?: string // Base64 du PDF récapitulatif
+  pdfFileName?: string
   signature?: string // Signature en base64
   companyInfo: {
     siren?: string
@@ -33,30 +34,9 @@ export async function POST(request: NextRequest) {
   try {
     const body: EmailPayload = await request.json()
 
-    // Générer le PDF de récapitulatif
-    const pdfBlob = await generateAccountPDF({
-      companyName: body.companyName,
-      siren: body.companyInfo.siren,
-      siret: body.companyInfo.siret,
-      nafApe: body.companyInfo.nafApe,
-      tvaIntracom: body.companyInfo.tvaIntracom,
-      address: body.companyInfo.address,
-      postalCode: body.companyInfo.postalCode,
-      city: body.companyInfo.city,
-      email: body.email,
-      phone: body.phone,
-      signature: body.signature,
-    })
-
-    // Convertir le PDF en Buffer
-    const pdfBuffer = Buffer.from(await pdfBlob.arrayBuffer())
-    const pdfFileName = `recapitulatif-${body.companyName || 'xeilom'}-${
-      new Date().toISOString().split('T')[0]
-    }.pdf`
-
     // Préparer les pièces jointes (KBIS + PDF récapitulatif)
     const attachments = []
-
+    
     // Ajouter le KBIS
     if (body.kbisFile && body.kbisFileName) {
       attachments.push({
@@ -65,11 +45,13 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Ajouter le PDF récapitulatif
-    attachments.push({
-      filename: pdfFileName,
-      content: pdfBuffer,
-    })
+    // Ajouter le PDF récapitulatif (envoyé depuis le client)
+    if (body.pdfFile && body.pdfFileName) {
+      attachments.push({
+        filename: body.pdfFileName,
+        content: Buffer.from(body.pdfFile, 'base64'),
+      })
+    }
 
     // Email 1 : À l'équipe XEILOM (récapitulatif + KBIS)
     const emailToTeam = await resend.emails.send({
