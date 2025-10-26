@@ -4,14 +4,8 @@ import { Resend } from 'resend'
 // Ne pas initialiser Resend au chargement du module (évite l'erreur de build)
 // Il sera initialisé dans la fonction POST seulement quand nécessaire
 
-// Configuration pour les gros fichiers
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
-  },
-}
+// Configuration pour les gros fichiers et timeout prolongé
+export const maxDuration = 30 // 30 secondes
 
 interface EmailPayload {
   companyName: string
