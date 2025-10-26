@@ -1,7 +1,12 @@
-// Middleware temporairement désactivé pour diagnostic
-// L'erreur persiste même avec un middleware minimal
-// Nécessite d'investiguer plus en profondeur
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+export function middleware(request: NextRequest) {
+  return NextResponse.next()
+}
 
 export const config = {
-  matcher: [],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
 }
