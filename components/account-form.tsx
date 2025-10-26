@@ -19,7 +19,6 @@ import {
 import { StepTransition } from '@/components/ui/step-transition'
 import { SaveNotification } from '@/components/ui/feedback'
 import { accountFormSchema, type AccountFormData } from '@/lib/validation'
-import { generateAccountPDF } from '@/lib/pdf-generator'
 import { useAutoSave, useProgressAnimation } from '@/hooks'
 import { useToast } from '@/contexts/ToastContext'
 import { ConfirmationPage } from '@/components/confirmation-page'
@@ -195,6 +194,9 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
   const onSubmit = async (data: AccountFormData) => {
     try {
       setIsSaving(true)
+
+      // Import dynamique pour éviter le chargement côté serveur
+      const { generateAccountPDF } = await import('@/lib/pdf-generator')
 
       // Générer le PDF avec toutes les informations
       const pdfBlob = await generateAccountPDF(data)

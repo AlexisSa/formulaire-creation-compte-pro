@@ -1,4 +1,14 @@
 /** @type {import('next').NextConfig} */
+
+// CRITIQUE: Définir self AVANT que Next.js charge les modules
+// Cela doit être la première chose dans ce fichier
+if (typeof global !== 'undefined') {
+  global.self = global.self || global
+  if (typeof global.self === 'undefined') {
+    global.self = {}
+  }
+}
+
 const nextConfig = {
   reactStrictMode: true,
   env: {
@@ -7,31 +17,35 @@ const nextConfig = {
 
   // Optimisations de performance
   experimental: {
-    // Optimiser le cache des modules
-    optimizeCss: true,
+    // optimizeCss désactivé car nécessite 'critters' manquant
     // Améliorer les performances de compilation
     swcMinify: true,
   },
 
   // Configuration webpack optimisée
   webpack: (config, { dev, isServer }) => {
-    // Exclure jsPDF du bundle serveur
+    // Exclure les bibliothèques orientées navigateur du bundle serveur
     if (isServer) {
+      // Définir self dans l'environnement global
+      if (typeof global !== 'undefined' && typeof global.self === 'undefined') {
+        global.self = global
+      }
+
+      // Externaliser les bibliothèques orientées navigateur
       config.externals = config.externals || []
+
+      // Ajouter les externals supplémentaires
+      const additionalExternals = {
+        jspdf: 'commonjs jspdf',
+        'jspdf-autotable': 'commonjs jspdf-autotable',
+        html2canvas: 'commonjs html2canvas',
+        'react-signature-canvas': 'commonjs react-signature-canvas',
+      }
+
       if (Array.isArray(config.externals)) {
-        config.externals.push({
-          'jspdf': 'commonjs jspdf',
-          'jspdf-autotable': 'commonjs jspdf-autotable',
-        })
+        config.externals.push(additionalExternals)
       } else {
-        // Si config.externals est un objet, le convertir en array
-        config.externals = [
-          config.externals,
-          {
-            'jspdf': 'commonjs jspdf',
-            'jspdf-autotable': 'commonjs jspdf-autotable',
-          }
-        ]
+        config.externals = [config.externals, additionalExternals]
       }
     }
 
@@ -70,8 +84,13 @@ const nextConfig = {
       },
     }
 
-    // Optimiser les chunks
-    if (!dev) {
+    // Optimiser les chunks (désactiver les vendors pour éviter l'erreur 'self is not defined')
+    if (!dev && isServer) {
+      // Désactiver splitChunks côté serveur pour éviter que les bibliothèques
+      // orientées navigateur soient bundlées dans vendors.js
+      config.optimization.splitChunks = false
+    } else if (!dev) {
+      // Configuration normale pour le client
       config.optimization.splitChunks = {
         chunks: 'all',
         cacheGroups: {
