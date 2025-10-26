@@ -4,6 +4,15 @@ import { Resend } from 'resend'
 // Ne pas initialiser Resend au chargement du module (évite l'erreur de build)
 // Il sera initialisé dans la fonction POST seulement quand nécessaire
 
+// Configuration pour les gros fichiers
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+}
+
 interface EmailPayload {
   companyName: string
   email: string
@@ -35,16 +44,16 @@ export async function POST(request: NextRequest) {
   try {
     // Initialiser Resend ici pour éviter l'erreur lors du build
     const resendApiKey = process.env.RESEND_API_KEY
-    
+
     console.log('🔍 [EMAIL DEBUG] API Key exists:', !!resendApiKey)
     console.log('🔍 [EMAIL DEBUG] API Key length:', resendApiKey?.length || 0)
-    
+
     if (!resendApiKey) {
       console.error('❌ RESEND_API_KEY is not configured')
       return NextResponse.json(
         {
           error: 'Configuration manquante',
-          message: 'La clé API Resend n\'est pas configurée',
+          message: "La clé API Resend n'est pas configurée",
         },
         { status: 500 }
       )
@@ -52,12 +61,21 @@ export async function POST(request: NextRequest) {
 
     const resend = new Resend(resendApiKey)
     const body: EmailPayload = await request.json()
-    
-    console.log('📧 [EMAIL DEBUG] Sending emails to:', body.email, 'and communication@xeilom.fr')
+
+    console.log(
+      '📧 [EMAIL DEBUG] Sending emails to:',
+      body.email,
+      'and communication@xeilom.fr'
+    )
+
+    // Calculer la taille des fichiers envoyés
+    const kbisSize = body.kbisFile ? Math.round(body.kbisFile.length * 0.75 / 1024) : 0
+    const pdfSize = body.pdfFile ? Math.round(body.pdfFile.length * 0.75 / 1024) : 0
+    console.log(`📦 [EMAIL DEBUG] File sizes - KBIS: ${kbisSize}KB, PDF: ${pdfSize}KB, Total: ${kbisSize + pdfSize}KB`)
 
     // Préparer les pièces jointes (KBIS + PDF récapitulatif)
     const attachments = []
-    
+
     // Ajouter le KBIS
     if (body.kbisFile && body.kbisFileName) {
       attachments.push({
@@ -167,7 +185,7 @@ export async function POST(request: NextRequest) {
     })
 
     console.log('✅ [EMAIL DEBUG] Email 1 sent successfully:', emailToTeam.data?.id)
-    
+
     // Email 2 : À l'utilisateur (message de remerciement)
     console.log('📨 [EMAIL DEBUG] Sending email 2 to user')
     const emailToUser = await resend.emails.send({
@@ -255,7 +273,7 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error("❌ [EMAIL ERROR] Erreur lors de l'envoi des emails:", error)
-    console.error("❌ [EMAIL ERROR] Error details:", JSON.stringify(error, null, 2))
+    console.error('❌ [EMAIL ERROR] Error details:', JSON.stringify(error, null, 2))
     return NextResponse.json(
       {
         error: "Erreur lors de l'envoi des emails",

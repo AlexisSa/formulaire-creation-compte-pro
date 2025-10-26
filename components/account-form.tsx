@@ -246,12 +246,40 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
 
       // Envoyer les emails
       try {
+        const emailPayload = {
+            companyName: data.companyName,
+            email: data.email,
+            phone: data.phone,
+            kbisFile: kbisBase64,
+            kbisFileName: kbisFileName,
+            pdfFile: pdfBase64,
+            pdfFileName: pdfFileName,
+            signature: data.signature,
+            companyInfo: {
+              siren: data.siren,
+              siret: data.siret,
+              nafApe: data.nafApe,
+              tvaIntracom: data.tvaIntracom,
+              address: data.address,
+              postalCode: data.postalCode,
+              city: data.city,
+            },
+          }
+        
+        const payloadSize = new Blob([JSON.stringify(emailPayload)]).size
+        console.log(`📦 [CLIENT] Payload size: ${(payloadSize / 1024 / 1024).toFixed(2)} MB`)
+        
+        if (payloadSize > 4 * 1024 * 1024) {
+          console.error('❌ [CLIENT] Payload too large! Size:', payloadSize, 'bytes')
+          throw new Error('Les fichiers sont trop volumineux. Veuillez réduire la taille des fichiers.')
+        }
+        
         const emailResponse = await fetch('/api/send-email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
+          body: JSON.stringify(emailPayload),
             companyName: data.companyName,
             email: data.email,
             phone: data.phone,
