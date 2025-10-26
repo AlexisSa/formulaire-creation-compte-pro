@@ -40,6 +40,7 @@ interface AccountFormProps {
  */
 export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
   const [currentStep, setCurrentStep] = useState(1)
+  const [generatedPDFBlob, setGeneratedPDFBlob] = useState<Blob | null>(null)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [showSaveNotification, setShowSaveNotification] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -201,17 +202,8 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
       // Générer le PDF avec toutes les informations
       const pdfBlob = await generateAccountPDF(data)
 
-      // Télécharger le PDF
-      const url = URL.createObjectURL(pdfBlob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `demande-compte-professionnel-${data.companyName || 'xeilom'}-${
-        new Date().toISOString().split('T')[0]
-      }.pdf`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(url)
+      // Stocker le PDF généré pour téléchargement manuel
+      setGeneratedPDFBlob(pdfBlob)
 
       // Fonction de compression (comme définit dans pako mais en pur JS)
       const compressData = async (data: Blob): Promise<string> => {
@@ -368,11 +360,13 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
     return (
       <ConfirmationPage
         companyName={submittedCompanyName}
+        pdfBlob={generatedPDFBlob}
         onBack={() => {
           // Réinitialiser et retourner au formulaire
           setShowConfirmation(false)
           setCurrentStep(1)
           reset()
+          setGeneratedPDFBlob(null) // Réinitialiser le PDF
         }}
         onLogoClick={onLogoClick}
       />

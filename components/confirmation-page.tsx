@@ -8,6 +8,7 @@ import { Header } from '@/components/header'
 
 interface ConfirmationPageProps {
   companyName?: string
+  pdfBlob?: Blob | null
   onBack?: () => void
   onLogoClick?: () => void
 }
@@ -17,11 +18,27 @@ interface ConfirmationPageProps {
  */
 export function ConfirmationPage({
   companyName,
+  pdfBlob,
   onBack,
   onLogoClick,
 }: ConfirmationPageProps) {
   const handleGoHome = () => {
     window.location.href = '/'
+  }
+
+  const handleDownloadPDF = () => {
+    if (!pdfBlob) return
+
+    const url = URL.createObjectURL(pdfBlob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `demande-compte-professionnel-${companyName || 'xeilom'}-${
+      new Date().toISOString().split('T')[0]
+    }.pdf`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
   }
 
   return (
@@ -213,6 +230,12 @@ export function ConfirmationPage({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.1 }}
         >
+          {pdfBlob && (
+            <Button size="lg" variant="outline" onClick={handleDownloadPDF}>
+              <FileText className="h-5 w-5 mr-2" />
+              Télécharger le PDF
+            </Button>
+          )}
           <Button size="lg" onClick={handleGoHome}>
             <Home className="h-5 w-5 mr-2" />
             Retour à l&apos;accueil
