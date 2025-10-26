@@ -16,6 +16,11 @@ export async function generateAccountPDF(data: any) {
     const { default: jsPDF } = await import('jspdf')
 
     const doc = new jsPDF('p', 'mm', 'a4')
+    
+    // Activer la compression pour réduire la taille du PDF
+    doc.setProperties({
+      compress: true,
+    })
     const pageWidth = doc.internal.pageSize.getWidth()
     const pageHeight = doc.internal.pageSize.getHeight()
     const margin = 20
@@ -219,12 +224,8 @@ export async function generateAccountPDF(data: any) {
       yPosition
     )
 
-    // === RETOUR DU BLOB AVEC COMPRESSION ===
-    // Optimiser les options de sortie pour réduire la taille
-    const pdfBlob = doc.output('blob', {
-      // Compression PDF
-      compress: true,
-    })
+    // === RETOUR DU BLOB ===
+    const pdfBlob = doc.output('blob')
     
     if (process.env.NODE_ENV === 'development') {
       console.log(`📄 PDF généré: ${(pdfBlob.size / 1024).toFixed(2)} KB`)
