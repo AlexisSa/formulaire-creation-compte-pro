@@ -183,7 +183,7 @@ export async function POST(request: NextRequest) {
           <body>
             <div class="container">
             <div class="header" style="padding-bottom: 40px;">
-              <img src="https://www.xeilom.fr/xeilom-logo.png" alt="XEILOM" style="max-width: 200px; height: auto; margin: 0 auto 20px auto; display: block;">
+              <img src="https://www.xeilom.fr/Files/126457/Img/23/logo-quadri-hd-scaled-removebg-preview.png" alt="XEILOM" style="max-width: 200px; height: auto; margin: 0 auto 20px auto; display: block;">
               <h1 style="margin: 0; font-size: 28px;">✅ Demande reçue !</h1>
               <p style="margin: 15px 0 0 0; opacity: 0.9; font-size: 16px;">Merci pour votre confiance</p>
             </div>
