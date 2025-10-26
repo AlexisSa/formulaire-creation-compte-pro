@@ -36,8 +36,11 @@ export async function POST(request: NextRequest) {
     // Initialiser Resend ici pour éviter l'erreur lors du build
     const resendApiKey = process.env.RESEND_API_KEY
     
+    console.log('🔍 [EMAIL DEBUG] API Key exists:', !!resendApiKey)
+    console.log('🔍 [EMAIL DEBUG] API Key length:', resendApiKey?.length || 0)
+    
     if (!resendApiKey) {
-      console.error('RESEND_API_KEY is not configured')
+      console.error('❌ RESEND_API_KEY is not configured')
       return NextResponse.json(
         {
           error: 'Configuration manquante',
@@ -49,6 +52,8 @@ export async function POST(request: NextRequest) {
 
     const resend = new Resend(resendApiKey)
     const body: EmailPayload = await request.json()
+    
+    console.log('📧 [EMAIL DEBUG] Sending emails to:', body.email, 'and communication@xeilom.fr')
 
     // Préparer les pièces jointes (KBIS + PDF récapitulatif)
     const attachments = []
@@ -70,6 +75,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Email 1 : À l'équipe XEILOM (récapitulatif + KBIS)
+    console.log('📨 [EMAIL DEBUG] Sending email 1 to team')
     const emailToTeam = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'noreply@xeilom.fr',
       to: 'communication@xeilom.fr',
@@ -160,7 +166,10 @@ export async function POST(request: NextRequest) {
       `,
     })
 
+    console.log('✅ [EMAIL DEBUG] Email 1 sent successfully:', emailToTeam.data?.id)
+    
     // Email 2 : À l'utilisateur (message de remerciement)
+    console.log('📨 [EMAIL DEBUG] Sending email 2 to user')
     const emailToUser = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'noreply@xeilom.fr',
       to: body.email,
@@ -235,6 +244,9 @@ export async function POST(request: NextRequest) {
       `,
     })
 
+    console.log('✅ [EMAIL DEBUG] Email 2 sent successfully:', emailToUser.data?.id)
+    console.log('✅ [EMAIL DEBUG] Both emails sent successfully!')
+
     return NextResponse.json({
       success: true,
       message: 'Emails envoyés avec succès',
@@ -242,7 +254,8 @@ export async function POST(request: NextRequest) {
       userEmailId: emailToUser.data?.id,
     })
   } catch (error) {
-    console.error("Erreur lors de l'envoi des emails:", error)
+    console.error("❌ [EMAIL ERROR] Erreur lors de l'envoi des emails:", error)
+    console.error("❌ [EMAIL ERROR] Error details:", JSON.stringify(error, null, 2))
     return NextResponse.json(
       {
         error: "Erreur lors de l'envoi des emails",
