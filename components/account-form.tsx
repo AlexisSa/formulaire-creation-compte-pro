@@ -213,18 +213,11 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
 
-      // Convertir le PDF en base64 pour l'email
-      const pdfBase64 = await pdfBlob.arrayBuffer().then((buffer) => {
-        const bytes = new Uint8Array(buffer)
-        let binary = ''
-        for (let i = 0; i < bytes.byteLength; i++) {
-          binary += String.fromCharCode(bytes[i])
-        }
-        return btoa(binary)
-      })
-      const pdfFileName = `recapitulatif-${data.companyName || 'xeilom'}-${
-        new Date().toISOString().split('T')[0]
-      }.pdf`
+      // NE PAS ENVOYER LE PDF RECAPITULATIF (trop lourd)
+      // Le PDF est déjà téléchargé par l'utilisateur
+      // On envoie seulement le KBIS par email
+      const pdfBase64 = undefined // Ne pas envoyer le PDF
+      const pdfFileName = undefined
 
       // Convertir le fichier KBIS en base64
       let kbisBase64 = ''
@@ -247,33 +240,37 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
       // Envoyer les emails
       try {
         const emailPayload = {
-            companyName: data.companyName,
-            email: data.email,
-            phone: data.phone,
-            kbisFile: kbisBase64,
-            kbisFileName: kbisFileName,
-            pdfFile: pdfBase64,
-            pdfFileName: pdfFileName,
-            signature: data.signature,
-            companyInfo: {
-              siren: data.siren,
-              siret: data.siret,
-              nafApe: data.nafApe,
-              tvaIntracom: data.tvaIntracom,
-              address: data.address,
-              postalCode: data.postalCode,
-              city: data.city,
-            },
-          }
-        
+          companyName: data.companyName,
+          email: data.email,
+          phone: data.phone,
+          kbisFile: kbisBase64,
+          kbisFileName: kbisFileName,
+          pdfFile: pdfBase64,
+          pdfFileName: pdfFileName,
+          signature: data.signature,
+          companyInfo: {
+            siren: data.siren,
+            siret: data.siret,
+            nafApe: data.nafApe,
+            tvaIntracom: data.tvaIntracom,
+            address: data.address,
+            postalCode: data.postalCode,
+            city: data.city,
+          },
+        }
+
         const payloadSize = new Blob([JSON.stringify(emailPayload)]).size
-        console.log(`📦 [CLIENT] Payload size: ${(payloadSize / 1024 / 1024).toFixed(2)} MB`)
-        
+        console.log(
+          `📦 [CLIENT] Payload size: ${(payloadSize / 1024 / 1024).toFixed(2)} MB`
+        )
+
         if (payloadSize > 4 * 1024 * 1024) {
           console.error('❌ [CLIENT] Payload too large! Size:', payloadSize, 'bytes')
-          throw new Error('Les fichiers sont trop volumineux. Veuillez réduire la taille des fichiers.')
+          throw new Error(
+            'Les fichiers sont trop volumineux. Veuillez réduire la taille des fichiers.'
+          )
         }
-        
+
         const emailResponse = await fetch('/api/send-email', {
           method: 'POST',
           headers: {
