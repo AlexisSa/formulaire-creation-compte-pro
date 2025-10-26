@@ -15,6 +15,26 @@ const nextConfig = {
 
   // Configuration webpack optimisée
   webpack: (config, { dev, isServer }) => {
+    // Exclure jsPDF du bundle serveur
+    if (isServer) {
+      config.externals = config.externals || []
+      if (Array.isArray(config.externals)) {
+        config.externals.push({
+          'jspdf': 'commonjs jspdf',
+          'jspdf-autotable': 'commonjs jspdf-autotable',
+        })
+      } else {
+        // Si config.externals est un objet, le convertir en array
+        config.externals = [
+          config.externals,
+          {
+            'jspdf': 'commonjs jspdf',
+            'jspdf-autotable': 'commonjs jspdf-autotable',
+          }
+        ]
+      }
+    }
+
     // Résoudre l'erreur 'self is not defined' en production
     if (!dev && isServer) {
       config.resolve.fallback = {
@@ -25,26 +45,6 @@ const nextConfig = {
         crypto: false,
         canvas: false,
       }
-
-      // Exclure les dépendances problématiques côté serveur
-      config.externals = config.externals || []
-      config.externals.push({
-        jspdf: 'commonjs jspdf',
-        canvas: 'commonjs canvas',
-      })
-
-      // Polyfill pour les variables globales manquantes
-      const webpack = require('webpack')
-      config.plugins.push(
-        new webpack.DefinePlugin({
-          'typeof window': JSON.stringify('undefined'),
-          'typeof self': JSON.stringify('undefined'),
-          'typeof document': JSON.stringify('undefined'),
-          self: 'undefined',
-          window: 'undefined',
-          document: 'undefined',
-        })
-      )
     }
 
     // Optimiser le watch en développement
