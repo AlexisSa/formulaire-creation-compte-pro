@@ -14,6 +14,7 @@ const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
 })
 
 const poppins = Poppins({
@@ -21,6 +22,7 @@ const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-poppins',
   display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
 })
 
 const outfit = Outfit({
@@ -28,6 +30,7 @@ const outfit = Outfit({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-outfit',
   display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
 })
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -35,6 +38,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ['300', '400', '500', '600', '700', '800'],
   variable: '--font-plus-jakarta',
   display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
 })
 
 const spaceGrotesk = Space_Grotesk({
@@ -42,6 +46,7 @@ const spaceGrotesk = Space_Grotesk({
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-space-grotesk',
   display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
 })
 
 const dmSans = DM_Sans({
@@ -49,6 +54,7 @@ const dmSans = DM_Sans({
   weight: ['400', '500', '600', '700'],
   variable: '--font-dm-sans',
   display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
 })
 
 export const metadata: Metadata = {
