@@ -213,36 +213,47 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
 
-      // Convertir le PDF en base64 pour l'email
-      // Le PDF sera envoyé dans un email séparé pour éviter l'erreur 413
-      const pdfBase64 = await pdfBlob.arrayBuffer().then((buffer) => {
-        const bytes = new Uint8Array(buffer)
+      // Fonction de compression (comme définit dans pako mais en pur JS)
+      const compressData = async (data: Blob): Promise<string> => {
+        // Utiliser la Compression Streams API si disponible
+        if ('CompressionStream' in window) {
+          try {
+            const stream = data.stream()
+            const compressedStream = stream.pipeThrough(new CompressionStream('gzip'))
+            const compressedBlob = await new Response(compressedStream).blob()
+            const arrayBuffer = await compressedBlob.arrayBuffer()
+            const bytes = new Uint8Array(arrayBuffer)
+            let binary = ''
+            for (let i = 0; i < bytes.byteLength; i++) {
+              binary += String.fromCharCode(bytes[i])
+            }
+            return btoa(binary)
+          } catch (error) {
+            console.warn('Compression failed, sending uncompressed:', error)
+          }
+        }
+        // Fallback: pas de compression
+        const arrayBuffer = await data.arrayBuffer()
+        const bytes = new Uint8Array(arrayBuffer)
         let binary = ''
         for (let i = 0; i < bytes.byteLength; i++) {
           binary += String.fromCharCode(bytes[i])
         }
         return btoa(binary)
-      })
+      }
+
+      // Convertir et compresser le PDF
+      const pdfBase64 = await compressData(pdfBlob)
       const pdfFileName = `recapitulatif-${data.companyName || 'xeilom'}-${
         new Date().toISOString().split('T')[0]
       }.pdf`
 
-      // Convertir le fichier KBIS en base64
+      // Convertir et compresser le fichier KBIS
       let kbisBase64 = ''
       let kbisFileName = ''
       if (data.legalDocument) {
         kbisFileName = data.legalDocument.name
-        const reader = new FileReader()
-        kbisBase64 = await new Promise((resolve, reject) => {
-          reader.onloadend = () => {
-            const base64String = reader.result as string
-            // Retirer le préfixe data:application/pdf;base64,
-            const base64 = base64String.split(',')[1] || base64String
-            resolve(base64)
-          }
-          reader.onerror = reject
-          reader.readAsDataURL(data.legalDocument)
-        })
+        kbisBase64 = await compressData(data.legalDocument)
       }
 
       // Envoyer les emails

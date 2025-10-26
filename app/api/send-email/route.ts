@@ -71,6 +71,23 @@ export async function POST(request: NextRequest) {
       }KB`
     )
 
+    // Fonction de décompression
+    const decompressData = (base64String: string): Buffer => {
+      try {
+        // Si c'est compressé avec gzip, décompresser
+        const buffer = Buffer.from(base64String, 'base64')
+        // Vérifier si c'est un fichier gzip (magic bytes: 1f 8b)
+        if (buffer[0] === 0x1f && buffer[1] === 0x8b) {
+          const zlib = require('zlib')
+          return zlib.gunzipSync(buffer)
+        }
+        return buffer
+      } catch (error) {
+        console.warn('Decompression failed, using as-is:', error)
+        return Buffer.from(base64String, 'base64')
+      }
+    }
+
     // Préparer les pièces jointes (KBIS + PDF récapitulatif)
     const attachments = []
 
@@ -78,7 +95,7 @@ export async function POST(request: NextRequest) {
     if (body.kbisFile && body.kbisFileName) {
       attachments.push({
         filename: body.kbisFileName,
-        content: Buffer.from(body.kbisFile, 'base64'),
+        content: decompressData(body.kbisFile),
       })
     }
 
@@ -86,17 +103,17 @@ export async function POST(request: NextRequest) {
     if (body.pdfFile && body.pdfFileName) {
       attachments.push({
         filename: body.pdfFileName,
-        content: Buffer.from(body.pdfFile, 'base64'),
+        content: decompressData(body.pdfFile),
       })
     }
 
-    // Email 1 : À l'équipe XEILOM (avec KBIS seulement si disponible)
+    // Email 1 : À l'équipe XEILOM (KBIS + PDF récapitulatif)
     console.log('📨 [EMAIL DEBUG] Sending email 1 to team')
     const emailToTeam = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'noreply@xeilom.fr',
       to: 'communication@xeilom.fr',
       subject: `🎯 Nouvelle demande de compte professionnel - ${body.companyName}`,
-      attachments: attachments.filter((att: any) => att.filename !== body.pdfFileName),
+      attachments: attachments,
       html: `
         <!DOCTYPE html>
         <html>
@@ -167,7 +184,9 @@ export async function POST(request: NextRequest) {
                 
                  <p style="margin-top: 30px; padding: 15px; background: #dbeafe; border-left: 4px solid #2563eb; border-radius: 4px;">
                    <strong>📎 Documents en pièce jointe :</strong><br>
-                   ${body.kbisFile ? `• KBIS (${body.kbisFileName})` : 'Aucun document joint'}
+                   ${body.kbisFile ? `• KBIS (${body.kbisFileName})` : ''}${body.kbisFile && body.pdfFile ? '<br>' : ''}
+                   ${body.pdfFile ? `• PDF récapitulatif complet de la demande` : ''}
+                   ${!body.kbisFile && !body.pdfFile ? 'Aucun document joint' : ''}
                  </p>
               </div>
               
@@ -182,43 +201,6 @@ export async function POST(request: NextRequest) {
     })
 
     console.log('✅ [EMAIL DEBUG] Email 1 sent successfully:', emailToTeam.data?.id)
-
-    // Email 1bis : PDF récapitulatif (si disponible)
-    let emailToTeamPDF
-    if (body.pdfFile && body.pdfFileName) {
-      console.log('📨 [EMAIL DEBUG] Sending PDF email to team')
-      emailToTeamPDF = await resend.emails.send({
-        from: process.env.FROM_EMAIL || 'noreply@xeilom.fr',
-        to: 'communication@xeilom.fr',
-        subject: `📄 PDF Récapitulatif - ${body.companyName}`,
-        attachments: [
-          {
-            filename: body.pdfFileName,
-            content: Buffer.from(body.pdfFile, 'base64'),
-          }
-        ],
-        html: `
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <meta charset="UTF-8">
-              <style>
-                body { font-family: Arial, sans-serif; padding: 20px; }
-                .container { max-width: 600px; margin: 0 auto; }
-              </style>
-            </head>
-            <body>
-              <div class="container">
-                <h2>PDF Récapitulatif de la demande</h2>
-                <p>Voici le PDF récapitulatif complet de la demande de compte professionnel pour <strong>${body.companyName}</strong>.</p>
-                <p>Le fichier est joint à cet email.</p>
-              </div>
-            </body>
-          </html>
-        `,
-      })
-      console.log('✅ [EMAIL DEBUG] PDF email sent successfully:', emailToTeamPDF.data?.id)
-    }
 
     // Email 2 : À l'utilisateur (message de remerciement)
     console.log('📨 [EMAIL DEBUG] Sending email 2 to user')
@@ -303,7 +285,6 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Emails envoyés avec succès',
       teamEmailId: emailToTeam.data?.id,
-      teamPDFEmailId: emailToTeamPDF?.data?.id,
       userEmailId: emailToUser.data?.id,
     })
   } catch (error) {
