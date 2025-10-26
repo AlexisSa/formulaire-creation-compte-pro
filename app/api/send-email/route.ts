@@ -63,9 +63,13 @@ export async function POST(request: NextRequest) {
     )
 
     // Calculer la taille des fichiers envoyés
-    const kbisSize = body.kbisFile ? Math.round(body.kbisFile.length * 0.75 / 1024) : 0
-    const pdfSize = body.pdfFile ? Math.round(body.pdfFile.length * 0.75 / 1024) : 0
-    console.log(`📦 [EMAIL DEBUG] File sizes - KBIS: ${kbisSize}KB, PDF: ${pdfSize}KB, Total: ${kbisSize + pdfSize}KB`)
+    const kbisSize = body.kbisFile ? Math.round((body.kbisFile.length * 0.75) / 1024) : 0
+    const pdfSize = body.pdfFile ? Math.round((body.pdfFile.length * 0.75) / 1024) : 0
+    console.log(
+      `📦 [EMAIL DEBUG] File sizes - KBIS: ${kbisSize}KB, PDF: ${pdfSize}KB, Total: ${
+        kbisSize + pdfSize
+      }KB`
+    )
 
     // Préparer les pièces jointes (KBIS + PDF récapitulatif)
     const attachments = []
@@ -163,8 +167,7 @@ export async function POST(request: NextRequest) {
                 
                  <p style="margin-top: 30px; padding: 15px; background: #dbeafe; border-left: 4px solid #2563eb; border-radius: 4px;">
                    <strong>📎 Documents en pièce jointe :</strong><br>
-                   • PDF récapitulatif complet de la demande<br>
-                   ${body.kbisFile ? `• KBIS (${body.kbisFileName})` : ''}
+                   ${body.kbisFile ? `• KBIS (${body.kbisFileName})` : 'Aucun document joint'}
                  </p>
               </div>
               
