@@ -213,11 +213,19 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
 
-      // NE PAS ENVOYER LE PDF RECAPITULATIF (trop lourd)
-      // Le PDF est déjà téléchargé par l'utilisateur
-      // On envoie seulement le KBIS par email
-      const pdfBase64 = undefined // Ne pas envoyer le PDF
-      const pdfFileName = undefined
+      // Convertir le PDF en base64 pour l'email
+      // Le PDF sera envoyé dans un email séparé pour éviter l'erreur 413
+      const pdfBase64 = await pdfBlob.arrayBuffer().then((buffer) => {
+        const bytes = new Uint8Array(buffer)
+        let binary = ''
+        for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i])
+        }
+        return btoa(binary)
+      })
+      const pdfFileName = `recapitulatif-${data.companyName || 'xeilom'}-${
+        new Date().toISOString().split('T')[0]
+      }.pdf`
 
       // Convertir le fichier KBIS en base64
       let kbisBase64 = ''
