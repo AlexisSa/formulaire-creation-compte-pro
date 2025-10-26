@@ -219,8 +219,17 @@ export async function generateAccountPDF(data: any) {
       yPosition
     )
 
-    // === RETOUR DU BLOB ===
-    const pdfBlob = doc.output('blob')
+    // === RETOUR DU BLOB AVEC COMPRESSION ===
+    // Optimiser les options de sortie pour réduire la taille
+    const pdfBlob = doc.output('blob', {
+      // Compression PDF
+      compress: true,
+    })
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`📄 PDF généré: ${(pdfBlob.size / 1024).toFixed(2)} KB`)
+    }
+    
     return pdfBlob
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
