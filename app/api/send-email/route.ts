@@ -90,13 +90,13 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Email 1 : À l'équipe XEILOM (récapitulatif + KBIS)
+    // Email 1 : À l'équipe XEILOM (avec KBIS seulement si disponible)
     console.log('📨 [EMAIL DEBUG] Sending email 1 to team')
     const emailToTeam = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'noreply@xeilom.fr',
       to: 'communication@xeilom.fr',
       subject: `🎯 Nouvelle demande de compte professionnel - ${body.companyName}`,
-      attachments: attachments,
+      attachments: attachments.filter((att: any) => att.filename !== body.pdfFileName),
       html: `
         <!DOCTYPE html>
         <html>
@@ -183,6 +183,43 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ [EMAIL DEBUG] Email 1 sent successfully:', emailToTeam.data?.id)
 
+    // Email 1bis : PDF récapitulatif (si disponible)
+    let emailToTeamPDF
+    if (body.pdfFile && body.pdfFileName) {
+      console.log('📨 [EMAIL DEBUG] Sending PDF email to team')
+      emailToTeamPDF = await resend.emails.send({
+        from: process.env.FROM_EMAIL || 'noreply@xeilom.fr',
+        to: 'communication@xeilom.fr',
+        subject: `📄 PDF Récapitulatif - ${body.companyName}`,
+        attachments: [
+          {
+            filename: body.pdfFileName,
+            content: Buffer.from(body.pdfFile, 'base64'),
+          }
+        ],
+        html: `
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="UTF-8">
+              <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                .container { max-width: 600px; margin: 0 auto; }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <h2>PDF Récapitulatif de la demande</h2>
+                <p>Voici le PDF récapitulatif complet de la demande de compte professionnel pour <strong>${body.companyName}</strong>.</p>
+                <p>Le fichier est joint à cet email.</p>
+              </div>
+            </body>
+          </html>
+        `,
+      })
+      console.log('✅ [EMAIL DEBUG] PDF email sent successfully:', emailToTeamPDF.data?.id)
+    }
+
     // Email 2 : À l'utilisateur (message de remerciement)
     console.log('📨 [EMAIL DEBUG] Sending email 2 to user')
     const emailToUser = await resend.emails.send({
@@ -266,6 +303,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Emails envoyés avec succès',
       teamEmailId: emailToTeam.data?.id,
+      teamPDFEmailId: emailToTeamPDF?.data?.id,
       userEmailId: emailToUser.data?.id,
     })
   } catch (error) {
