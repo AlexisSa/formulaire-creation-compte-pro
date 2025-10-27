@@ -271,8 +271,8 @@ export async function POST(request: NextRequest) {
                 <div class="highlight">
                   <p style="margin: 0; font-size: 16px;">
                     <strong>📋 Prochaines étapes :</strong><br><br>
-                    • Votre demande sera traitée sous <strong>48 heures</strong><br>
-                    • Vous recevrez un email de confirmation avec vos identifiants dès l'activation de votre compte<br>
+                    • Votre demande sera traitée sous <strong>24 heures</strong><br>
+                    • Vous recevrez un email de confirmation dès l'activation de votre compte<br>
                     • Vous pourrez alors accéder à nos tarifs professionnels et passer commande
                   </p>
                 </div>

@@ -112,7 +112,7 @@ export function ConfirmationPage({
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
                     Votre compte professionnel sera activé sous{' '}
-                    <span className="font-medium text-blue-600">48 heures</span> après
+                    <span className="font-medium text-blue-600">24 heures</span> après
                     validation de vos documents.
                   </p>
                 </div>
@@ -170,7 +170,7 @@ export function ConfirmationPage({
                 step: '3',
                 title: 'Activation de votre compte',
                 description:
-                  'Vous recevez un email avec vos identifiants et pouvez passer commande dès réception.',
+                  'Vous recevez un email de confirmation et pouvez passer commande dès réception.',
               },
             ].map((item, index) => (
               <motion.li

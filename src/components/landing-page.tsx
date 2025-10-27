@@ -324,7 +324,7 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
                   {
                     step: '3',
                     title: 'Validation',
-                    description: 'Compte actif sous 48h',
+                    description: 'Compte actif sous 24h',
                     color: 'orange',
                   },
                 ].map((item, index) => {
@@ -569,7 +569,7 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
             >
               <FAQItem
                 question="Combien de temps faut-il pour créer un compte professionnel ?"
-                answer="Votre compte sera actif sous 48h après validation de vos documents. Vous recevrez un email de confirmation une fois votre compte validé."
+                answer="Votre compte sera actif sous 24h après validation de vos documents. Vous recevrez un email de confirmation une fois votre compte validé."
               />
               <FAQItem
                 question="Quels documents sont nécessaires ?"
