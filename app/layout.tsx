@@ -61,9 +61,6 @@ export const metadata: Metadata = {
   title: 'XEILOM - Demande de Compte Client',
   description:
     "Demandez l'ouverture d'un compte client professionnel chez Xeilom, spécialiste en courant faible. Processus simple et sécurisé en 3 étapes.",
-  icons: {
-    icon: '/favicon.ico',
-  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
