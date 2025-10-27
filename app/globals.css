@@ -49,15 +49,6 @@
   @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
 }
 
-/* Amélioration de la visibilité des liens */
-a:not(.btn):not(.button):not(.no-underline) {
-  @apply underline decoration-2 underline-offset-2;
-}
-
-a:not(.btn):not(.button):not(.no-underline):hover {
-  @apply decoration-4;
-}
-
 /* Styles pour les éléments de formulaire */
 input:focus,
 textarea:focus,
@@ -476,6 +467,104 @@ button:not(:disabled) {
 
     .print-visible {
       display: block !important;
+    }
+  }
+
+  /* Mobile optimizations */
+  .mobile-optimized {
+    /* Force le GPU pour les transitions mobiles */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    /* Réduction de la latence tactile */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Scroll horizontal optimisé pour mobile */
+  .scroll-horizontal {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    /* Masquer la scrollbar sur mobile */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scroll-horizontal::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Tables responsive */
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-responsive table {
+    width: 100%;
+    min-width: 640px;
+  }
+
+  /* Mode paysage mobile */
+  @media (orientation: landscape) and (max-width: 896px) {
+    .landscape-hide {
+      display: none !important;
+    }
+
+    .landscape-compact {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+  }
+
+  /* Optimisation du reflow pour petits écrans */
+  @media (max-width: 640px) {
+    .mobile-stack {
+      flex-direction: column !important;
+    }
+
+    .mobile-center {
+      text-align: center !important;
+    }
+
+    .mobile-full-width {
+      width: 100% !important;
+    }
+
+    .mobile-no-wrap {
+      white-space: nowrap !important;
+    }
+
+    /* Padding réduit sur mobile */
+    .mobile-padding {
+      padding: 0.75rem !important;
+    }
+
+    /* Espacement réduit */
+    .mobile-gap {
+      gap: 0.5rem !important;
+    }
+  }
+
+  /* Optimisation pour les très petits écrans */
+  @media (max-width: 375px) {
+    .mobile-text-sm {
+      font-size: 0.875rem !important;
+    }
+
+    .mobile-text-xs {
+      font-size: 0.75rem !important;
+    }
+  }
+
+  /* Amélioration du touch target sur mobile */
+  @media (pointer: coarse) {
+    button,
+    a,
+    [role='button'] {
+      min-height: 44px;
+      min-width: 44px;
     }
   }
 }

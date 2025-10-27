@@ -127,22 +127,24 @@ export function CGVModal({ open, onOpenChange }: CGVModalProps) {
             </p>
             <p className="text-gray-700 leading-relaxed mb-3">
               Dans le cas d&apos;une première affaire, le paiement s&apos;effectue au
-              comptant et sera accompagné des pièces nécessaires à l&apos;ouverture de compte
-              du nouveau client. Dans le cas d&apos;un règlement à terme, la mise à disposition
-              des produits commandés constitue le fait générateur de la facturation. Le délai
-              précité s&apos;entend à compter de cette date. Les échéances sont de rigueur et
-              les réclamations éventuelles portant sur les prix ou la qualité des marchandises
-              ne dispense pas l&apos;Acheteur de régler les factures à l&apos;échéance convenue.
+              comptant et sera accompagné des pièces nécessaires à l&apos;ouverture de
+              compte du nouveau client. Dans le cas d&apos;un règlement à terme, la mise à
+              disposition des produits commandés constitue le fait générateur de la
+              facturation. Le délai précité s&apos;entend à compter de cette date. Les
+              échéances sont de rigueur et les réclamations éventuelles portant sur les
+              prix ou la qualité des marchandises ne dispense pas l&apos;Acheteur de
+              régler les factures à l&apos;échéance convenue.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              Le défaut de paiement d&apos;une facture ou le non-retour dans les quinze jours
-              d&apos;un effet envoyé pour acceptation autorise le Vendeur à suspendre toute
-              livraison quelles que soient les conditions de la commande et ce jusqu&apos;à
-              parfait règlement. Il fera courir les intérêts au taux de 9% par an de plein droit
-              et sans mise en demeure préalable. En outre, vingt-quatre heures après la mise en
-              demeure, par lettre recommandée non suivie de paiement, la vente des produits non
-              payés sera résolue en plein droit ; les produits revenant immédiatement la
-              propriété du Vendeur qui se prévaut de la présente disposition.
+              Le défaut de paiement d&apos;une facture ou le non-retour dans les quinze
+              jours d&apos;un effet envoyé pour acceptation autorise le Vendeur à
+              suspendre toute livraison quelles que soient les conditions de la commande
+              et ce jusqu&apos;à parfait règlement. Il fera courir les intérêts au taux de
+              9% par an de plein droit et sans mise en demeure préalable. En outre,
+              vingt-quatre heures après la mise en demeure, par lettre recommandée non
+              suivie de paiement, la vente des produits non payés sera résolue en plein
+              droit ; les produits revenant immédiatement la propriété du Vendeur qui se
+              prévaut de la présente disposition.
             </p>
           </section>
 
@@ -260,42 +262,59 @@ export function CGVModal({ open, onOpenChange }: CGVModalProps) {
             </p>
           </section>
 
-          {/* INFORMATIONS COMPLÉMENTAIRES */}
-          <section className="pb-6 text-gray-700 leading-relaxed">
-            <p className="mb-3">
-              <strong className="text-gray-900">PRIX :</strong> Nos prix s&apos;entendent nets, hors taxes, emballés en conditionnement standard. Ils peuvent
-              être révisés sans préavis par XEILOM, et communiqués rapidement à l&apos;Acheteur.
+          {/* PRIX */}
+          <section className="pb-6 border-b border-gray-200">
+            <h3 className="text-lg font-bold text-blue-900 mb-3">PRIX</h3>
+            <p className="text-gray-700 leading-relaxed">
+              Nos prix s&apos;entendent nets, hors taxes, emballés en conditionnement
+              standard. Ils peuvent être révisés sans préavis par XEILOM, et communiqués
+              rapidement à l&apos;Acheteur.
             </p>
-            <p className="mb-3">
-              <strong className="text-gray-900">FRAIS DE PORT :</strong> Franco de port, pour les livraisons France d&apos;un montant supérieur à 200€
-              Hors Taxes en messagerie (48 à 96H). Hors baies et coffrets 19 pouces.
+          </section>
+
+          {/* FRAIS DE PORT */}
+          <section className="pb-6 border-b border-gray-200">
+            <h3 className="text-lg font-bold text-blue-900 mb-3">FRAIS DE PORT</h3>
+            <p className="text-gray-700 leading-relaxed">
+              Franco de port, pour les livraisons France d&apos;un montant supérieur à
+              200€ Hors Taxes en messagerie (48 à 96H). Hors baies et coffrets 19 pouces.
             </p>
-            <p className="mb-3">
-              <strong className="text-gray-900">CONDITIONNEMENT :</strong> Nos marchandises sont livrées par unités ou en boite complète à votre
+          </section>
+
+          {/* CONDITIONNEMENT */}
+          <section className="pb-6 border-b border-gray-200">
+            <h3 className="text-lg font-bold text-blue-900 mb-3">CONDITIONNEMENT</h3>
+            <p className="text-gray-700 leading-relaxed">
+              Nos marchandises sont livrées par unités ou en boite complète à votre
               convenance.
             </p>
-            <p className="mb-3">
-              <strong className="text-gray-900">FRAIS DE GESTION</strong>
-              <br />
-              D&apos;un montant de 25€ pour les livraisons en France d&apos;un montant inférieur à 200€ Hors Taxes en messagerie (48 à 96H)
-              ou pour toute livraison d&apos;une baie.
-              <br />
-              ou d&apos;un coffret 19 pouces de 4 à 42U.
+          </section>
+
+          {/* FRAIS DE GESTION */}
+          <section className="pb-6 border-b border-gray-200">
+            <h3 className="text-lg font-bold text-blue-900 mb-3">FRAIS DE GESTION</h3>
+            <p className="text-gray-700 leading-relaxed">
+              D&apos;un montant de 25€ pour les livraisons en France d&apos;un montant
+              inférieur à 200€ Hors Taxes en messagerie (48 à 96H) ou pour toute livraison
+              d&apos;une baie ou d&apos;un coffret 19 pouces de 4 à 42U.
             </p>
-            <p>
-              <strong className="text-gray-900">EXPRESS :</strong> A la demande de l&apos;acheteur, les produits pourront être envoyés en EXPRESS à sa charge.
+          </section>
+
+          {/* EXPRESS */}
+          <section className="pb-6">
+            <h3 className="text-lg font-bold text-blue-900 mb-3">EXPRESS</h3>
+            <p className="text-gray-700 leading-relaxed">
+              A la demande de l&apos;acheteur, les produits pourront être envoyés en
+              EXPRESS à sa charge.
             </p>
           </section>
 
           {/* Footer */}
-          <div className="mt-6 pt-4">
-            <p className="text-gray-700 mb-4">Conditions générales de vente</p>
-            <div className="border-t-2 border-blue-500 bg-blue-50 p-4 rounded">
-              <p className="text-center text-gray-700 font-semibold text-sm">
-                XEILOM - SAS au capital de 70.000 € - R.C.S SOISSONS - Siret 521 756 502
-                00030 – APE 4652 Z – N° Intracom. FR 15521756502
-              </p>
-            </div>
+          <div className="mt-6 pt-4 border-t-2 border-blue-500 bg-blue-50 p-4 rounded">
+            <p className="text-center text-gray-700 font-semibold text-sm">
+              XEILOM - SAS au capital de 70.000 € - R.C.S SOISSONS - Siret 521 756 502
+              00030 – APE 4652 Z – N° Intracom. FR 15521756502
+            </p>
           </div>
         </div>
       </DialogContent>

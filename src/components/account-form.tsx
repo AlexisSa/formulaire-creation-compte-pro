@@ -22,6 +22,7 @@ import { accountFormSchema, type AccountFormData } from '@/lib/validation'
 import { useAutoSave, useProgressAnimation } from '@/hooks'
 import { useToast } from '@/contexts/ToastContext'
 import { ConfirmationPage } from '@/components/confirmation-page'
+import { Footer } from '@/components/footer'
 import { ChevronLeft, ChevronRight, Check, Save } from 'lucide-react'
 
 const STEPS = [
@@ -400,16 +401,16 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
         message="Progression sauvegardée"
       />
 
-      <div className="max-w-6xl mx-auto px-8 py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         {/* En-tête */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.h2
-            className="text-4xl md:text-5xl font-light text-gray-900 mb-6 tracking-tight"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-gray-900 mb-4 sm:mb-6 tracking-tight"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
@@ -420,7 +421,7 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
           </motion.h2>
 
           <motion.p
-            className="text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed"
+            className="text-sm sm:text-base lg:text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -433,7 +434,7 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
         {/* Stepper */}
         <motion.div
           id="form-stepper"
-          className="mb-12"
+          className="mb-8 sm:mb-10 lg:mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
@@ -442,19 +443,19 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
             steps={STEPS}
             currentStep={currentStep}
             onStepClick={handleStepClick}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-200"
+            className="bg-white rounded-xl p-3 sm:p-4 lg:p-6 shadow-sm border border-gray-200"
           />
         </motion.div>
 
         {/* Recherche entreprise - visible uniquement à l'étape 1 */}
         {currentStep === 1 && (
           <motion.div
-            className="mb-8"
+            className="mb-6 sm:mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border-2 border-blue-200 shadow-lg">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 sm:p-6 lg:p-8 rounded-xl lg:rounded-2xl border-2 border-blue-200 shadow-lg">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
                   <svg
@@ -525,15 +526,17 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
                 className="absolute inset-0 bg-white/90 rounded-xl z-10 flex items-center justify-center"
               >
                 <div className="flex flex-col items-center gap-3">
-                  <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                  <p className="text-sm text-gray-700 font-medium">Chargement...</p>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-xs sm:text-sm text-gray-700 font-medium">
+                    Chargement...
+                  </p>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
           <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 rounded-xl">
-            <CardContent className="p-8">
+            <CardContent className="p-4 sm:p-6 lg:p-8">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
                 {/* Contenu de l'étape */}
                 <AnimatePresence mode="wait">
@@ -555,50 +558,109 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
 
                 {/* Navigation */}
                 <motion.div
-                  className="flex justify-between items-center pt-8 border-t border-gray-200 gap-6"
+                  className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center pt-6 sm:pt-8 border-t border-gray-200 gap-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.7 }}
                 >
-                  {/* Bouton précédent */}
-                  <div className="flex-1">
-                    {currentStep > 1 && (
-                      <Button type="button" variant="outline" onClick={handlePrevious}>
-                        <ChevronLeft className="h-4 w-4 mr-2" />
-                        Précédent
-                      </Button>
-                    )}
-                  </div>
-
-                  {/* Indicateur d'étape */}
-                  <div className="flex-1 text-center">
-                    <span className="text-sm text-gray-600 font-medium">
+                  {/* Indicateur d'étape - mobile only */}
+                  <div className="text-center sm:hidden w-full">
+                    <span className="text-xs text-gray-600 font-medium">
                       Étape {currentStep} sur {STEPS.length}
                     </span>
                   </div>
 
-                  {/* Bouton suivant ou soumettre */}
-                  <div className="flex-1 flex justify-end">
-                    {currentStep < STEPS.length ? (
-                      <Button type="button" onClick={handleNext} variant="default">
-                        Suivant
-                        <ChevronRight className="h-4 w-4 ml-2" />
-                      </Button>
-                    ) : (
-                      <Button type="submit" disabled={isSubmitting} variant="default">
-                        {isSubmitting ? (
-                          <>
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                            Envoi en cours...
-                          </>
-                        ) : (
-                          <>
-                            <Check className="h-4 w-4 mr-2" />
-                            Faire ma demande de compte pro
-                          </>
-                        )}
-                      </Button>
-                    )}
+                  {/* Layout desktop */}
+                  <div className="hidden sm:flex flex-1 items-center justify-between w-full gap-4">
+                    {/* Bouton précédent */}
+                    <div className="flex-1">
+                      {currentStep > 1 && (
+                        <Button type="button" variant="outline" onClick={handlePrevious}>
+                          <ChevronLeft className="h-4 w-4 mr-2" />
+                          Précédent
+                        </Button>
+                      )}
+                    </div>
+
+                    {/* Indicateur d'étape */}
+                    <div className="flex-1 text-center">
+                      <span className="text-sm text-gray-600 font-medium">
+                        Étape {currentStep} sur {STEPS.length}
+                      </span>
+                    </div>
+
+                    {/* Bouton suivant ou soumettre */}
+                    <div className="flex-1 flex justify-end">
+                      {currentStep < STEPS.length ? (
+                        <Button type="button" onClick={handleNext} variant="default">
+                          Suivant
+                          <ChevronRight className="h-4 w-4 ml-2" />
+                        </Button>
+                      ) : (
+                        <Button type="submit" disabled={isSubmitting} variant="default">
+                          {isSubmitting ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                              Envoi en cours...
+                            </>
+                          ) : (
+                            <>
+                              <Check className="h-4 w-4 mr-2" />
+                              Faire ma demande de compte pro
+                            </>
+                          )}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Layout mobile */}
+                  <div className="flex sm:hidden flex-col gap-4 w-full">
+                    {/* Boutons en row pour mobile */}
+                    <div className="flex gap-4 w-full">
+                      {currentStep > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handlePrevious}
+                          className="flex-1"
+                        >
+                          <ChevronLeft className="h-4 w-4 mr-2" />
+                          Retour
+                        </Button>
+                      )}
+
+                      {currentStep < STEPS.length ? (
+                        <Button
+                          type="button"
+                          onClick={handleNext}
+                          variant="default"
+                          className="flex-1"
+                        >
+                          Continuer
+                          <ChevronRight className="h-4 w-4 ml-2" />
+                        </Button>
+                      ) : (
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          variant="default"
+                          className="flex-1"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                              Envoi...
+                            </>
+                          ) : (
+                            <>
+                              <Check className="h-4 w-4 mr-2" />
+                              Valider
+                            </>
+                          )}
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               </form>
@@ -606,38 +668,30 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
           </Card>
         </motion.div>
 
-        {/* Aide */}
-        <motion.div
-          className="text-center mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-        >
-          <motion.p className="text-gray-700 mb-2">
-            Une question ? Notre équipe est là pour vous aider
-          </motion.p>
-          <motion.a
-            href="mailto:info.xeilom@xeilom.fr"
-            className="text-blue-600 font-medium hover:text-blue-700 transition-colors no-underline"
-          >
-            info.xeilom@xeilom.fr
-          </motion.a>
-        </motion.div>
-
         {/* Message discret sur la sauvegarde automatique */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1 }}
-          className="text-center mt-8"
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="text-center mt-6 sm:mt-8"
         >
-          <div className="inline-flex items-center space-x-2 text-sm text-gray-600 bg-gray-50 rounded-full px-4 py-2 border border-gray-200">
-            <Save className="w-4 h-4 text-blue-600" />
-            <span>
+          <div className="inline-flex items-center space-x-2 text-xs sm:text-sm text-gray-600 bg-gray-50 rounded-full px-3 sm:px-4 py-2 border border-gray-200">
+            <Save className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 flex-shrink-0" />
+            <span className="hidden sm:inline">
               Vos données sont automatiquement sauvegardées pour vous faire gagner du
               temps si vous souhaitez reprendre plus tard
             </span>
+            <span className="sm:hidden">Sauvegarde automatique activée</span>
           </div>
+        </motion.div>
+
+        {/* Footer homogénéisé avec la landing page */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1 }}
+        >
+          <Footer />
         </motion.div>
       </div>
 

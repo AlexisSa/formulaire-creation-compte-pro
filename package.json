@@ -7,8 +7,10 @@
     "dev:clean": "rm -rf .next && next dev",
     "build": "next build",
     "build:prod": "./build-production.sh",
+    "build:check": "next build 2>&1 | tail -30",
     "start": "next start",
     "lint": "next lint",
+    "lint:check": "next lint 2>&1 | tail -20",
     "test": "jest",
     "test:watch": "jest --watch"
   },

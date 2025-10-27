@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { googleReviewsData } from '@/data/google-reviews'
+import { Footer } from '@/components/footer'
 
 interface LandingPageProps {
   onStart: () => void
@@ -644,19 +645,7 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
         </section>
 
         {/* Footer */}
-        <footer className="py-16 border-t border-gray-200">
-          <div className="text-center">
-            <p className="text-gray-600 mb-3 font-light">
-              Une question ? Notre équipe est là
-            </p>
-            <a
-              href="mailto:info.xeilom@xeilom.fr"
-              className="text-blue-600 font-medium hover:text-blue-700 transition-colors no-underline"
-            >
-              info.xeilom@xeilom.fr
-            </a>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </div>
   )

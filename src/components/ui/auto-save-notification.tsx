@@ -44,11 +44,12 @@ export function AutoSaveNotification({
           exit={{ opacity: 0, y: -20, scale: 0.9 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className={cn(
-            'fixed bottom-4 right-4 z-50',
+            'fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 z-50',
             'bg-white/90 backdrop-blur-sm border border-green-200',
             'rounded-lg shadow-lg px-4 py-3',
             'flex items-center space-x-2',
             'text-sm text-green-700',
+            'max-w-xs sm:max-w-none',
             className
           )}
         >
@@ -78,11 +79,12 @@ export function SaveIndicator({ isSaving, className }: SaveIndicatorProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className={cn(
-            'fixed top-4 right-4 z-50',
+            'fixed top-4 left-4 right-4 sm:left-auto sm:right-4 z-50',
             'bg-white/90 backdrop-blur-sm border border-blue-200',
             'rounded-lg shadow-sm px-3 py-2',
             'flex items-center space-x-2',
             'text-sm text-blue-700',
+            'max-w-xs sm:max-w-none',
             className
           )}
         >

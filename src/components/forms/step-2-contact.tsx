@@ -43,14 +43,14 @@ export function Step2Contact({ form }: Step2ContactProps) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Contacts côte à côte */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {/* Responsable Achat */}
-        <div className="space-y-5 bg-blue-50/30 border border-blue-100 rounded-xl p-6">
-          <div className="flex items-center gap-2 mb-6">
-            <Mail className="h-4 w-4 text-blue-600" />
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+        <div className="space-y-5 bg-blue-50/30 border border-blue-100 rounded-xl p-4 sm:p-6">
+          <div className="flex items-center gap-2 mb-4 sm:mb-6">
+            <Mail className="h-4 w-4 text-blue-600 flex-shrink-0" />
+            <h3 className="text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wide">
               Responsable Achat
             </h3>
           </div>
@@ -115,11 +115,11 @@ export function Step2Contact({ form }: Step2ContactProps) {
         </div>
 
         {/* Service Comptabilité */}
-        <div className="space-y-5 bg-blue-50/30 border border-blue-100 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="space-y-5 bg-blue-50/30 border border-blue-100 rounded-xl p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6 flex-wrap gap-2">
             <div className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-blue-600" />
-              <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+              <Mail className="h-4 w-4 text-blue-600 flex-shrink-0" />
+              <h3 className="text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wide">
                 Service Comptabilité
               </h3>
             </div>
@@ -128,10 +128,11 @@ export function Step2Contact({ form }: Step2ContactProps) {
               variant="ghost"
               size="sm"
               onClick={copyAchatToCompta}
-              className="text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-100"
+              className="text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-100 whitespace-nowrap"
             >
-              <Copy className="h-3 w-3 mr-1" />
-              Copier les infos achat
+              <Copy className="h-3 w-3 sm:mr-1" />
+              <span className="hidden sm:inline">Copier les infos achat</span>
+              <span className="sm:hidden">Copier</span>
             </Button>
           </div>
 
@@ -196,12 +197,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
       </div>
 
       {/* Adresses côte à côte */}
-      <div className="grid md:grid-cols-2 gap-6 pt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 pt-6 sm:pt-8">
         {/* Adresse de facturation */}
-        <div className="space-y-5 bg-gray-50/50 border border-gray-200 rounded-xl p-6">
-          <div className="flex items-center gap-2 mb-6">
-            <MapPin className="h-4 w-4 text-blue-600" />
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+        <div className="space-y-5 bg-gray-50/50 border border-gray-200 rounded-xl p-4 sm:p-6">
+          <div className="flex items-center gap-2 mb-4 sm:mb-6">
+            <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
+            <h3 className="text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wide">
               Adresse de facturation
             </h3>
           </div>
@@ -271,11 +272,11 @@ export function Step2Contact({ form }: Step2ContactProps) {
         </div>
 
         {/* Adresse de livraison */}
-        <div className="space-y-5 bg-gray-50/50 border border-gray-200 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="space-y-5 bg-gray-50/50 border border-gray-200 rounded-xl p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6 flex-wrap gap-2">
             <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-blue-600" />
-              <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+              <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
+              <h3 className="text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wide">
                 Adresse de livraison
               </h3>
             </div>
@@ -284,10 +285,11 @@ export function Step2Contact({ form }: Step2ContactProps) {
               variant="ghost"
               size="sm"
               onClick={copyFacturationToLivraison}
-              className="text-xs text-gray-600 hover:text-gray-700 hover:bg-gray-100"
+              className="text-xs text-gray-600 hover:text-gray-700 hover:bg-gray-100 whitespace-nowrap"
             >
-              <Copy className="h-3 w-3 mr-1" />
-              Copier la facturation
+              <Copy className="h-3 w-3 sm:mr-1" />
+              <span className="hidden sm:inline">Copier la facturation</span>
+              <span className="sm:hidden">Copier</span>
             </Button>
           </div>
 

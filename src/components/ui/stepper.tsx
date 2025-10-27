@@ -23,7 +23,7 @@ export function Stepper({ steps, currentStep, onStepClick, className }: StepperP
   return (
     <div className={cn('w-full', className)}>
       <nav aria-label="Progress">
-        <ol role="list" className="flex items-start justify-between gap-2">
+        <ol role="list" className="flex items-start justify-between gap-2 sm:gap-4">
           {steps.map((step, index) => {
             const stepNumber = index + 1
             const isCompleted = currentStep > stepNumber
