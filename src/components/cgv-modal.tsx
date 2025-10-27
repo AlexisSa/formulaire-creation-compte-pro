@@ -267,37 +267,51 @@ export function CGVModal({ open, onOpenChange }: CGVModalProps) {
             </p>
           </section>
 
-          {/* INFORMATIONS COMPLÉMENTAIRES */}
+          {/* PRIX */}
+          <section className="pb-6 border-b border-gray-200">
+            <h3 className="text-lg font-bold text-blue-900 mb-3">PRIX</h3>
+            <p className="text-gray-700 leading-relaxed">
+              Nos prix s&apos;entendent nets, hors taxes, emballés en conditionnement
+              standard. Ils peuvent être révisés sans préavis par XEILOM, et communiqués
+              rapidement à l&apos;Acheteur.
+            </p>
+          </section>
+
+          {/* FRAIS DE PORT */}
+          <section className="pb-6 border-b border-gray-200">
+            <h3 className="text-lg font-bold text-blue-900 mb-3">FRAIS DE PORT</h3>
+            <p className="text-gray-700 leading-relaxed">
+              Franco de port, pour les livraisons France d&apos;un montant supérieur à 200€
+              Hors Taxes en messagerie (48 à 96H). Hors baies et coffrets 19 pouces.
+            </p>
+          </section>
+
+          {/* CONDITIONNEMENT */}
+          <section className="pb-6 border-b border-gray-200">
+            <h3 className="text-lg font-bold text-blue-900 mb-3">CONDITIONNEMENT</h3>
+            <p className="text-gray-700 leading-relaxed">
+              Nos marchandises sont livrées par unités ou en boite complète à votre
+              convenance.
+            </p>
+          </section>
+
+          {/* FRAIS DE GESTION */}
+          <section className="pb-6 border-b border-gray-200">
+            <h3 className="text-lg font-bold text-blue-900 mb-3">FRAIS DE GESTION</h3>
+            <p className="text-gray-700 leading-relaxed">
+              D&apos;un montant de 25€ pour les livraisons en France d&apos;un montant
+              inférieur à 200€ Hors Taxes en messagerie (48 à 96H) ou pour toute livraison
+              d&apos;une baie ou d&apos;un coffret 19 pouces de 4 à 42U.
+            </p>
+          </section>
+
+          {/* EXPRESS */}
           <section className="pb-6">
-            <h3 className="text-lg font-bold text-blue-900 mb-3">
-              INFORMATIONS COMPLÉMENTAIRES
-            </h3>
-            <div className="space-y-3 text-gray-700">
-              <p className="leading-relaxed">
-                <strong>PRIX :</strong> Nos prix s&apos;entendent nets, hors taxes,
-                emballés en conditionnement standard. Ils peuvent être révisés sans
-                préavis par XEILOM, et communiqués rapidement à l&apos;Acheteur.
-              </p>
-              <p className="leading-relaxed">
-                <strong>FRAIS DE PORT :</strong> Franco de port, pour les livraisons
-                France d&apos;un montant supérieur à 200€ Hors Taxes en messagerie (48 à
-                96H). Hors baies et coffrets 19 pouces.
-              </p>
-              <p className="leading-relaxed">
-                <strong>CONDITIONNEMENT :</strong> Nos marchandises sont livrées par
-                unités ou en boite complète à votre convenance.
-              </p>
-              <p className="leading-relaxed">
-                <strong>FRAIS DE GESTION :</strong> D&apos;un montant de 25€ pour les
-                livraisons en France d&apos;un montant inférieur à 200€ Hors Taxes en
-                messagerie (48 à 96H) ou pour toute livraison d&apos;une baie ou d&apos;un
-                coffret 19 pouces de 4 à 42U.
-              </p>
-              <p className="leading-relaxed">
-                <strong>EXPRESS :</strong> A la demande de l&apos;acheteur, les produits
-                pourront être envoyés en EXPRESS à sa charge.
-              </p>
-            </div>
+            <h3 className="text-lg font-bold text-blue-900 mb-3">EXPRESS</h3>
+            <p className="text-gray-700 leading-relaxed">
+              A la demande de l&apos;acheteur, les produits pourront être envoyés en
+              EXPRESS à sa charge.
+            </p>
           </section>
 
           {/* Footer */}
