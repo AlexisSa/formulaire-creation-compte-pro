@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { AccountFormData } from '@/lib/validation'
 import { Label } from '@/components/ui/label'
@@ -7,7 +8,7 @@ import { FileUpload } from '@/components/file-upload'
 import { SignaturePad } from '@/components/signature-pad'
 import { FileText, PenTool, HelpCircle, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import { CGVModal } from '@/components/cgv-modal'
 
 interface Step3DocumentsProps {
   form: UseFormReturn<AccountFormData>
@@ -17,6 +18,8 @@ interface Step3DocumentsProps {
  * Étape 3 : Documents et signature
  */
 export function Step3Documents({ form }: Step3DocumentsProps) {
+  const [isCGVOpen, setIsCGVOpen] = useState(false)
+
   const {
     setValue,
     watch,
@@ -151,12 +154,13 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
               Votre signature électronique a la même valeur juridique qu&apos;une
               signature manuscrite (règlement eIDAS). En signant, vous reconnaissez avoir
               pris connaissance et accepter nos{' '}
-              <Link
-                href="/cgv"
+              <button
+                type="button"
+                onClick={() => setIsCGVOpen(true)}
                 className="text-blue-600 underline font-medium hover:text-blue-700"
               >
                 CGV disponibles ici
-              </Link>
+              </button>
               .
             </p>
           </div>
@@ -212,6 +216,9 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
           </div>
         </div>
       </div>
+
+      {/* CGV Modal */}
+      <CGVModal open={isCGVOpen} onOpenChange={setIsCGVOpen} />
     </div>
   )
 }
