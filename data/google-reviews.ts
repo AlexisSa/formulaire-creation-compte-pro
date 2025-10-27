@@ -16,20 +16,16 @@ export const googleReviewsData = {
 
   // Lien vers ta page Google My Business (pour le bouton "Voir tous les avis")
   // Remplace par ton lien Google Maps
-  googleMapsUrl: 'https://g.page/r/VOTRE_LIEN_GOOGLE_ICI/review',
+  googleMapsUrl:
+    'https://www.google.com/search?sca_esv=bd032de3f00d742c&sxsrf=AE3TifO-85bybyqd4wcDBq_fX051-Eiz2A:1761555310986&q=xeilom&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-Ex_FWoLcTcQEocsSFNuBYVujs_ARDgt_ACKGpCI0hvZRGIXf17RL8hsYMuQUno3XdrB2K9Y%3D&uds=AOm0WdFtkCuWBhRwUN_KebTX4_PPPKMBpKuyDb15ZkDQFat3rqz4985wmMz-BiRzNFzBkj2ETec1eDCkWh2DI1e2GzgXDBq9lU2ZGFol7RYR6TxIHFdUB1A&sa=X&sqi=2&ved=2ahUKEwi89MD0gMSQAxWWcaQEHTySC_oQ3PALegQIMxAF&biw=1728&bih=913&dpr=2',
 
   // Liste des avis à afficher (max 3-6 recommandé)
   reviews: [
     {
-      // Initiales pour l'avatar (2 lettres max)
       initials: 'JD',
-      // Nom complet du client
       authorName: 'Jean Dupont',
-      // Note sur 5 (1 à 5)
       rating: 5,
-      // Date relative (ex: "Il y a 2 semaines", "Il y a 1 mois")
       relativeTime: 'Il y a 2 semaines',
-      // Texte de l'avis (copie-colle depuis Google)
       text: '"Excellent service ! L\'équipe Xeilom a réalisé notre installation VDI avec un professionnalisme remarquable. Délais respectés et travail soigné. Je recommande vivement."',
     },
     {
@@ -45,6 +41,20 @@ export const googleReviewsData = {
       rating: 5,
       relativeTime: 'Il y a 3 semaines',
       text: '"Installation téléphonie IP impeccable. Équipe compétente et professionnelle. Rapport qualité-prix excellent. Nous continuerons à faire appel à Xeilom pour nos futurs projets."',
+    },
+    {
+      initials: 'SC',
+      authorName: 'Sophie Chen',
+      rating: 5,
+      relativeTime: 'Il y a 1 semaine',
+      text: '"Service client exceptionnel et livraison rapide. Les produits de Xeilom sont de qualité supérieure. Je recommande sans hésitation pour vos projets de courant faible."',
+    },
+    {
+      initials: 'TL',
+      authorName: 'Thomas Leblanc',
+      rating: 5,
+      relativeTime: 'Il y a 5 jours',
+      text: '"Excellent rapport qualité-prix et conseils avisés. L\'équipe a su répondre à toutes nos questions et nous proposer des solutions adaptées à notre budget. Très satisfait !"',
     },
   ],
 }

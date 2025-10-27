@@ -11,7 +11,7 @@ averageRating: 4.9,  // ← Change la note
 totalReviews: 47,    // ← Change le nombre total
 ```
 
-#### **2. Lien Google Maps**
+#### **2. Lien Google Maps** ⭐ **NOUVEAU : Bouton de redirection !**
 
 ```typescript
 googleMapsUrl: 'https://g.page/r/TON_LIEN/review',
@@ -23,6 +23,8 @@ googleMapsUrl: 'https://g.page/r/TON_LIEN/review',
 2. Cherche "Xeilom"
 3. Clique sur "Avis"
 4. Copie l'URL de la page
+
+**✨ Le bouton "Voir tous nos avis Google" apparaîtra automatiquement sous le carrousel une fois le lien configuré !**
 
 ---
 
@@ -68,6 +70,12 @@ reviews: [
 
 ### 🎨 **Personnalisation avancée**
 
+#### **Le carrousel d'avis** 🎠
+
+- Les avis défilent automatiquement avec les boutons de navigation (← →)
+- Les indicateurs de points permettent d'aller directement à un avis
+- Ajoute autant d'avis que tu veux (recommandé : 3-6)
+
 #### Changer la couleur des avatars :
 
 Fichier : `components/landing-page.tsx`
@@ -79,6 +87,12 @@ style={{backgroundColor: '#363BC7'}}  // ← Ta couleur
 #### Afficher plus/moins d'avis :
 
 Ajoute ou supprime simplement des objets dans le tableau `reviews`
+
+#### Le bouton "Voir tous nos avis Google" :
+
+- Apparaît automatiquement sous le carrousel si le lien est configuré
+- Affiche le nombre total d'avis (`totalReviews`)
+- Ouvre Google Maps dans un nouvel onglet
 
 ---
 

@@ -18,8 +18,12 @@ import {
   ChevronDown,
   Clock,
   TrendingUp,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { googleReviewsData } from '@/data/google-reviews'
 
 interface LandingPageProps {
   onStart: () => void
@@ -74,22 +78,43 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 }
 
 export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
-  const testimonials = [
-    {
-      name: 'Marie Dubois',
-      company: 'SARL TechnoSolutions',
-      content:
-        'XEILOM a transformé notre infrastructure réseau. Service impeccable et équipe très professionnelle.',
-      rating: 5,
-    },
-    {
-      name: 'Jean Martin',
-      company: 'Groupe Industriel Pro',
-      content:
-        'Intervention rapide et solution adaptée à nos besoins. Je recommande vivement leurs services.',
-      rating: 5,
-    },
-  ]
+  const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+
+  const testimonials = googleReviewsData.reviews
+
+  // Auto-play du carrousel
+  useEffect(() => {
+    if (testimonials.length <= 1 || isPaused) return
+
+    const interval = setInterval(() => {
+      setCurrentReviewIndex((prev) => (prev + 1) % testimonials.length)
+    }, 5000) // Change d'avis toutes les 5 secondes
+
+    return () => clearInterval(interval)
+  }, [currentReviewIndex, testimonials.length, isPaused])
+
+  const nextReview = () => {
+    if (testimonials.length > 1) {
+      setCurrentReviewIndex((prev) => (prev + 1) % testimonials.length)
+      setIsPaused(true)
+      setTimeout(() => setIsPaused(false), 10000)
+    }
+  }
+
+  const prevReview = () => {
+    if (testimonials.length > 1) {
+      setCurrentReviewIndex(
+        (prev) => (prev - 1 + testimonials.length) % testimonials.length
+      )
+      setIsPaused(true)
+      setTimeout(() => setIsPaused(false), 10000)
+    }
+  }
+
+  const goToReview = (index: number) => {
+    setCurrentReviewIndex(index)
+  }
 
   return (
     <div className="min-h-screen bg-white relative">
@@ -359,9 +384,9 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
           </div>
         </section>
 
-        {/* Testimonials */}
-        <section className="my-32 py-24 bg-gray-50 rounded-3xl">
-          <div className="max-w-5xl mx-auto px-12">
+        {/* Testimonials Carousel */}
+        <section className="my-32 py-16 md:py-24 bg-gray-50 rounded-3xl">
+          <div className="max-w-5xl mx-auto px-6 md:px-12">
             <div className="text-center mb-16">
               <motion.h2
                 initial={{ opacity: 0, y: 30 }}
@@ -383,37 +408,114 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
               </motion.p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-12">
-              {testimonials.map((testimonial, index) => (
+            <div
+              className="relative"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+            >
+              {/* Navigation buttons - only show if more than 1 review */}
+              {testimonials.length > 1 && (
+                <>
+                  <button
+                    onClick={prevReview}
+                    className="absolute left-0 top-[35%] -translate-y-1/2 -translate-x-2 md:-translate-x-4 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-all duration-300 hover:scale-110"
+                    aria-label="Avis précédent"
+                  >
+                    <ChevronLeft className="h-5 w-5 md:h-6 md:w-6 text-gray-700" />
+                  </button>
+
+                  <button
+                    onClick={nextReview}
+                    className="absolute right-0 top-[35%] -translate-y-1/2 translate-x-2 md:translate-x-4 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-all duration-300 hover:scale-110"
+                    aria-label="Avis suivant"
+                  >
+                    <ChevronRight className="h-5 w-5 md:h-6 md:w-6 text-gray-700" />
+                  </button>
+                </>
+              )}
+
+              {/* Carousel container */}
+              <div className="overflow-hidden">
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{ duration: 0.6, delay: index * 0.15 }}
-                  className="bg-white p-10 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300"
+                  key={currentReviewIndex}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.5, ease: 'easeInOut' }}
+                  className="bg-white p-6 md:p-10 rounded-2xl shadow-sm"
                 >
-                  <div className="flex items-center gap-1 mb-6">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <blockquote className="text-lg text-gray-700 mb-8 font-light leading-relaxed">
-                    &ldquo;{testimonial.content}&rdquo;
-                  </blockquote>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                      <Users className="h-6 w-6 text-gray-600" />
+                  <div className="max-w-3xl mx-auto">
+                    {/* Stars */}
+                    <div className="flex items-center gap-1 mb-6">
+                      {[...Array(testimonials[currentReviewIndex].rating)].map((_, i) => (
+                        <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                      ))}
                     </div>
-                    <div>
-                      <div className="font-medium text-gray-900 text-base">
-                        {testimonial.name}
+
+                    {/* Review text */}
+                    <blockquote className="text-base md:text-lg text-gray-700 mb-8 font-light leading-relaxed">
+                      {testimonials[currentReviewIndex].text}
+                    </blockquote>
+
+                    {/* Author info */}
+                    <div className="flex items-center">
+                      <div
+                        className="w-12 h-12 rounded-full flex items-center justify-center mr-4 text-white font-medium"
+                        style={{ backgroundColor: '#363BC7' }}
+                      >
+                        {testimonials[currentReviewIndex].initials}
                       </div>
-                      <div className="text-sm text-gray-600">{testimonial.company}</div>
+                      <div>
+                        <div className="font-medium text-gray-900 text-base">
+                          {testimonials[currentReviewIndex].authorName}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {testimonials[currentReviewIndex].relativeTime}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
-              ))}
+              </div>
+
+              {/* Dots indicator - only show if more than 1 review */}
+              {testimonials.length > 1 && (
+                <div className="flex justify-center gap-2 mt-8">
+                  {testimonials.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        goToReview(index)
+                        setIsPaused(true)
+                        setTimeout(() => setIsPaused(false), 10000)
+                      }}
+                      className={`transition-all duration-300 rounded-full ${
+                        index === currentReviewIndex
+                          ? 'w-8 h-2 bg-blue-600'
+                          : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
+                      }`}
+                      aria-label={`Aller à l'avis ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Google Reviews Link Button */}
+              <div className="flex justify-center mt-10">
+                <motion.a
+                  href={googleReviewsData.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-300 no-underline"
+                >
+                  Voir tous nos avis Google
+                  <ExternalLink className="h-3 w-3 opacity-60" />
+                </motion.a>
+              </div>
             </div>
           </div>
         </section>
