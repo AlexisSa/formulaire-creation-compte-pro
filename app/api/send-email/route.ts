@@ -40,7 +40,9 @@ interface EmailPayload {
  *
  * Envoie 2 emails :
  * 1. À communication@xeilom.fr avec le récapitulatif + KBIS
- * 2. À l'utilisateur avec message de remerciement + lien boutique
+ * 2. Au client (Responsable Achat) avec Cc au Service Compta si email différent
+ *
+ * Optimisation : évite les doublons si Responsable Achat = Service Compta
  */
 export async function POST(request: NextRequest) {
   try {
@@ -232,11 +234,21 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ [EMAIL DEBUG] Email 1 sent successfully:', emailToTeam.data?.id)
 
-    // Email 2 : Au Responsable Achat (message de remerciement)
-    console.log('📨 [EMAIL DEBUG] Sending email 2 to Responsable Achat')
-    const emailToAchat = await resend.emails.send({
+    // Email 2 : Au client (Responsable Achat, avec Cc au Service Compta si différent)
+    // Éviter les doublons si les emails sont identiques
+    const isSameEmail =
+      body.responsableAchatEmail.toLowerCase() === body.serviceComptaEmail.toLowerCase()
+    const recipientEmails = isSameEmail
+      ? [body.responsableAchatEmail]
+      : [body.responsableAchatEmail, body.serviceComptaEmail]
+
+    console.log('📨 [EMAIL DEBUG] Sending email to client')
+    console.log('📨 [EMAIL DEBUG] Recipients:', recipientEmails)
+
+    const emailToClient = await resend.emails.send({
       from: process.env.FROM_EMAIL || 'noreply@xeilom.fr',
       to: body.responsableAchatEmail,
+      cc: isSameEmail ? undefined : [body.serviceComptaEmail],
       subject: '✅ Votre demande de compte professionnel XEILOM',
       html: `
         <!DOCTYPE html>
@@ -308,84 +320,21 @@ export async function POST(request: NextRequest) {
       `,
     })
 
-    console.log('✅ [EMAIL DEBUG] Email 2 sent successfully:', emailToAchat.data?.id)
-
-    // Email 3 : Au Service Comptabilité (information)
-    console.log('📨 [EMAIL DEBUG] Sending email 3 to Service Comptabilité')
-    const emailToCompta = await resend.emails.send({
-      from: process.env.FROM_EMAIL || 'noreply@xeilom.fr',
-      to: body.serviceComptaEmail,
-      subject: '📋 Information : Demande de compte professionnel XEILOM',
-      html: `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="UTF-8">
-            <style>
-              body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-              .header { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 40px; border-radius: 8px 8px 0 0; text-align: center; }
-              .content { background: #f9fafb; padding: 40px; border: 1px solid #e5e7eb; }
-              .highlight { background: #dbeafe; padding: 20px; border-left: 4px solid #2563eb; border-radius: 4px; margin: 20px 0; }
-              .footer { background: #f3f4f6; padding: 30px; text-align: center; color: #6b7280; font-size: 12px; border-radius: 0 0 8px 8px; }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-            <div class="header" style="padding-bottom: 40px;">
-              <img src="https://www.xeilom.fr/Files/126457/Img/23/logo-quadri-hd-scaled-removebg-preview.png" alt="XEILOM" style="max-width: 200px; height: auto; margin: 0 auto 20px auto; display: block;">
-              <h1 style="margin: 0; font-size: 28px;">📋 Demande de compte enregistrée</h1>
-              <p style="margin: 15px 0 0 0; opacity: 0.9; font-size: 16px;">Information pour le Service Comptabilité</p>
-            </div>
-              
-              <div class="content">
-                <p style="font-size: 18px; margin-bottom: 20px;">
-                  Bonjour,<br><br>
-                  
-                  Une demande de compte professionnel pour <strong>${body.companyName}</strong> a été enregistrée.<br>
-                  Vous en serez informé dès l'activation du compte pour la gestion financière.
-                </p>
-                
-                <div class="highlight">
-                  <p style="margin: 0; font-size: 16px;">
-                    <strong>📋 Résumé :</strong><br><br>
-                    • <strong>Entreprise :</strong> ${body.companyName}<br>
-                    • <strong>Contact commercial :</strong> ${body.responsableAchatEmail}<br>
-                    • Un email de confirmation a été envoyé au responsable achat<br>
-                    • Vous recevrez les informations nécessaires pour la gestion comptable après validation
-                  </p>
-                </div>
-                
-                <p style="margin-top: 30px; padding: 15px; background: #f3f4f6; border-radius: 8px; font-size: 14px;">
-                  <strong>💬 Une question ?</strong><br>
-                  Notre équipe est disponible du lundi au vendredi, de 9h à 18h<br>
-                  📧 <a href="mailto:info.xeilom@xeilom.fr" style="color: #2563eb;">info.xeilom@xeilom.fr</a><br>
-                  📞 <a href="tel:0365610420" style="color: #2563eb;">03 65 61 04 20</a>
-                </p>
-              </div>
-              
-              <div class="footer">
-                <p><strong>XEILOM</strong> - Distributeur & Fabricant Courant Faible</p>
-                <p>info.xeilom@xeilom.fr | 03 65 61 04 20</p>
-                <p style="margin-top: 20px; font-size: 11px; opacity: 0.7;">
-                  Cet email a été envoyé automatiquement suite à l'enregistrement d'une demande de compte professionnel.
-                </p>
-              </div>
-            </div>
-          </body>
-        </html>
-      `,
-    })
-
-    console.log('✅ [EMAIL DEBUG] Email 3 sent successfully:', emailToCompta.data?.id)
+    console.log(
+      '✅ [EMAIL DEBUG] Client email sent successfully:',
+      emailToClient.data?.id
+    )
     console.log('✅ [EMAIL DEBUG] All emails sent successfully!')
 
     return NextResponse.json({
       success: true,
       message: 'Emails envoyés avec succès',
       teamEmailId: emailToTeam.data?.id,
-      responsableAchatEmailId: emailToAchat.data?.id,
-      serviceComptaEmailId: emailToCompta.data?.id,
+      clientEmailId: emailToClient.data?.id,
+      recipients: {
+        to: body.responsableAchatEmail,
+        cc: isSameEmail ? 'aucun (email identique)' : body.serviceComptaEmail,
+      },
     })
   } catch (error) {
     console.error("❌ [EMAIL ERROR] Erreur lors de l'envoi des emails:", error)
