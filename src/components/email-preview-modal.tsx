@@ -1,12 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Mail } from 'lucide-react'
 
 interface EmailPreviewModalProps {
@@ -85,7 +80,8 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                   <br />
                   <strong>À:</strong> communication@xeilom.fr
                   <br />
-                  <strong>Objet:</strong> 🎯 Nouvelle demande de compte professionnel - {sampleCompany.name}
+                  <strong>Objet:</strong> 🎯 Nouvelle demande de compte professionnel -{' '}
+                  {sampleCompany.name}
                 </p>
               </div>
               <div className="p-6 space-y-4">
@@ -99,7 +95,8 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                 <div className="space-y-4">
                   <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
                     <p className="font-semibold text-gray-900 mb-3">
-                      Une nouvelle demande de création de compte professionnel a été soumise.
+                      Une nouvelle demande de création de compte professionnel a été
+                      soumise.
                     </p>
 
                     <h3 className="font-semibold text-blue-600 mb-2">
@@ -119,19 +116,20 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                         <strong>NAF/APE:</strong> {sampleCompany.nafApe}
                       </p>
                       <p>
-                        <strong>Adresse:</strong> {sampleCompany.address}, {sampleCompany.postalCode} {sampleCompany.city}
+                        <strong>Adresse:</strong> {sampleCompany.address},{' '}
+                        {sampleCompany.postalCode} {sampleCompany.city}
                       </p>
                     </div>
 
-                    <h3 className="font-semibold text-blue-600 mb-2 mt-4">
-                      Contacts
-                    </h3>
+                    <h3 className="font-semibold text-blue-600 mb-2 mt-4">Contacts</h3>
                     <div className="space-y-2 text-sm text-gray-700">
                       <p>
-                        <strong>Responsable Achat:</strong> {sampleContacts.achatEmail}, {sampleContacts.achatPhone}
+                        <strong>Responsable Achat:</strong> {sampleContacts.achatEmail},{' '}
+                        {sampleContacts.achatPhone}
                       </p>
                       <p>
-                        <strong>Service Comptabilité:</strong> {sampleContacts.comptaEmail}, {sampleContacts.comptaPhone}
+                        <strong>Service Comptabilité:</strong>{' '}
+                        {sampleContacts.comptaEmail}, {sampleContacts.comptaPhone}
                       </p>
                     </div>
                   </div>
@@ -176,7 +174,8 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                     <br />
                     <br />
                     Votre demande de compte professionnel chez{' '}
-                    <strong>{sampleCompany.name}</strong> a bien été reçue par notre équipe.
+                    <strong>{sampleCompany.name}</strong> a bien été reçue par notre
+                    équipe.
                   </p>
 
                   <div className="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-500">
@@ -184,9 +183,17 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                       📋 Prochaines étapes :
                     </p>
                     <ul className="space-y-2 text-sm text-gray-700">
-                      <li>• Votre demande sera traitée sous <strong>24 heures</strong></li>
-                      <li>• Vous recevrez un email de confirmation dès l'activation de votre compte</li>
-                      <li>• Vous pourrez alors accéder à nos tarifs professionnels et passer commande</li>
+                      <li>
+                        • Votre demande sera traitée sous <strong>24 heures</strong>
+                      </li>
+                      <li>
+                        • Vous recevrez un email de confirmation dès l'activation de votre
+                        compte
+                      </li>
+                      <li>
+                        • Vous pourrez alors accéder à nos tarifs professionnels et passer
+                        commande
+                      </li>
                     </ul>
                   </div>
 
@@ -219,4 +226,3 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
     </Dialog>
   )
 }
-

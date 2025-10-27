@@ -126,107 +126,155 @@ export async function POST(request: NextRequest) {
       attachments: attachments,
       html: `
         <!DOCTYPE html>
-        <html>
+        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
           <head>
             <meta charset="UTF-8">
-            <style>
-              body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-              .header { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0; text-align: center; }
-              .content { background: #f9fafb; padding: 30px; border: 1px solid #e5e7eb; }
-              .info-box { background: white; padding: 20px; margin: 15px 0; border-left: 4px solid #2563eb; border-radius: 4px; }
-              .info-label { font-weight: bold; color: #1e40af; }
-              .footer { background: #f3f4f6; padding: 20px; text-align: center; color: #6b7280; font-size: 12px; border-radius: 0 0 8px 8px; }
-              .button { display: inline-block; padding: 12px 24px; background: #2563eb; color: white; text-decoration: none; border-radius: 6px; margin-top: 20px; }
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="x-apple-disable-message-reformatting">
+            <!--[if mso]>
+            <style type="text/css">
+              body, table, td { font-family: Arial, sans-serif !important; }
             </style>
+            <![endif]-->
           </head>
-          <body>
-            <div class="container">
-              <div class="header">
-                <h1 style="margin: 0;">🎯 Nouvelle demande de compte professionnel</h1>
-                <p style="margin: 10px 0 0 0; opacity: 0.9;">XEILOM</p>
-              </div>
-              
-              <div class="content">
-                <p><strong>Une nouvelle demande de création de compte professionnel a été soumise.</strong></p>
-                
-                <h2 style="color: #1e40af; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">Informations de l'entreprise</h2>
-                
-                <div class="info-box">
-                  <div style="margin-bottom: 10px;"><span class="info-label">Nom :</span> ${
-                    body.companyName
-                  }</div>
-                  ${
-                    body.companyInfo.siren
-                      ? `<div style="margin-bottom: 10px;"><span class="info-label">SIREN :</span> ${body.companyInfo.siren}</div>`
-                      : ''
-                  }
-                  ${
-                    body.companyInfo.siret
-                      ? `<div style="margin-bottom: 10px;"><span class="info-label">SIRET :</span> ${body.companyInfo.siret}</div>`
-                      : ''
-                  }
-                  ${
-                    body.companyInfo.nafApe
-                      ? `<div style="margin-bottom: 10px;"><span class="info-label">NAF/APE :</span> ${body.companyInfo.nafApe}</div>`
-                      : ''
-                  }
-                  ${
-                    body.companyInfo.tvaIntracom
-                      ? `<div style="margin-bottom: 10px;"><span class="info-label">TVA Intracommunautaire :</span> ${body.companyInfo.tvaIntracom}</div>`
-                      : ''
-                  }
-                  ${
-                    body.companyInfo.address
-                      ? `<div style="margin-bottom: 10px;"><span class="info-label">Adresse de facturation :</span> ${body.companyInfo.address}, ${body.companyInfo.postalCode} ${body.companyInfo.city}</div>`
-                      : ''
-                  }
-                  ${
-                    body.companyInfo.deliveryAddress
-                      ? `<div style="margin-bottom: 10px;"><span class="info-label">Adresse de livraison :</span> ${body.companyInfo.deliveryAddress}, ${body.companyInfo.deliveryPostalCode} ${body.companyInfo.deliveryCity}</div>`
-                      : ''
-                  }
-                </div>
-                
-                <h2 style="color: #1e40af; border-bottom: 2px solid #2563eb; padding-bottom: 10px; margin-top: 30px;">Contacts</h2>
-                
-                <div class="info-box">
-                  <div style="margin-bottom: 15px;">
-                    <strong style="color: #1e40af;">Responsable Achat</strong>
-                  </div>
-                  <div style="margin-bottom: 10px;"><span class="info-label">Email :</span> ${
-                    body.responsableAchatEmail
-                  }</div>
-                  <div style="margin-bottom: 15px;"><span class="info-label">Téléphone :</span> ${
-                    body.responsableAchatPhone
-                  }</div>
-                  
-                  <div style="margin-top: 15px; border-top: 1px solid #e5e7eb; padding-top: 10px;">
-                    <strong style="color: #1e40af;">Service Comptabilité</strong>
-                  </div>
-                  <div style="margin-bottom: 10px;"><span class="info-label">Email :</span> ${
-                    body.serviceComptaEmail
-                  }</div>
-                  <div><span class="info-label">Téléphone :</span> ${
-                    body.serviceComptaPhone
-                  }</div>
-                </div>
-                
-                 <p style="margin-top: 30px; padding: 15px; background: #dbeafe; border-left: 4px solid #2563eb; border-radius: 4px;">
-                   <strong>📎 Documents en pièce jointe :</strong><br>
-                   ${body.kbisFile ? `• KBIS (${body.kbisFileName})` : ''}${
-        body.kbisFile && body.pdfFile ? '<br>' : ''
-      }
-                   ${body.pdfFile ? `• PDF récapitulatif complet de la demande` : ''}
-                   ${!body.kbisFile && !body.pdfFile ? 'Aucun document joint' : ''}
-                 </p>
-              </div>
-              
-              <div class="footer">
-                <p>Email envoyé automatiquement depuis le formulaire de création de compte professionnel XEILOM</p>
-                <p>© ${new Date().getFullYear()} XEILOM - Distributeur & Fabricant Courant Faible</p>
-              </div>
-            </div>
+          <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; line-height: 1.6; color: #333333;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+              <tr>
+                <td align="center" style="padding: 20px;">
+                  <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="border-collapse: collapse; max-width: 600px; width: 100%;">
+                    <!-- Header -->
+                    <tr>
+                      <td style="background-color: #2563eb; padding: 30px 20px; text-align: center;">
+                        <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: bold;">🎯 Nouvelle demande de compte professionnel</h1>
+                        <p style="margin: 10px 0 0 0; color: #e0e7ff; font-size: 14px;">XEILOM</p>
+                      </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                      <td style="background-color: #f9fafb; padding: 30px 20px; border: 1px solid #e5e7eb;">
+                        <p style="margin: 0 0 20px 0; font-size: 16px;"><strong>Une nouvelle demande de création de compte professionnel a été soumise.</strong></p>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+                          <tr>
+                            <td>
+                              <h2 style="margin: 0 0 15px 0; color: #1e40af; font-size: 18px; border-bottom: 2px solid #2563eb; padding-bottom: 8px;">Informations de l'entreprise</h2>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="background-color: #ffffff; padding: 15px; border-left: 4px solid #2563eb;">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                                <tr>
+                                  <td style="padding-bottom: 8px;">
+                                    <span style="font-weight: bold; color: #1e40af;">Nom :</span> ${body.companyName}
+                                  </td>
+                                </tr>
+                                ${
+                                  body.companyInfo.siren
+                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">SIREN :</span> ${body.companyInfo.siren}</td></tr>`
+                                    : ''
+                                }
+                                ${
+                                  body.companyInfo.siret
+                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">SIRET :</span> ${body.companyInfo.siret}</td></tr>`
+                                    : ''
+                                }
+                                ${
+                                  body.companyInfo.nafApe
+                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">NAF/APE :</span> ${body.companyInfo.nafApe}</td></tr>`
+                                    : ''
+                                }
+                                ${
+                                  body.companyInfo.tvaIntracom
+                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">TVA Intracommunautaire :</span> ${body.companyInfo.tvaIntracom}</td></tr>`
+                                    : ''
+                                }
+                                ${
+                                  body.companyInfo.address
+                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">Adresse de facturation :</span> ${body.companyInfo.address}, ${body.companyInfo.postalCode} ${body.companyInfo.city}</td></tr>`
+                                    : ''
+                                }
+                                ${
+                                  body.companyInfo.deliveryAddress
+                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">Adresse de livraison :</span> ${body.companyInfo.deliveryAddress}, ${body.companyInfo.deliveryPostalCode} ${body.companyInfo.deliveryCity}</td></tr>`
+                                    : ''
+                                }
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+                          <tr>
+                            <td>
+                              <h2 style="margin: 0 0 15px 0; color: #1e40af; font-size: 18px; border-bottom: 2px solid #2563eb; padding-bottom: 8px;">Contacts</h2>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="background-color: #ffffff; padding: 15px; border-left: 4px solid #2563eb;">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                                <tr>
+                                  <td style="padding-bottom: 10px;">
+                                    <strong style="color: #1e40af;">Responsable Achat</strong>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="padding-bottom: 8px;">
+                                    <span style="font-weight: bold; color: #1e40af;">Email :</span> ${body.responsableAchatEmail}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="padding-bottom: 15px;">
+                                    <span style="font-weight: bold; color: #1e40af;">Téléphone :</span> ${body.responsableAchatPhone}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="border-top: 1px solid #e5e7eb; padding-top: 10px; padding-bottom: 10px;">
+                                    <strong style="color: #1e40af;">Service Comptabilité</strong>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="padding-bottom: 8px;">
+                                    <span style="font-weight: bold; color: #1e40af;">Email :</span> ${body.serviceComptaEmail}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <span style="font-weight: bold; color: #1e40af;">Téléphone :</span> ${body.serviceComptaPhone}
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr>
+                            <td style="background-color: #dbeafe; padding: 15px; border-left: 4px solid #2563eb;">
+                              <p style="margin: 0; font-size: 14px;">
+                                <strong>📎 Documents en pièce jointe :</strong><br>
+                                ${body.kbisFile ? `• KBIS (${body.kbisFileName})` : ''}${body.kbisFile && body.pdfFile ? '<br>' : ''}
+                                ${body.pdfFile ? `• PDF récapitulatif complet de la demande` : ''}
+                                ${!body.kbisFile && !body.pdfFile ? 'Aucun document joint' : ''}
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                      <td style="background-color: #f3f4f6; padding: 20px; text-align: center; color: #6b7280; font-size: 12px;">
+                        <p style="margin: 0 0 8px 0;">Email envoyé automatiquement depuis le formulaire de création de compte professionnel XEILOM</p>
+                        <p style="margin: 0;">© ${new Date().getFullYear()} XEILOM - Distributeur & Fabricant Courant Faible</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
           </body>
         </html>
       `,
@@ -252,69 +300,134 @@ export async function POST(request: NextRequest) {
       subject: '✅ Votre demande de compte professionnel XEILOM',
       html: `
         <!DOCTYPE html>
-        <html>
+        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
           <head>
             <meta charset="UTF-8">
-            <style>
-              body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-              .header { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 40px; border-radius: 8px 8px 0 0; text-align: center; }
-              .content { background: #f9fafb; padding: 40px; border: 1px solid #e5e7eb; }
-              .highlight { background: #dbeafe; padding: 20px; border-left: 4px solid #2563eb; border-radius: 4px; margin: 20px 0; }
-              .footer { background: #f3f4f6; padding: 30px; text-align: center; color: #6b7280; font-size: 12px; border-radius: 0 0 8px 8px; }
-              .button { display: inline-block; padding: 15px 30px; background: #2563eb; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; margin: 20px 0; }
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="x-apple-disable-message-reformatting">
+            <!--[if mso]>
+            <style type="text/css">
+              body, table, td { font-family: Arial, sans-serif !important; }
             </style>
+            <![endif]-->
           </head>
-          <body>
-            <div class="container">
-            <div class="header" style="padding-bottom: 40px;">
-              <img src="https://www.xeilom.fr/Files/126457/Img/23/logo-quadri-hd-scaled-removebg-preview.png" alt="XEILOM" style="max-width: 200px; height: auto; margin: 0 auto 20px auto; display: block;">
-              <h1 style="margin: 0; font-size: 28px;">✅ Demande reçue !</h1>
-              <p style="margin: 15px 0 0 0; opacity: 0.9; font-size: 16px;">Merci pour votre confiance</p>
-            </div>
-              
-              <div class="content">
-                <p style="font-size: 18px; margin-bottom: 20px;">
-                  Bonjour,<br><br>
-                  
-                  Votre demande de compte professionnel chez <strong>${body.companyName}</strong> a bien été reçue par notre équipe.
-                </p>
-                
-                <div class="highlight">
-                  <p style="margin: 0; font-size: 16px;">
-                    <strong>📋 Prochaines étapes :</strong><br><br>
-                    • Votre demande sera traitée sous <strong>24 heures</strong><br>
-                    • Vous recevrez un email de confirmation dès l'activation de votre compte<br>
-                    • Vous pourrez alors accéder à nos tarifs professionnels et passer commande
-                  </p>
-                </div>
-                
-                <p style="margin-top: 30px; text-align: center;">
-                  En attendant, découvrez notre catalogue de produits professionnels en courant faible :
-                </p>
-                
-                <div style="text-align: center;">
-                  <a href="https://www.xeilom.fr" style="display: inline-block; padding: 16px 32px; background: #1d4ed8; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3); transition: all 0.3s;">
-                    🛒 Visiter notre boutique en ligne
-                  </a>
-                </div>
-                
-                <p style="margin-top: 30px; padding: 15px; background: #f3f4f6; border-radius: 8px; font-size: 14px;">
-                  <strong>💬 Une question ?</strong><br>
-                  Notre équipe est disponible du lundi au vendredi, de 9h à 18h<br>
-                  📧 <a href="mailto:info.xeilom@xeilom.fr" style="color: #2563eb;">info.xeilom@xeilom.fr</a><br>
-                  📞 <a href="tel:0365610420" style="color: #2563eb;">03 65 61 04 20</a>
-                </p>
-              </div>
-              
-              <div class="footer">
-                <p><strong>XEILOM</strong> - Distributeur & Fabricant Courant Faible</p>
-                <p>info.xeilom@xeilom.fr | 03 65 61 04 20</p>
-                <p style="margin-top: 20px; font-size: 11px; opacity: 0.7;">
-                  Cet email a été envoyé automatiquement suite à votre demande de création de compte professionnel.
-                </p>
-              </div>
-            </div>
+          <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; line-height: 1.6; color: #333333;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+              <tr>
+                <td align="center" style="padding: 20px;">
+                  <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="border-collapse: collapse; max-width: 600px; width: 100%;">
+                    <!-- Header -->
+                    <tr>
+                      <td style="background-color: #2563eb; padding: 40px 20px; text-align: center;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr>
+                            <td align="center" style="padding-bottom: 20px;">
+                              <img src="https://www.xeilom.fr/Files/126457/Img/23/logo-quadri-hd-scaled-removebg-preview.png" alt="XEILOM" width="200" height="auto" style="max-width: 200px; height: auto; display: block; margin: 0 auto;">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center">
+                              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">✅ Demande reçue !</h1>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center" style="padding-top: 10px;">
+                              <p style="margin: 0; color: #e0e7ff; font-size: 16px;">Merci pour votre confiance</p>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                      <td style="background-color: #f9fafb; padding: 40px 20px; border: 1px solid #e5e7eb;">
+                        <p style="margin: 0 0 20px 0; font-size: 18px; color: #333333;">
+                          Bonjour,<br><br>
+                          
+                          Votre demande de compte professionnel chez <strong>${body.companyName}</strong> a bien été reçue par notre équipe.
+                        </p>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+                          <tr>
+                            <td style="background-color: #dbeafe; padding: 20px; border-left: 4px solid #2563eb;">
+                              <p style="margin: 0 0 15px 0; font-size: 16px; font-weight: bold; color: #333333;">
+                                📋 Prochaines étapes :
+                              </p>
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                                <tr>
+                                  <td style="padding-bottom: 8px; font-size: 16px; color: #333333;">
+                                    • Votre demande sera traitée sous <strong>24 heures</strong>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="padding-bottom: 8px; font-size: 16px; color: #333333;">
+                                    • Vous recevrez un email de confirmation dès l'activation de votre compte
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="font-size: 16px; color: #333333;">
+                                    • Vous pourrez alors accéder à nos tarifs professionnels et passer commande
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+                          <tr>
+                            <td align="center" style="padding-bottom: 15px;">
+                              <p style="margin: 0; color: #333333;">
+                                En attendant, découvrez notre catalogue de produits professionnels en courant faible :
+                              </p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center">
+                              <a href="https://www.xeilom.fr" style="display: inline-block; padding: 16px 32px; background-color: #1d4ed8; color: #ffffff; text-decoration: none; font-weight: bold; font-size: 16px;">
+                                🛒 Visiter notre boutique en ligne
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr>
+                            <td style="background-color: #f3f4f6; padding: 15px;">
+                              <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: #333333;">
+                                💬 Une question ?
+                              </p>
+                              <p style="margin: 0 0 8px 0; font-size: 14px; color: #333333;">
+                                Notre équipe est disponible du lundi au vendredi, de 9h à 18h
+                              </p>
+                              <p style="margin: 0 0 5px 0; font-size: 14px; color: #2563eb;">
+                                📧 <a href="mailto:info.xeilom@xeilom.fr" style="color: #2563eb;">info.xeilom@xeilom.fr</a>
+                              </p>
+                              <p style="margin: 0; font-size: 14px; color: #2563eb;">
+                                📞 <a href="tel:0365610420" style="color: #2563eb;">03 65 61 04 20</a>
+                              </p>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                      <td style="background-color: #f3f4f6; padding: 30px; text-align: center; color: #6b7280; font-size: 12px; border: 1px solid #e5e7eb;">
+                        <p style="margin: 0 0 8px 0; font-weight: bold; color: #333333;">XEILOM - Distributeur & Fabricant Courant Faible</p>
+                        <p style="margin: 0 0 15px 0;">info.xeilom@xeilom.fr | 03 65 61 04 20</p>
+                        <p style="margin: 0; font-size: 11px; color: #9ca3af;">
+                          Cet email a été envoyé automatiquement suite à votre demande de création de compte professionnel.
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
           </body>
         </html>
       `,
