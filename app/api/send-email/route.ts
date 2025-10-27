@@ -167,7 +167,9 @@ export async function POST(request: NextRequest) {
                               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
                                   <td style="padding-bottom: 8px;">
-                                    <span style="font-weight: bold; color: #1e40af;">Nom :</span> ${body.companyName}
+                                    <span style="font-weight: bold; color: #1e40af;">Nom :</span> ${
+                                      body.companyName
+                                    }
                                   </td>
                                 </tr>
                                 ${
@@ -221,12 +223,16 @@ export async function POST(request: NextRequest) {
                                 </tr>
                                 <tr>
                                   <td style="padding-bottom: 8px;">
-                                    <span style="font-weight: bold; color: #1e40af;">Email :</span> ${body.responsableAchatEmail}
+                                    <span style="font-weight: bold; color: #1e40af;">Email :</span> ${
+                                      body.responsableAchatEmail
+                                    }
                                   </td>
                                 </tr>
                                 <tr>
                                   <td style="padding-bottom: 15px;">
-                                    <span style="font-weight: bold; color: #1e40af;">Téléphone :</span> ${body.responsableAchatPhone}
+                                    <span style="font-weight: bold; color: #1e40af;">Téléphone :</span> ${
+                                      body.responsableAchatPhone
+                                    }
                                   </td>
                                 </tr>
                                 <tr>
@@ -236,12 +242,16 @@ export async function POST(request: NextRequest) {
                                 </tr>
                                 <tr>
                                   <td style="padding-bottom: 8px;">
-                                    <span style="font-weight: bold; color: #1e40af;">Email :</span> ${body.serviceComptaEmail}
+                                    <span style="font-weight: bold; color: #1e40af;">Email :</span> ${
+                                      body.serviceComptaEmail
+                                    }
                                   </td>
                                 </tr>
                                 <tr>
                                   <td>
-                                    <span style="font-weight: bold; color: #1e40af;">Téléphone :</span> ${body.serviceComptaPhone}
+                                    <span style="font-weight: bold; color: #1e40af;">Téléphone :</span> ${
+                                      body.serviceComptaPhone
+                                    }
                                   </td>
                                 </tr>
                               </table>
@@ -254,9 +264,19 @@ export async function POST(request: NextRequest) {
                             <td style="background-color: #dbeafe; padding: 15px; border-left: 4px solid #2563eb;">
                               <p style="margin: 0; font-size: 14px;">
                                 <strong>📎 Documents en pièce jointe :</strong><br>
-                                ${body.kbisFile ? `• KBIS (${body.kbisFileName})` : ''}${body.kbisFile && body.pdfFile ? '<br>' : ''}
-                                ${body.pdfFile ? `• PDF récapitulatif complet de la demande` : ''}
-                                ${!body.kbisFile && !body.pdfFile ? 'Aucun document joint' : ''}
+                                ${body.kbisFile ? `• KBIS (${body.kbisFileName})` : ''}${
+        body.kbisFile && body.pdfFile ? '<br>' : ''
+      }
+                                ${
+                                  body.pdfFile
+                                    ? `• PDF récapitulatif complet de la demande`
+                                    : ''
+                                }
+                                ${
+                                  !body.kbisFile && !body.pdfFile
+                                    ? 'Aucun document joint'
+                                    : ''
+                                }
                               </p>
                             </td>
                           </tr>

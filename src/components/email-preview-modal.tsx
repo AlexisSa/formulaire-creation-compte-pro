@@ -84,64 +84,97 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                   {sampleCompany.name}
                 </p>
               </div>
-              <div className="p-6 space-y-4">
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-lg text-center">
-                  <h2 className="text-xl font-bold mb-2">
-                    🎯 Nouvelle demande de compte professionnel
-                  </h2>
-                  <p className="opacity-90">XEILOM</p>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
-                    <p className="font-semibold text-gray-900 mb-3">
-                      Une nouvelle demande de création de compte professionnel a été
-                      soumise.
-                    </p>
-
-                    <h3 className="font-semibold text-blue-600 mb-2">
-                      Informations de l'entreprise
-                    </h3>
-                    <div className="space-y-2 text-sm text-gray-700">
-                      <p>
-                        <strong>Nom:</strong> {sampleCompany.name}
-                      </p>
-                      <p>
-                        <strong>SIREN:</strong> {sampleCompany.siren}
-                      </p>
-                      <p>
-                        <strong>SIRET:</strong> {sampleCompany.siret}
-                      </p>
-                      <p>
-                        <strong>NAF/APE:</strong> {sampleCompany.nafApe}
-                      </p>
-                      <p>
-                        <strong>Adresse:</strong> {sampleCompany.address},{' '}
-                        {sampleCompany.postalCode} {sampleCompany.city}
-                      </p>
-                    </div>
-
-                    <h3 className="font-semibold text-blue-600 mb-2 mt-4">Contacts</h3>
-                    <div className="space-y-2 text-sm text-gray-700">
-                      <p>
-                        <strong>Responsable Achat:</strong> {sampleContacts.achatEmail},{' '}
-                        {sampleContacts.achatPhone}
-                      </p>
-                      <p>
-                        <strong>Service Comptabilité:</strong>{' '}
-                        {sampleContacts.comptaEmail}, {sampleContacts.comptaPhone}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500 text-sm">
-                    <strong>📎 Documents en pièce jointe:</strong>
-                    <ul className="mt-2 space-y-1">
-                      <li>• KBIS (kbis.pdf)</li>
-                      <li>• PDF récapitulatif complet de la demande</li>
-                    </ul>
-                  </div>
-                </div>
+              
+              {/* Email Preview - Structure Outlook compatible */}
+              <div style={{ maxWidth: '600px', margin: '0 auto', fontFamily: 'Arial, sans-serif' }}>
+                <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                  <tbody>
+                    {/* Header */}
+                    <tr>
+                      <td style={{ backgroundColor: '#2563eb', padding: '30px 20px', textAlign: 'center' }}>
+                        <h1 style={{ margin: 0, color: '#ffffff', fontSize: '24px', fontWeight: 'bold' }}>
+                          🎯 Nouvelle demande de compte professionnel
+                        </h1>
+                        <p style={{ margin: '10px 0 0 0', color: '#e0e7ff', fontSize: '14px' }}>XEILOM</p>
+                      </td>
+                    </tr>
+                    
+                    {/* Content */}
+                    <tr>
+                      <td style={{ backgroundColor: '#f9fafb', padding: '30px 20px', border: '1px solid #e5e7eb' }}>
+                        <p style={{ margin: '0 0 20px 0', fontSize: '16px' }}>
+                          <strong>Une nouvelle demande de création de compte professionnel a été soumise.</strong>
+                        </p>
+                        
+                        <h2 style={{ color: '#1e40af', fontSize: '18px', borderBottom: '2px solid #2563eb', paddingBottom: '8px', marginTop: 0 }}>
+                          Informations de l'entreprise
+                        </h2>
+                        
+                        <div style={{ backgroundColor: '#ffffff', padding: '15px', borderLeft: '4px solid #2563eb' }}>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                            <strong style={{ color: '#1e40af' }}>Nom :</strong> {sampleCompany.name}
+                          </p>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                            <strong style={{ color: '#1e40af' }}>SIREN :</strong> {sampleCompany.siren}
+                          </p>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                            <strong style={{ color: '#1e40af' }}>SIRET :</strong> {sampleCompany.siret}
+                          </p>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                            <strong style={{ color: '#1e40af' }}>NAF/APE :</strong> {sampleCompany.nafApe}
+                          </p>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                            <strong style={{ color: '#1e40af' }}>Adresse :</strong> {sampleCompany.address}, {sampleCompany.postalCode} {sampleCompany.city}
+                          </p>
+                        </div>
+                        
+                        <h2 style={{ color: '#1e40af', fontSize: '18px', borderBottom: '2px solid #2563eb', paddingBottom: '8px', marginTop: '25px' }}>
+                          Contacts
+                        </h2>
+                        
+                        <div style={{ backgroundColor: '#ffffff', padding: '15px', borderLeft: '4px solid #2563eb' }}>
+                          <p style={{ margin: '0 0 10px 0', fontWeight: 'bold', color: '#1e40af' }}>
+                            Responsable Achat
+                          </p>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                            <strong style={{ color: '#1e40af' }}>Email :</strong> {sampleContacts.achatEmail}
+                          </p>
+                          <p style={{ margin: '0 0 15px 0', fontSize: '14px' }}>
+                            <strong style={{ color: '#1e40af' }}>Téléphone :</strong> {sampleContacts.achatPhone}
+                          </p>
+                          
+                          <p style={{ borderTop: '1px solid #e5e7eb', paddingTop: '10px', margin: '15px 0 10px 0', fontWeight: 'bold', color: '#1e40af' }}>
+                            Service Comptabilité
+                          </p>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                            <strong style={{ color: '#1e40af' }}>Email :</strong> {sampleContacts.comptaEmail}
+                          </p>
+                          <p style={{ margin: 0, fontSize: '14px' }}>
+                            <strong style={{ color: '#1e40af' }}>Téléphone :</strong> {sampleContacts.comptaPhone}
+                          </p>
+                        </div>
+                        
+                        <div style={{ backgroundColor: '#dbeafe', padding: '15px', borderLeft: '4px solid #2563eb', marginTop: '25px' }}>
+                          <p style={{ margin: 0, fontSize: '14px' }}>
+                            <strong>📎 Documents en pièce jointe :</strong><br />
+                            • KBIS (kbis.pdf)<br />
+                            • PDF récapitulatif complet de la demande
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    {/* Footer */}
+                    <tr>
+                      <td style={{ backgroundColor: '#f3f4f6', padding: '20px', textAlign: 'center', color: '#6b7280', fontSize: '12px' }}>
+                        <p style={{ margin: '0 0 8px 0' }}>
+                          Email envoyé automatiquement depuis le formulaire de création de compte professionnel XEILOM
+                        </p>
+                        <p style={{ margin: 0 }}>© {new Date().getFullYear()} XEILOM - Distributeur & Fabricant Courant Faible</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           ) : (
@@ -157,67 +190,118 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                   <strong>Objet:</strong> ✅ Votre demande de compte professionnel XEILOM
                 </p>
               </div>
-              <div className="p-6 space-y-4">
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8 rounded-lg text-center">
-                  <img
-                    src="https://www.xeilom.fr/Files/126457/Img/23/logo-quadri-hd-scaled-removebg-preview.png"
-                    alt="XEILOM"
-                    className="max-w-48 h-auto mx-auto mb-4"
-                  />
-                  <h1 className="text-2xl font-bold mb-2">✅ Demande reçue !</h1>
-                  <p className="opacity-90">Merci pour votre confiance</p>
-                </div>
-
-                <div className="space-y-4">
-                  <p className="text-base text-gray-700">
-                    Bonjour,
-                    <br />
-                    <br />
-                    Votre demande de compte professionnel chez{' '}
-                    <strong>{sampleCompany.name}</strong> a bien été reçue par notre
-                    équipe.
-                  </p>
-
-                  <div className="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-500">
-                    <p className="font-semibold text-gray-900 mb-3">
-                      📋 Prochaines étapes :
-                    </p>
-                    <ul className="space-y-2 text-sm text-gray-700">
-                      <li>
-                        • Votre demande sera traitée sous <strong>24 heures</strong>
-                      </li>
-                      <li>
-                        • Vous recevrez un email de confirmation dès l'activation de votre
-                        compte
-                      </li>
-                      <li>
-                        • Vous pourrez alors accéder à nos tarifs professionnels et passer
-                        commande
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="text-center py-4">
-                    <a
-                      href="#"
-                      className="inline-block px-8 py-3 bg-blue-700 text-white rounded-lg font-semibold"
-                    >
-                      🛒 Visiter notre boutique en ligne
-                    </a>
-                  </div>
-
-                  <div className="bg-gray-50 p-4 rounded-lg text-sm">
-                    <p className="font-semibold text-gray-900 mb-2">💬 Une question ?</p>
-                    <p className="text-gray-600">
-                      Notre équipe est disponible du lundi au vendredi, de 9h à 18h
-                    </p>
-                    <p className="text-gray-600">
-                      📧 info.xeilom@xeilom.fr
-                      <br />
-                      📞 03 65 61 04 20
-                    </p>
-                  </div>
-                </div>
+              
+              {/* Email Preview - Structure Outlook compatible */}
+              <div style={{ maxWidth: '600px', margin: '0 auto', fontFamily: 'Arial, sans-serif' }}>
+                <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                  <tbody>
+                    {/* Header */}
+                    <tr>
+                      <td style={{ backgroundColor: '#2563eb', padding: '40px 20px', textAlign: 'center' }}>
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody>
+                            <tr>
+                              <td style={{ paddingBottom: '20px' }}>
+                                <img
+                                  src="https://www.xeilom.fr/Files/126457/Img/23/logo-quadri-hd-scaled-removebg-preview.png"
+                                  alt="XEILOM"
+                                  width="200"
+                                  style={{ maxWidth: '200px', height: 'auto', display: 'block', margin: '0 auto' }}
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h1 style={{ margin: 0, color: '#ffffff', fontSize: '28px', fontWeight: 'bold' }}>
+                                  ✅ Demande reçue !
+                                </h1>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={{ paddingTop: '10px' }}>
+                                <p style={{ margin: 0, color: '#e0e7ff', fontSize: '16px' }}>Merci pour votre confiance</p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    
+                    {/* Content */}
+                    <tr>
+                      <td style={{ backgroundColor: '#f9fafb', padding: '40px 20px', border: '1px solid #e5e7eb' }}>
+                        <p style={{ margin: '0 0 20px 0', fontSize: '18px' }}>
+                          Bonjour,
+                          <br />
+                          <br />
+                          Votre demande de compte professionnel chez <strong>{sampleCompany.name}</strong> a bien été reçue par notre équipe.
+                        </p>
+                        
+                        <div style={{ backgroundColor: '#dbeafe', padding: '20px', borderLeft: '4px solid #2563eb' }}>
+                          <p style={{ margin: '0 0 15px 0', fontSize: '16px', fontWeight: 'bold' }}>
+                            📋 Prochaines étapes :
+                          </p>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '16px' }}>
+                            • Votre demande sera traitée sous <strong>24 heures</strong>
+                          </p>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '16px' }}>
+                            • Vous recevrez un email de confirmation dès l'activation de votre compte
+                          </p>
+                          <p style={{ margin: 0, fontSize: '16px' }}>
+                            • Vous pourrez alors accéder à nos tarifs professionnels et passer commande
+                          </p>
+                        </div>
+                        
+                        <p style={{ marginTop: '25px', textAlign: 'center', color: '#333333' }}>
+                          En attendant, découvrez notre catalogue de produits professionnels en courant faible :
+                        </p>
+                        
+                        <div style={{ textAlign: 'center', paddingTop: '15px' }}>
+                          <a
+                            href="#"
+                            style={{
+                              display: 'inline-block',
+                              padding: '16px 32px',
+                              backgroundColor: '#1d4ed8',
+                              color: '#ffffff',
+                              textDecoration: 'none',
+                              fontWeight: 'bold',
+                              fontSize: '16px'
+                            }}
+                          >
+                            🛒 Visiter notre boutique en ligne
+                          </a>
+                        </div>
+                        
+                        <div style={{ backgroundColor: '#f3f4f6', padding: '15px', marginTop: '25px' }}>
+                          <p style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: 'bold' }}>
+                            💬 Une question ?
+                          </p>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                            Notre équipe est disponible du lundi au vendredi, de 9h à 18h
+                          </p>
+                          <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#2563eb' }}>
+                            📧 info.xeilom@xeilom.fr
+                          </p>
+                          <p style={{ margin: 0, fontSize: '14px', color: '#2563eb' }}>
+                            📞 03 65 61 04 20
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    {/* Footer */}
+                    <tr>
+                      <td style={{ backgroundColor: '#f3f4f6', padding: '30px', textAlign: 'center', color: '#6b7280', fontSize: '12px', border: '1px solid #e5e7eb' }}>
+                        <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: '#333333' }}>XEILOM - Distributeur & Fabricant Courant Faible</p>
+                        <p style={{ margin: '0 0 15px 0' }}>info.xeilom@xeilom.fr | 03 65 61 04 20</p>
+                        <p style={{ margin: 0, fontSize: '11px', color: '#9ca3af' }}>
+                          Cet email a été envoyé automatiquement suite à votre demande de création de compte professionnel.
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           )}
