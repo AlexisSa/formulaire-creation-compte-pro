@@ -26,17 +26,30 @@ export const accountFormSchema = z.object({
     .optional()
     .or(z.literal('')),
 
-  // Contact
-  email: z
+  // Responsable Achat
+  responsableAchatEmail: z
     .string()
     .email("L'adresse email n'est pas valide")
-    .min(1, "L'email est obligatoire"),
+    .min(1, "L'email du responsable achat est obligatoire"),
 
-  phone: z
+  responsableAchatPhone: z
     .string()
     .regex(
       /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/,
-      "Le numéro de téléphone n'est pas valide"
+      "Le numéro de téléphone du responsable achat n'est pas valide"
+    ),
+
+  // Service Comptabilité
+  serviceComptaEmail: z
+    .string()
+    .email("L'adresse email n'est pas valide")
+    .min(1, "L'email du service comptabilité est obligatoire"),
+
+  serviceComptaPhone: z
+    .string()
+    .regex(
+      /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/,
+      "Le numéro de téléphone du service comptabilité n'est pas valide"
     ),
 
   // Adresse de facturation
@@ -45,6 +58,13 @@ export const accountFormSchema = z.object({
   postalCode: z.string().regex(/^\d{5}$/, 'Le code postal doit contenir 5 chiffres'),
 
   city: z.string().min(2, 'La ville doit contenir au moins 2 caractères'),
+
+  // Adresse de livraison
+  deliveryAddress: z.string().min(5, "L'adresse de livraison doit contenir au moins 5 caractères"),
+
+  deliveryPostalCode: z.string().regex(/^\d{5}$/, 'Le code postal de livraison doit contenir 5 chiffres'),
+
+  deliveryCity: z.string().min(2, 'La ville de livraison doit contenir au moins 2 caractères'),
 
   // Documents
   legalDocument: z

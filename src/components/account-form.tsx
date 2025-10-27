@@ -135,7 +135,15 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
         'postalCode',
         'city',
       ],
-      ['email', 'phone'],
+      [
+        'responsableAchatEmail',
+        'responsableAchatPhone',
+        'serviceComptaEmail',
+        'serviceComptaPhone',
+        'deliveryAddress',
+        'deliveryPostalCode',
+        'deliveryCity',
+      ],
       ['legalDocument', 'signature'],
     ]
 
@@ -276,8 +284,10 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
       try {
         const emailPayload = {
           companyName: data.companyName,
-          email: data.email,
-          phone: data.phone,
+          responsableAchatEmail: data.responsableAchatEmail,
+          responsableAchatPhone: data.responsableAchatPhone,
+          serviceComptaEmail: data.serviceComptaEmail,
+          serviceComptaPhone: data.serviceComptaPhone,
           kbisFile: kbisBase64,
           kbisFileName: kbisFileName,
           pdfFile: pdfBase64,
@@ -291,6 +301,9 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
             address: data.address,
             postalCode: data.postalCode,
             city: data.city,
+            deliveryAddress: data.deliveryAddress,
+            deliveryPostalCode: data.deliveryPostalCode,
+            deliveryCity: data.deliveryCity,
           },
         }
 

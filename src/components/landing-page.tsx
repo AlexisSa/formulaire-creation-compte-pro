@@ -21,6 +21,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
+  FileText,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { googleReviewsData } from '@/data/google-reviews'
@@ -199,7 +200,7 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
 
             {/* CTA Button */}
             <motion.div
-              className="flex items-center justify-center mb-12"
+              className="flex items-center justify-center mb-12 gap-4 flex-wrap"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -207,6 +208,20 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
               <Button onClick={onStart} size="lg">
                 Créer mon compte pro
                 <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => {
+                  const link = document.createElement('a')
+                  link.href = '/ouverture-compte-xeilom.pdf'
+                  link.download = 'ouverture-compte-xeilom.pdf'
+                  link.click()
+                }}
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
+                <FileText className="mr-2 h-5 w-5" />
+                Formulaire papier
               </Button>
             </motion.div>
           </motion.div>
@@ -605,9 +620,24 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex items-center justify-center gap-4 flex-wrap"
             >
               <Button onClick={onStart} size="lg">
                 Créer mon compte professionnel
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => {
+                  const link = document.createElement('a')
+                  link.href = '/ouverture-compte-xeilom.pdf'
+                  link.download = 'ouverture-compte-xeilom.pdf'
+                  link.click()
+                }}
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
+                <FileText className="mr-2 h-5 w-5" />
+                Télécharger le formulaire papier
               </Button>
             </motion.div>
           </div>

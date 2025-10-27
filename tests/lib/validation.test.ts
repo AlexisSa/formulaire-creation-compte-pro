@@ -5,11 +5,16 @@ describe('validation', () => {
     const validData = {
       companyName: 'Test Company',
       siret: '12345678901234',
-      email: 'test@example.com',
-      phone: '0123456789',
+      responsableAchatEmail: 'achat@example.com',
+      responsableAchatPhone: '0123456789',
+      serviceComptaEmail: 'compta@example.com',
+      serviceComptaPhone: '0123456790',
       address: '123 Test Street',
       postalCode: '75001',
       city: 'Paris',
+      deliveryAddress: '456 Delivery Street',
+      deliveryPostalCode: '75002',
+      deliveryCity: 'Paris',
       legalDocument: new File(['test'], 'test.pdf', { type: 'application/pdf' }),
       signature: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
     }
@@ -47,15 +52,15 @@ describe('validation', () => {
       })
     })
 
-    describe('email', () => {
+    describe('responsableAchatEmail', () => {
       it('refuse un email invalide', () => {
-        const data = { ...validData, email: 'invalid-email' }
+        const data = { ...validData, responsableAchatEmail: 'invalid-email' }
         const result = accountFormSchema.safeParse(data)
         expect(result.success).toBe(false)
       })
     })
 
-    describe('phone', () => {
+    describe('responsableAchatPhone', () => {
       it('accepte différents formats de téléphone français', () => {
         const formats = [
           '0123456789',
@@ -65,14 +70,45 @@ describe('validation', () => {
         ]
 
         formats.forEach((phone) => {
-          const data = { ...validData, phone }
+          const data = { ...validData, responsableAchatPhone: phone }
           const result = accountFormSchema.safeParse(data)
           expect(result.success).toBe(true)
         })
       })
 
       it('refuse un numéro invalide', () => {
-        const data = { ...validData, phone: '123' }
+        const data = { ...validData, responsableAchatPhone: '123' }
+        const result = accountFormSchema.safeParse(data)
+        expect(result.success).toBe(false)
+      })
+    })
+
+    describe('serviceComptaEmail', () => {
+      it('refuse un email invalide', () => {
+        const data = { ...validData, serviceComptaEmail: 'invalid-email' }
+        const result = accountFormSchema.safeParse(data)
+        expect(result.success).toBe(false)
+      })
+    })
+
+    describe('serviceComptaPhone', () => {
+      it('accepte différents formats de téléphone français', () => {
+        const formats = [
+          '0123456789',
+          '01 23 45 67 89',
+          '01.23.45.67.89',
+          '01-23-45-67-89',
+        ]
+
+        formats.forEach((phone) => {
+          const data = { ...validData, serviceComptaPhone: phone }
+          const result = accountFormSchema.safeParse(data)
+          expect(result.success).toBe(true)
+        })
+      })
+
+      it('refuse un numéro invalide', () => {
+        const data = { ...validData, serviceComptaPhone: '123' }
         const result = accountFormSchema.safeParse(data)
         expect(result.success).toBe(false)
       })

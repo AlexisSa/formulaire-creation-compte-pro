@@ -66,7 +66,15 @@ export function useFormStep(
         'city',
       ],
       // Étape 2: Contact
-      ['email', 'phone'],
+      [
+        'responsableAchatEmail',
+        'responsableAchatPhone',
+        'serviceComptaEmail',
+        'serviceComptaPhone',
+        'deliveryAddress',
+        'deliveryPostalCode',
+        'deliveryCity',
+      ],
       // Étape 3: Documents & Signature
       ['legalDocument', 'signature'],
     ]

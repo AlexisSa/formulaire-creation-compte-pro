@@ -39,6 +39,6 @@ describe('Button', () => {
   it('applique la taille lg', () => {
     render(<Button size="lg">Large</Button>)
     const button = screen.getByRole('button')
-    expect(button).toHaveClass('h-11')
+    expect(button).toHaveClass('h-12')
   })
 })

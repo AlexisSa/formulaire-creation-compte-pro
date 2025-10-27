@@ -30,7 +30,7 @@ export async function generateAccountPDF(data: any) {
 
     // === LOGO ET EN-TÊTE ===
     doc.setFillColor(255, 255, 255)
-    doc.rect(0, 0, pageWidth, 40, 'F')
+    doc.rect(0, 0, pageWidth, 35, 'F')
 
     try {
       // Charger et afficher le logo
@@ -45,8 +45,8 @@ export async function generateAccountPDF(data: any) {
       })
 
       // Calculer les dimensions pour garder les bonnes proportions
-      const maxWidth = 60 // mm
-      const maxHeight = 20 // mm
+      const maxWidth = 55 // mm - réduit
+      const maxHeight = 18 // mm - réduit
       const logoRatio = logoImg.width / logoImg.height
 
       let logoWidth = maxWidth
@@ -57,16 +57,16 @@ export async function generateAccountPDF(data: any) {
         logoWidth = maxHeight * logoRatio
       }
 
-      doc.addImage(logoImg, 'PNG', margin, 10, logoWidth, logoHeight)
+      doc.addImage(logoImg, 'PNG', margin, 8, logoWidth, logoHeight)
     } catch (error) {
       // Fallback sur le texte si le logo ne charge pas
       doc.setTextColor(primaryColor)
-      doc.setFontSize(32)
+      doc.setFontSize(28)
       doc.setFont('helvetica', 'bold')
-      doc.text('XEILOM', margin, 25)
+      doc.text('XEILOM', margin, 20)
     }
 
-    yPosition = 50
+    yPosition = 42
 
     // === INFORMATIONS ENTREPRISE ===
     // Titre de section
@@ -75,14 +75,14 @@ export async function generateAccountPDF(data: any) {
     doc.setFont('helvetica', 'bold')
     doc.text("Informations de l'entreprise", margin, yPosition)
 
-    yPosition += 5
+    yPosition += 6
 
     // Ligne décorative
     doc.setDrawColor(primaryColor)
     doc.setLineWidth(0.5)
     doc.line(margin, yPosition, pageWidth - margin, yPosition)
 
-    yPosition += 8
+    yPosition += 7
 
     // Données de l'entreprise
     doc.setFontSize(9)
@@ -107,11 +107,11 @@ export async function generateAccountPDF(data: any) {
       yPosition += 7
     })
 
-    // Adresse en bloc
-    yPosition += 5
+    // Adresse de facturation en bloc
+    yPosition += 4
     doc.setFont('helvetica', 'bold')
     doc.setTextColor(textPrimary)
-    doc.text('Adresse:', margin + 5, yPosition)
+    doc.text('Adresse de facturation:', margin + 5, yPosition)
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(textSecondary)
     const address =
@@ -120,7 +120,23 @@ export async function generateAccountPDF(data: any) {
         .trim() || 'Non renseigné'
     doc.text(address, margin + 50, yPosition)
 
-    yPosition += 20
+    yPosition += 7
+
+    // Adresse de livraison en bloc
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(textPrimary)
+    doc.text('Adresse de livraison:', margin + 5, yPosition)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(textSecondary)
+    const deliveryAddress =
+      `${data.deliveryAddress || ''}, ${data.deliveryPostalCode || ''} ${
+        data.deliveryCity || ''
+      }`
+        .replace(/^, /, '')
+        .trim() || 'Non renseigné'
+    doc.text(deliveryAddress, margin + 50, yPosition)
+
+    yPosition += 14
 
     // === INFORMATIONS CONTACT ===
     // Titre de section
@@ -142,22 +158,92 @@ export async function generateAccountPDF(data: any) {
     doc.setFontSize(9)
     doc.setFont('helvetica', 'normal')
 
-    const contactData = [
-      { label: 'Email', value: data.email || 'Non renseigné' },
-      { label: 'Téléphone', value: data.phone || 'Non renseigné' },
-    ]
+    // Responsable Achat
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(primaryColor)
+    doc.text('Responsable Achat:', margin + 5, yPosition)
+    yPosition += 6
 
-    contactData.forEach(({ label, value }) => {
-      doc.setFont('helvetica', 'bold')
-      doc.setTextColor(textPrimary)
-      doc.text(`${label}:`, margin + 5, yPosition)
-      doc.setFont('helvetica', 'normal')
-      doc.setTextColor(textSecondary)
-      doc.text(value, margin + 50, yPosition)
-      yPosition += 7
-    })
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(textPrimary)
+    doc.text('Email:', margin + 5, yPosition)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(textSecondary)
+    doc.text(data.responsableAchatEmail || 'Non renseigné', margin + 50, yPosition)
+    yPosition += 6
 
-    yPosition += 15
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(textPrimary)
+    doc.text('Téléphone:', margin + 5, yPosition)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(textSecondary)
+    doc.text(data.responsableAchatPhone || 'Non renseigné', margin + 50, yPosition)
+    yPosition += 8
+
+    // Service Comptabilité
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(primaryColor)
+    doc.text('Service Comptabilité:', margin + 5, yPosition)
+    yPosition += 6
+
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(textPrimary)
+    doc.text('Email:', margin + 5, yPosition)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(textSecondary)
+    doc.text(data.serviceComptaEmail || 'Non renseigné', margin + 50, yPosition)
+    yPosition += 6
+
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(textPrimary)
+    doc.text('Téléphone:', margin + 5, yPosition)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(textSecondary)
+    doc.text(data.serviceComptaPhone || 'Non renseigné', margin + 50, yPosition)
+    yPosition += 12
+
+    // === CONDITIONS DE RÈGLEMENT ===
+    // Titre de section
+    doc.setTextColor(primaryColor)
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Conditions de règlement', margin, yPosition)
+
+    yPosition += 5
+
+    // Ligne décorative
+    doc.setDrawColor(primaryColor)
+    doc.setLineWidth(0.5)
+    doc.line(margin, yPosition, pageWidth - margin, yPosition)
+
+    yPosition += 8
+
+    // Données des conditions de règlement
+    doc.setFontSize(9)
+    doc.setFont('helvetica', 'normal')
+
+    // 1ère commande
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(textPrimary)
+    doc.text('1ère commande:', margin + 5, yPosition)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(textSecondary)
+    doc.text('Règlement avant expédition de marchandise', margin + 40, yPosition)
+    yPosition += 6
+
+    // Autres commandes
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(textPrimary)
+    doc.text('Autres commandes:', margin + 5, yPosition)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(textSecondary)
+    const otherOrdersText =
+      "Après ouverture du compte client professionnel, et après acceptation de notre service financier, le règlement des matériels pourra s'effectuer à 30 jours fin de mois"
+
+    // Découper le texte sur plusieurs lignes si nécessaire
+    const textLines = doc.splitTextToSize(otherOrdersText, pageWidth - margin - 50)
+    doc.text(textLines, margin + 40, yPosition)
+    yPosition += textLines.length * 6 + 8
 
     // === SIGNATURE ===
     if (data.signature) {
@@ -189,7 +275,7 @@ export async function generateAccountPDF(data: any) {
         const imgWidth = 70
         const imgHeight = 25
         doc.addImage(signatureImg, 'PNG', margin + 5, yPosition, imgWidth, imgHeight)
-        yPosition += imgHeight + 10
+        yPosition += imgHeight + 7
       } catch (error) {
         doc.setFontSize(9)
         doc.setTextColor(textSecondary)
@@ -199,23 +285,23 @@ export async function generateAccountPDF(data: any) {
     }
 
     // === PIED DE PAGE ===
-    yPosition = pageHeight - 40
+    yPosition = pageHeight - 30
 
     // Ligne de séparation
     doc.setDrawColor(borderColor)
     doc.setLineWidth(0.5)
     doc.line(margin, yPosition, pageWidth - margin, yPosition)
-    yPosition += 8
+    yPosition += 6
 
     // Informations de contact
     doc.setTextColor(textSecondary)
-    doc.setFontSize(8)
+    doc.setFontSize(7)
     doc.setFont('helvetica', 'normal')
     doc.text('XEILOM - Distributeur & Fabricant Courant Faible', margin, yPosition)
-    doc.text('info.xeilom@xeilom.fr | www.xeilom.fr', margin, yPosition + 5)
+    doc.text('info.xeilom@xeilom.fr | www.xeilom.fr', margin, yPosition + 4)
     doc.text(
       `Généré le ${new Date().toLocaleDateString('fr-FR')}`,
-      pageWidth - margin - 45,
+      pageWidth - margin - 40,
       yPosition
     )
 
