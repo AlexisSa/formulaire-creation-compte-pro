@@ -295,7 +295,9 @@ export async function POST(request: NextRequest) {
                             <td style="background-color: #dbeafe; padding: 20px; border-left: 4px solid #2563eb;">
                               <p style="margin: 0; font-size: 14px; line-height: 1.8;">
                                 <strong>📎 Documents en pièce jointe :</strong><br>
-                                ${body.kbisFile ? `• KBIS (${body.kbisFileName})<br>` : ''}
+                                ${
+                                  body.kbisFile ? `• KBIS (${body.kbisFileName})<br>` : ''
+                                }
                                 ${
                                   body.pdfFile
                                     ? `• PDF récapitulatif complet de la demande`

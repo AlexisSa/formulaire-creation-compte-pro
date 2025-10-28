@@ -1,13 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { Store, ReceiptText, Mail } from 'lucide-react'
+import { Store, ReceiptText } from 'lucide-react'
 import { CGVModal } from '@/components/cgv-modal'
-import { EmailPreviewModal } from '@/components/email-preview-modal'
 
 export function Footer() {
   const [isCGVOpen, setIsCGVOpen] = useState(false)
-  const [isEmailPreviewOpen, setIsEmailPreviewOpen] = useState(false)
 
   return (
     <>
@@ -41,13 +39,7 @@ export function Footer() {
                   <ReceiptText className="h-4 w-4" />
                   CGV
                 </button>
-                <button
-                  onClick={() => setIsEmailPreviewOpen(true)}
-                  className="text-sm text-gray-600 hover:text-blue-600 transition-colors flex items-center gap-1"
-                >
-                  <Mail className="h-4 w-4" />
-                  Prévisualiser les emails
-                </button>
+                {/* Email preview button removed */}
               </div>
             </div>
 
@@ -124,8 +116,7 @@ export function Footer() {
       {/* CGV Modal */}
       <CGVModal open={isCGVOpen} onOpenChange={setIsCGVOpen} />
 
-      {/* Email Preview Modal */}
-      <EmailPreviewModal open={isEmailPreviewOpen} onOpenChange={setIsEmailPreviewOpen} />
+      {/* Email preview modal removed */}
     </>
   )
 }
