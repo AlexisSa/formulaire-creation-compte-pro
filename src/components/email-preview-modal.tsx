@@ -102,60 +102,85 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                     {/* Content */}
                     <tr>
                       <td style={{ backgroundColor: '#f9fafb', padding: '30px 20px', border: '1px solid #e5e7eb' }}>
-                        <p style={{ margin: '0 0 20px 0', fontSize: '16px' }}>
+                        <p style={{ margin: '0 0 25px 0', fontSize: '16px', lineHeight: '1.6' }}>
                           <strong>Une nouvelle demande de création de compte professionnel a été soumise.</strong>
                         </p>
                         
-                        <h2 style={{ color: '#1e40af', fontSize: '18px', borderBottom: '2px solid #2563eb', paddingBottom: '8px', marginTop: 0 }}>
+                        {/* Spacer */}
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody><tr><td style={{ height: '15px', lineHeight: '15px' }}>&nbsp;</td></tr></tbody>
+                        </table>
+                        
+                        <h2 style={{ color: '#1e40af', fontSize: '18px', borderBottom: '2px solid #2563eb', paddingBottom: '10px', marginTop: 0, marginBottom: 0 }}>
                           Informations de l'entreprise
                         </h2>
                         
-                        <div style={{ backgroundColor: '#ffffff', padding: '15px', borderLeft: '4px solid #2563eb' }}>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                        {/* Spacer */}
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody><tr><td style={{ height: '10px', lineHeight: '10px' }}>&nbsp;</td></tr></tbody>
+                        </table>
+                        
+                        <div style={{ backgroundColor: '#ffffff', padding: '20px', borderLeft: '4px solid #2563eb' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '14px', lineHeight: '1.6' }}>
                             <strong style={{ color: '#1e40af' }}>Nom :</strong> {sampleCompany.name}
                           </p>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '14px', lineHeight: '1.6' }}>
                             <strong style={{ color: '#1e40af' }}>SIREN :</strong> {sampleCompany.siren}
                           </p>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '14px', lineHeight: '1.6' }}>
                             <strong style={{ color: '#1e40af' }}>SIRET :</strong> {sampleCompany.siret}
                           </p>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '14px', lineHeight: '1.6' }}>
                             <strong style={{ color: '#1e40af' }}>NAF/APE :</strong> {sampleCompany.nafApe}
                           </p>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '14px', lineHeight: '1.6' }}>
                             <strong style={{ color: '#1e40af' }}>Adresse :</strong> {sampleCompany.address}, {sampleCompany.postalCode} {sampleCompany.city}
                           </p>
                         </div>
                         
-                        <h2 style={{ color: '#1e40af', fontSize: '18px', borderBottom: '2px solid #2563eb', paddingBottom: '8px', marginTop: '25px' }}>
+                        {/* Spacer entre sections */}
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody><tr><td style={{ height: '20px', lineHeight: '20px' }}>&nbsp;</td></tr></tbody>
+                        </table>
+                        
+                        <h2 style={{ color: '#1e40af', fontSize: '18px', borderBottom: '2px solid #2563eb', paddingBottom: '10px', marginTop: 0, marginBottom: 0 }}>
                           Contacts
                         </h2>
                         
-                        <div style={{ backgroundColor: '#ffffff', padding: '15px', borderLeft: '4px solid #2563eb' }}>
-                          <p style={{ margin: '0 0 10px 0', fontWeight: 'bold', color: '#1e40af' }}>
+                        {/* Spacer */}
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody><tr><td style={{ height: '10px', lineHeight: '10px' }}>&nbsp;</td></tr></tbody>
+                        </table>
+                        
+                        <div style={{ backgroundColor: '#ffffff', padding: '20px', borderLeft: '4px solid #2563eb' }}>
+                          <p style={{ margin: '0 0 12px 0', fontWeight: 'bold', color: '#1e40af', fontSize: '14px' }}>
                             Responsable Achat
                           </p>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '14px', lineHeight: '1.6' }}>
                             <strong style={{ color: '#1e40af' }}>Email :</strong> {sampleContacts.achatEmail}
                           </p>
-                          <p style={{ margin: '0 0 15px 0', fontSize: '14px' }}>
+                          <p style={{ margin: '0 0 20px 0', fontSize: '14px', lineHeight: '1.6' }}>
                             <strong style={{ color: '#1e40af' }}>Téléphone :</strong> {sampleContacts.achatPhone}
                           </p>
                           
-                          <p style={{ borderTop: '1px solid #e5e7eb', paddingTop: '10px', margin: '15px 0 10px 0', fontWeight: 'bold', color: '#1e40af' }}>
+                          <p style={{ borderTop: '1px solid #e5e7eb', paddingTop: '15px', margin: '0 0 12px 0', fontWeight: 'bold', color: '#1e40af', fontSize: '14px' }}>
                             Service Comptabilité
                           </p>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '14px', lineHeight: '1.6' }}>
                             <strong style={{ color: '#1e40af' }}>Email :</strong> {sampleContacts.comptaEmail}
                           </p>
-                          <p style={{ margin: 0, fontSize: '14px' }}>
+                          <p style={{ margin: 0, fontSize: '14px', lineHeight: '1.6' }}>
                             <strong style={{ color: '#1e40af' }}>Téléphone :</strong> {sampleContacts.comptaPhone}
                           </p>
                         </div>
                         
-                        <div style={{ backgroundColor: '#dbeafe', padding: '15px', borderLeft: '4px solid #2563eb', marginTop: '25px' }}>
-                          <p style={{ margin: 0, fontSize: '14px' }}>
+                        {/* Spacer entre sections */}
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody><tr><td style={{ height: '20px', lineHeight: '20px' }}>&nbsp;</td></tr></tbody>
+                        </table>
+                        
+                        <div style={{ backgroundColor: '#dbeafe', padding: '20px', borderLeft: '4px solid #2563eb' }}>
+                          <p style={{ margin: 0, fontSize: '14px', lineHeight: '1.8' }}>
                             <strong>📎 Documents en pièce jointe :</strong><br />
                             • KBIS (kbis.pdf)<br />
                             • PDF récapitulatif complet de la demande
@@ -230,33 +255,48 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                     {/* Content */}
                     <tr>
                       <td style={{ backgroundColor: '#f9fafb', padding: '40px 20px', border: '1px solid #e5e7eb' }}>
-                        <p style={{ margin: '0 0 20px 0', fontSize: '18px' }}>
+                        <p style={{ margin: '0 0 25px 0', fontSize: '18px', lineHeight: '1.8' }}>
                           Bonjour,
                           <br />
                           <br />
                           Votre demande de compte professionnel chez <strong>{sampleCompany.name}</strong> a bien été reçue par notre équipe.
                         </p>
                         
-                        <div style={{ backgroundColor: '#dbeafe', padding: '20px', borderLeft: '4px solid #2563eb' }}>
-                          <p style={{ margin: '0 0 15px 0', fontSize: '16px', fontWeight: 'bold' }}>
+                        {/* Spacer */}
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody><tr><td style={{ height: '15px', lineHeight: '15px' }}>&nbsp;</td></tr></tbody>
+                        </table>
+                        
+                        <div style={{ backgroundColor: '#dbeafe', padding: '25px', borderLeft: '4px solid #2563eb' }}>
+                          <p style={{ margin: '0 0 20px 0', fontSize: '16px', fontWeight: 'bold', color: '#1e40af' }}>
                             📋 Prochaines étapes :
                           </p>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '16px' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#333333', lineHeight: '1.6' }}>
                             • Votre demande sera traitée sous <strong>24 heures</strong>
                           </p>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '16px' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '15px', color: '#333333', lineHeight: '1.6' }}>
                             • Vous recevrez un email de confirmation dès l'activation de votre compte
                           </p>
-                          <p style={{ margin: 0, fontSize: '16px' }}>
+                          <p style={{ margin: 0, fontSize: '15px', color: '#333333', lineHeight: '1.6' }}>
                             • Vous pourrez alors accéder à nos tarifs professionnels et passer commande
                           </p>
                         </div>
                         
-                        <p style={{ marginTop: '25px', textAlign: 'center', color: '#333333' }}>
+                        {/* Spacer entre sections */}
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody><tr><td style={{ height: '20px', lineHeight: '20px' }}>&nbsp;</td></tr></tbody>
+                        </table>
+                        
+                        <p style={{ marginTop: 0, textAlign: 'center', color: '#333333', fontSize: '16px', lineHeight: '1.6', marginBottom: 0 }}>
                           En attendant, découvrez notre catalogue de produits professionnels en courant faible :
                         </p>
                         
-                        <div style={{ textAlign: 'center', paddingTop: '15px' }}>
+                        {/* Spacer */}
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody><tr><td style={{ height: '10px', lineHeight: '10px' }}>&nbsp;</td></tr></tbody>
+                        </table>
+                        
+                        <div style={{ textAlign: 'center' }}>
                           <a
                             href="#"
                             style={{
@@ -273,14 +313,19 @@ export function EmailPreviewModal({ open, onOpenChange }: EmailPreviewModalProps
                           </a>
                         </div>
                         
-                        <div style={{ backgroundColor: '#f3f4f6', padding: '15px', marginTop: '25px' }}>
-                          <p style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: 'bold' }}>
+                        {/* Spacer entre sections */}
+                        <table cellPadding="0" cellSpacing="0" width="100%" style={{ borderCollapse: 'collapse' }}>
+                          <tbody><tr><td style={{ height: '20px', lineHeight: '20px' }}>&nbsp;</td></tr></tbody>
+                        </table>
+                        
+                        <div style={{ backgroundColor: '#f3f4f6', padding: '20px' }}>
+                          <p style={{ margin: '0 0 15px 0', fontSize: '15px', fontWeight: 'bold', color: '#333333' }}>
                             💬 Une question ?
                           </p>
-                          <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}>
+                          <p style={{ margin: '0 0 12px 0', fontSize: '14px', lineHeight: '1.6' }}>
                             Notre équipe est disponible du lundi au vendredi, de 9h à 18h
                           </p>
-                          <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#2563eb' }}>
+                          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#2563eb' }}>
                             📧 info.xeilom@xeilom.fr
                           </p>
                           <p style={{ margin: 0, fontSize: '14px', color: '#2563eb' }}>

@@ -154,19 +154,32 @@ export async function POST(request: NextRequest) {
                     <!-- Content -->
                     <tr>
                       <td style="background-color: #f9fafb; padding: 30px 20px; border: 1px solid #e5e7eb;">
-                        <p style="margin: 0 0 20px 0; font-size: 16px;"><strong>Une nouvelle demande de création de compte professionnel a été soumise.</strong></p>
+                        <p style="margin: 0 0 25px 0; font-size: 16px; line-height: 1.6;"><strong>Une nouvelle demande de création de compte professionnel a été soumise.</strong></p>
                         
-                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+                        <!-- Spacer -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr><td style="height: 15px; line-height: 15px;">&nbsp;</td></tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                           <tr>
                             <td>
-                              <h2 style="margin: 0 0 15px 0; color: #1e40af; font-size: 18px; border-bottom: 2px solid #2563eb; padding-bottom: 8px;">Informations de l'entreprise</h2>
+                              <h2 style="margin: 0; color: #1e40af; font-size: 18px; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">Informations de l'entreprise</h2>
                             </td>
                           </tr>
+                        </table>
+                        
+                        <!-- Spacer -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr><td style="height: 10px; line-height: 10px;">&nbsp;</td></tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                           <tr>
-                            <td style="background-color: #ffffff; padding: 15px; border-left: 4px solid #2563eb;">
+                            <td style="background-color: #ffffff; padding: 20px; border-left: 4px solid #2563eb;">
                               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
-                                  <td style="padding-bottom: 8px;">
+                                  <td style="padding-bottom: 12px; font-size: 14px; line-height: 1.6;">
                                     <span style="font-weight: bold; color: #1e40af;">Nom :</span> ${
                                       body.companyName
                                     }
@@ -174,32 +187,32 @@ export async function POST(request: NextRequest) {
                                 </tr>
                                 ${
                                   body.companyInfo.siren
-                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">SIREN :</span> ${body.companyInfo.siren}</td></tr>`
+                                    ? `<tr><td style="padding-bottom: 12px; font-size: 14px; line-height: 1.6;"><span style="font-weight: bold; color: #1e40af;">SIREN :</span> ${body.companyInfo.siren}</td></tr>`
                                     : ''
                                 }
                                 ${
                                   body.companyInfo.siret
-                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">SIRET :</span> ${body.companyInfo.siret}</td></tr>`
+                                    ? `<tr><td style="padding-bottom: 12px; font-size: 14px; line-height: 1.6;"><span style="font-weight: bold; color: #1e40af;">SIRET :</span> ${body.companyInfo.siret}</td></tr>`
                                     : ''
                                 }
                                 ${
                                   body.companyInfo.nafApe
-                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">NAF/APE :</span> ${body.companyInfo.nafApe}</td></tr>`
+                                    ? `<tr><td style="padding-bottom: 12px; font-size: 14px; line-height: 1.6;"><span style="font-weight: bold; color: #1e40af;">NAF/APE :</span> ${body.companyInfo.nafApe}</td></tr>`
                                     : ''
                                 }
                                 ${
                                   body.companyInfo.tvaIntracom
-                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">TVA Intracommunautaire :</span> ${body.companyInfo.tvaIntracom}</td></tr>`
+                                    ? `<tr><td style="padding-bottom: 12px; font-size: 14px; line-height: 1.6;"><span style="font-weight: bold; color: #1e40af;">TVA Intracommunautaire :</span> ${body.companyInfo.tvaIntracom}</td></tr>`
                                     : ''
                                 }
                                 ${
                                   body.companyInfo.address
-                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">Adresse de facturation :</span> ${body.companyInfo.address}, ${body.companyInfo.postalCode} ${body.companyInfo.city}</td></tr>`
+                                    ? `<tr><td style="padding-bottom: 12px; font-size: 14px; line-height: 1.6;"><span style="font-weight: bold; color: #1e40af;">Adresse de facturation :</span> ${body.companyInfo.address}, ${body.companyInfo.postalCode} ${body.companyInfo.city}</td></tr>`
                                     : ''
                                 }
                                 ${
                                   body.companyInfo.deliveryAddress
-                                    ? `<tr><td style="padding-bottom: 8px;"><span style="font-weight: bold; color: #1e40af;">Adresse de livraison :</span> ${body.companyInfo.deliveryAddress}, ${body.companyInfo.deliveryPostalCode} ${body.companyInfo.deliveryCity}</td></tr>`
+                                    ? `<tr><td style="padding-bottom: 12px; font-size: 14px; line-height: 1.6;"><span style="font-weight: bold; color: #1e40af;">Adresse de livraison :</span> ${body.companyInfo.deliveryAddress}, ${body.companyInfo.deliveryPostalCode} ${body.companyInfo.deliveryCity}</td></tr>`
                                     : ''
                                 }
                               </table>
@@ -207,48 +220,61 @@ export async function POST(request: NextRequest) {
                           </tr>
                         </table>
                         
-                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+                        <!-- Spacer entre sections -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr><td style="height: 20px; line-height: 20px;">&nbsp;</td></tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                           <tr>
                             <td>
-                              <h2 style="margin: 0 0 15px 0; color: #1e40af; font-size: 18px; border-bottom: 2px solid #2563eb; padding-bottom: 8px;">Contacts</h2>
+                              <h2 style="margin: 0; color: #1e40af; font-size: 18px; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">Contacts</h2>
                             </td>
                           </tr>
+                        </table>
+                        
+                        <!-- Spacer -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr><td style="height: 10px; line-height: 10px;">&nbsp;</td></tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                           <tr>
-                            <td style="background-color: #ffffff; padding: 15px; border-left: 4px solid #2563eb;">
+                            <td style="background-color: #ffffff; padding: 20px; border-left: 4px solid #2563eb;">
                               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
-                                  <td style="padding-bottom: 10px;">
-                                    <strong style="color: #1e40af;">Responsable Achat</strong>
+                                  <td style="padding-bottom: 12px; font-size: 14px;">
+                                    <strong style="color: #1e40af; font-size: 14px;">Responsable Achat</strong>
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td style="padding-bottom: 8px;">
+                                  <td style="padding-bottom: 12px; font-size: 14px; line-height: 1.6;">
                                     <span style="font-weight: bold; color: #1e40af;">Email :</span> ${
                                       body.responsableAchatEmail
                                     }
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td style="padding-bottom: 15px;">
+                                  <td style="padding-bottom: 20px; font-size: 14px; line-height: 1.6;">
                                     <span style="font-weight: bold; color: #1e40af;">Téléphone :</span> ${
                                       body.responsableAchatPhone
                                     }
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td style="border-top: 1px solid #e5e7eb; padding-top: 10px; padding-bottom: 10px;">
-                                    <strong style="color: #1e40af;">Service Comptabilité</strong>
+                                  <td style="border-top: 1px solid #e5e7eb; padding-top: 15px; padding-bottom: 12px;">
+                                    <strong style="color: #1e40af; font-size: 14px;">Service Comptabilité</strong>
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td style="padding-bottom: 8px;">
+                                  <td style="padding-bottom: 12px; font-size: 14px; line-height: 1.6;">
                                     <span style="font-weight: bold; color: #1e40af;">Email :</span> ${
                                       body.serviceComptaEmail
                                     }
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td>
+                                  <td style="font-size: 14px; line-height: 1.6;">
                                     <span style="font-weight: bold; color: #1e40af;">Téléphone :</span> ${
                                       body.serviceComptaPhone
                                     }
@@ -259,14 +285,17 @@ export async function POST(request: NextRequest) {
                           </tr>
                         </table>
                         
+                        <!-- Spacer entre sections -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr><td style="height: 20px; line-height: 20px;">&nbsp;</td></tr>
+                        </table>
+                        
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                           <tr>
-                            <td style="background-color: #dbeafe; padding: 15px; border-left: 4px solid #2563eb;">
-                              <p style="margin: 0; font-size: 14px;">
+                            <td style="background-color: #dbeafe; padding: 20px; border-left: 4px solid #2563eb;">
+                              <p style="margin: 0; font-size: 14px; line-height: 1.8;">
                                 <strong>📎 Documents en pièce jointe :</strong><br>
-                                ${body.kbisFile ? `• KBIS (${body.kbisFileName})` : ''}${
-        body.kbisFile && body.pdfFile ? '<br>' : ''
-      }
+                                ${body.kbisFile ? `• KBIS (${body.kbisFileName})<br>` : ''}
                                 ${
                                   body.pdfFile
                                     ? `• PDF récapitulatif complet de la demande`
@@ -363,31 +392,36 @@ export async function POST(request: NextRequest) {
                     <!-- Content -->
                     <tr>
                       <td style="background-color: #f9fafb; padding: 40px 20px; border: 1px solid #e5e7eb;">
-                        <p style="margin: 0 0 20px 0; font-size: 18px; color: #333333;">
+                        <p style="margin: 0 0 25px 0; font-size: 18px; color: #333333; line-height: 1.8;">
                           Bonjour,<br><br>
                           
                           Votre demande de compte professionnel chez <strong>${body.companyName}</strong> a bien été reçue par notre équipe.
                         </p>
                         
-                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+                        <!-- Spacer -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr><td style="height: 15px; line-height: 15px;">&nbsp;</td></tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                           <tr>
-                            <td style="background-color: #dbeafe; padding: 20px; border-left: 4px solid #2563eb;">
-                              <p style="margin: 0 0 15px 0; font-size: 16px; font-weight: bold; color: #333333;">
+                            <td style="background-color: #dbeafe; padding: 25px; border-left: 4px solid #2563eb;">
+                              <p style="margin: 0 0 20px 0; font-size: 16px; font-weight: bold; color: #1e40af;">
                                 📋 Prochaines étapes :
                               </p>
                               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
-                                  <td style="padding-bottom: 8px; font-size: 16px; color: #333333;">
+                                  <td style="padding-bottom: 12px; font-size: 15px; color: #333333; line-height: 1.6;">
                                     • Votre demande sera traitée sous <strong>24 heures</strong>
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td style="padding-bottom: 8px; font-size: 16px; color: #333333;">
+                                  <td style="padding-bottom: 12px; font-size: 15px; color: #333333; line-height: 1.6;">
                                     • Vous recevrez un email de confirmation dès l'activation de votre compte
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td style="font-size: 16px; color: #333333;">
+                                  <td style="font-size: 15px; color: #333333; line-height: 1.6;">
                                     • Vous pourrez alors accéder à nos tarifs professionnels et passer commande
                                   </td>
                                 </tr>
@@ -396,14 +430,27 @@ export async function POST(request: NextRequest) {
                           </tr>
                         </table>
                         
-                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+                        <!-- Spacer entre sections -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr><td style="height: 20px; line-height: 20px;">&nbsp;</td></tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                           <tr>
                             <td align="center" style="padding-bottom: 15px;">
-                              <p style="margin: 0; color: #333333;">
+                              <p style="margin: 0; color: #333333; font-size: 16px; line-height: 1.6;">
                                 En attendant, découvrez notre catalogue de produits professionnels en courant faible :
                               </p>
                             </td>
                           </tr>
+                        </table>
+                        
+                        <!-- Spacer -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr><td style="height: 10px; line-height: 10px;">&nbsp;</td></tr>
+                        </table>
+                        
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                           <tr>
                             <td align="center">
                               <a href="https://www.xeilom.fr" style="display: inline-block; padding: 16px 32px; background-color: #1d4ed8; color: #ffffff; text-decoration: none; font-weight: bold; font-size: 16px;">
@@ -413,16 +460,21 @@ export async function POST(request: NextRequest) {
                           </tr>
                         </table>
                         
+                        <!-- Spacer entre sections -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                          <tr><td style="height: 20px; line-height: 20px;">&nbsp;</td></tr>
+                        </table>
+                        
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                           <tr>
-                            <td style="background-color: #f3f4f6; padding: 15px;">
-                              <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: #333333;">
+                            <td style="background-color: #f3f4f6; padding: 20px;">
+                              <p style="margin: 0 0 15px 0; font-size: 15px; font-weight: bold; color: #333333;">
                                 💬 Une question ?
                               </p>
-                              <p style="margin: 0 0 8px 0; font-size: 14px; color: #333333;">
+                              <p style="margin: 0 0 12px 0; font-size: 14px; color: #333333; line-height: 1.6;">
                                 Notre équipe est disponible du lundi au vendredi, de 9h à 18h
                               </p>
-                              <p style="margin: 0 0 5px 0; font-size: 14px; color: #2563eb;">
+                              <p style="margin: 0 0 8px 0; font-size: 14px; color: #2563eb;">
                                 📧 <a href="mailto:info.xeilom@xeilom.fr" style="color: #2563eb;">info.xeilom@xeilom.fr</a>
                               </p>
                               <p style="margin: 0; font-size: 14px; color: #2563eb;">
