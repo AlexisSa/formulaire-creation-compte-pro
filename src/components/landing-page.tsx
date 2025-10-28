@@ -130,7 +130,7 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
             >
               <Image
                 src="/xeilom-logo.png"
-                alt="Xeilom - Distributeur et fabricant courant faible"
+                alt="Xeilom - Fabricant et distributeur courant faible"
                 width={120}
                 height={40}
                 className="h-10 w-auto object-contain"
@@ -174,7 +174,7 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
             >
               <div className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
               <span className="text-sm font-medium text-blue-900">
-                Distributeur et fabricant courant faible{' '}
+                Fabricant et distributeur courant faible{' '}
               </span>
             </motion.div>
 
