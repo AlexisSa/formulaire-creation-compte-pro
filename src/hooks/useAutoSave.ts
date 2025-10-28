@@ -91,6 +91,28 @@ export function useAutoSave(options: UseAutoSaveOptions = {}): UseAutoSaveReturn
   )
 
   /**
+   * Suppression du brouillon
+   */
+  const clearDraft = useCallback(() => {
+    // Vérifier que nous sommes côté client
+    if (typeof window === 'undefined') return
+
+    try {
+      localStorage.removeItem(storageKey)
+      lastSavedData.current = ''
+
+      // Annuler la sauvegarde en cours
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current)
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Erreur lors de la suppression du brouillon:', error)
+      }
+    }
+  }, [storageKey])
+
+  /**
    * Chargement du brouillon depuis localStorage
    */
   const loadDraft = useCallback((): Partial<AccountFormData> | null => {
@@ -119,29 +141,7 @@ export function useAutoSave(options: UseAutoSaveOptions = {}): UseAutoSaveReturn
       }
       return null
     }
-  }, [storageKey])
-
-  /**
-   * Suppression du brouillon
-   */
-  const clearDraft = useCallback(() => {
-    // Vérifier que nous sommes côté client
-    if (typeof window === 'undefined') return
-
-    try {
-      localStorage.removeItem(storageKey)
-      lastSavedData.current = ''
-
-      // Annuler la sauvegarde en cours
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current)
-      }
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Erreur lors de la suppression du brouillon:', error)
-      }
-    }
-  }, [storageKey])
+  }, [storageKey, clearDraft])
 
   /**
    * Vérifier s'il y a un brouillon

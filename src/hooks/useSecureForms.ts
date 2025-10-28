@@ -180,7 +180,7 @@ export function useSecureCompanyForm(
 
       setAutoSaveTimer(timer)
     },
-    [autoSave, isReady, autoSaveDelay, validateData, submitForm]
+    [autoSave, isReady, autoSaveDelay, validateData, submitForm, autoSaveTimer]
   )
 
   return {

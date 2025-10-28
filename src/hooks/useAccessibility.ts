@@ -95,6 +95,17 @@ export function useAccessibility(
   )
 
   /**
+   * Libère le piège de focus
+   */
+  const releaseFocus = useCallback(() => {
+    if (previousFocusRef.current) {
+      previousFocusRef.current.focus()
+      previousFocusRef.current = null
+    }
+    focusTrapRef.current = null
+  }, [])
+
+  /**
    * Piège le focus dans un élément
    */
   const trapFocus = useCallback(
@@ -137,19 +148,8 @@ export function useAccessibility(
       element.addEventListener('keydown', handleKeyDown)
       return () => element.removeEventListener('keydown', handleKeyDown)
     },
-    [manageFocus, enableFocusTrap, focusFirstElement, getFocusableElements]
+    [manageFocus, enableFocusTrap, focusFirstElement, getFocusableElements, releaseFocus]
   )
-
-  /**
-   * Libère le piège de focus
-   */
-  const releaseFocus = useCallback(() => {
-    if (previousFocusRef.current) {
-      previousFocusRef.current.focus()
-      previousFocusRef.current = null
-    }
-    focusTrapRef.current = null
-  }, [])
 
   // Nettoyage au démontage
   useEffect(() => {
