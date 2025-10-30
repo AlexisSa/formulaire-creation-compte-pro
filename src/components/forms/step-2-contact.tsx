@@ -186,7 +186,7 @@ export function Step2Contact({ form, stepSubmitted }: Step2ContactProps) {
           {isFromInsee && isMissingAddressInfo && (
             <div className="bg-blue-50 border border-blue-200 rounded-md p-3 mb-3 text-blue-700 text-sm flex items-center gap-2">
               <AlertCircle className="h-4 w-4 text-blue-500 flex-shrink-0" aria-hidden="true" />
-              Certaines informations d'adresse n'ont pas pu être récupérées automatiquement. Merci de compléter ces champs pour poursuivre votre inscription.
+              Certaines informations d&apos;adresse n&apos;ont pas pu être récupérées automatiquement. Merci de compléter ces champs pour poursuivre votre inscription.
             </div>
           )}
 

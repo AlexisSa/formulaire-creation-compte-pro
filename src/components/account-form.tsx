@@ -86,11 +86,6 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
     formState: { isSubmitting },
   } = form
 
-  // Ajoute un effet pour resynchroniser RHF au submit d'étape
-  useEffect(() => {
-    if (isSubmitted) form.formState.isSubmitted = true
-  }, [isSubmitted])
-
   // Animation de progression au changement d'étape
   useEffect(() => {
     const progressPercentage = (currentStep / STEPS.length) * 100
