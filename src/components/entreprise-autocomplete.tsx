@@ -224,13 +224,13 @@ export function EntrepriseAutocomplete({
             <div className="flex gap-3">
               <div className="flex-1 space-y-2">
                 <Label htmlFor="search-compagnyName" className="text-sm">
-                  Nom de l&apos;entreprise <span className="text-destructive">*</span>
+                  Nom de votre entreprise <span className="text-destructive">*</span>
                 </Label>
                 <div className="relative">
                   <Input
                     id="search-name"
                     type="text"
-                    placeholder="Tapez le nom de l'entreprise..."
+                    placeholder="Tapez le nom de votre entreprise..."
                     value={searchName}
                     onChange={(e) => {
                       setSearchName(e.target.value);
@@ -245,7 +245,7 @@ export function EntrepriseAutocomplete({
                       if (searchName.trim().length >= 2 && filteredResults.length > 0) setShowResults(true)
                     }}
                     className="pr-10"
-                    aria-label="Nom de l'entreprise à rechercher"
+                    aria-label="Nom de votre entreprise à rechercher"
                     aria-describedby={error ? 'search-error' : undefined}
                   />
                   {isLoading && (
