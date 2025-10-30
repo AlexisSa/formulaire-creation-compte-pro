@@ -34,15 +34,12 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
     try {
       const { generateAccountPDF } = await import('@/lib/pdf-generator')
       const data = getValues()
-
       // Générer le PDF
       const pdfBlob = await generateAccountPDF(data)
-
       // Créer le lien de téléchargement
       const url = URL.createObjectURL(pdfBlob)
       const link = document.createElement('a')
       link.href = url
-
       // Nom du fichier avec le nom de l'entreprise
       const companyName = data.companyName || 'xeilom'
       const date = new Date().toISOString().split('T')[0]
@@ -50,12 +47,10 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
         /[^a-zA-Z0-9]/g,
         '-'
       )}-${date}.pdf`
-
       // Télécharger
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-
       // Nettoyer l'URL
       setTimeout(() => URL.revokeObjectURL(url), 100)
     } catch (error) {
@@ -66,64 +61,7 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
 
   return (
     <div className="space-y-8">
-      {/* Section 1: Document légal */}
-      <div className="bg-blue-50/30 border border-blue-100 rounded-xl p-6 space-y-5">
-        <div className="flex items-center gap-2">
-          <FileText className="h-5 w-5 text-blue-600" />
-          <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
-            Justificatif d&apos;entreprise <span className="text-red-600">*</span>
-          </h3>
-        </div>
-
-        <p className="text-sm text-gray-600">
-          Kbis de moins de 3 mois, statuts, ou inscription au registre des métiers • PDF,
-          PNG, JPG • Max 5 MB
-        </p>
-
-        <div className="bg-white border border-blue-200 rounded-lg p-4 space-y-2">
-          <div className="flex items-start gap-2">
-            <HelpCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="text-sm font-medium text-gray-900 mb-1">
-                Comment obtenir votre Kbis ?
-              </p>
-              <p className="text-sm text-gray-700 leading-relaxed">
-                Le Kbis est votre extrait d&apos;immatriculation au Registre du Commerce
-                et des Sociétés (RCS). Vous pouvez le télécharger gratuitement sur{' '}
-                <a
-                  href="https://www.infogreffe.fr/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline font-medium hover:text-blue-700"
-                >
-                  infogreffe.fr
-                </a>{' '}
-                ou{' '}
-                <a
-                  href="https://www.societe.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline font-medium hover:text-blue-700"
-                >
-                  societe.com
-                </a>{' '}
-                en recherchant votre entreprise par nom ou numéro SIREN.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <FileUpload
-          value={legalDocument}
-          onFileChange={(file) => {
-            setValue('legalDocument', file as any, { shouldValidate: true })
-          }}
-          error={errors.legalDocument?.message}
-          maxSize={5 * 1024 * 1024} // 5 MB
-        />
-      </div>
-
-      {/* Section 2: Signature + Conditions */}
+      {/* Section 1: Signature + Conditions */}
       <div className="space-y-6">
         {/* Signature */}
         <div className="bg-blue-50/30 border border-blue-100 rounded-xl p-6 space-y-5">
@@ -133,18 +71,15 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
               Signature des CGV <span className="text-red-600">*</span>
             </h3>
           </div>
-
           <p className="text-sm text-gray-600">
             En signant, vous acceptez les conditions générales de vente Xeilom
           </p>
-
           <SignaturePad
             onSave={(signature) =>
               setValue('signature', signature, { shouldValidate: true })
             }
             error={errors.signature?.message}
           />
-
           {/* Info CGV */}
           <div className="bg-white border border-blue-200 rounded-lg p-4 mt-4">
             <p className="text-sm font-medium text-gray-900 mb-2">
@@ -174,7 +109,6 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
               Conditions de règlement
             </h3>
           </div>
-
           <div className="space-y-3 text-sm text-gray-700">
             <p className="font-medium">
               <span className="text-gray-900 font-semibold">1ère commande :</span>{' '}
@@ -186,6 +120,28 @@ export function Step3Documents({ form }: Step3DocumentsProps) {
               notre service financier, le règlement des matériels pourra s&apos;effectuer
               à 30 jours fin de mois
             </p>
+          </div>
+        </div>
+
+        {/* Section document (optionnelle) */}
+        <div className="border border-gray-200 rounded-lg px-4 py-2 flex gap-2 items-start bg-white">
+          <FileText className="h-4 w-4 text-gray-400 mt-1" />
+          <div className="flex-1">
+            <div className="text-xs font-semibold text-gray-800 mb-2">
+              Joindre un KBIS si souhaité (optionnel)
+            </div>
+            <div className="text-xs text-gray-500 mb-2">
+              Vous pouvez accélérer la validation de votre dossier en ajoutant un KBIS
+              récent (PDF/JPG/PNG, &lt; 5 Mo), mais ce n&apos;est pas obligatoire.
+            </div>
+            <FileUpload
+              value={legalDocument}
+              onFileChange={(file) => {
+                setValue('legalDocument', file as any, { shouldValidate: false })
+              }}
+              error={errors.legalDocument?.message}
+              maxSize={5 * 1024 * 1024}
+            />
           </div>
         </div>
 

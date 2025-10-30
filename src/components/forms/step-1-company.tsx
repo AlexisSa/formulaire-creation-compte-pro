@@ -52,7 +52,6 @@ export function Step1Company({ form }: Step1CompanyProps) {
           <Input
             id="companyName"
             type="text"
-            placeholder="SARL EXEMPLE"
             {...register('companyName')}
             className={errors.companyName ? 'border-red-500' : ''}
             aria-invalid={errors.companyName ? 'true' : 'false'}
@@ -74,8 +73,6 @@ export function Step1Company({ form }: Step1CompanyProps) {
             <Input
               id="siren"
               type="text"
-              placeholder="123456789"
-              maxLength={9}
               {...register('siren')}
               className={errors.siren ? 'border-red-500' : ''}
               aria-invalid={errors.siren ? 'true' : 'false'}
@@ -95,8 +92,6 @@ export function Step1Company({ form }: Step1CompanyProps) {
             <Input
               id="siret"
               type="text"
-              placeholder="12345678900001"
-              maxLength={14}
               {...register('siret')}
               className={errors.siret ? 'border-red-500' : ''}
               aria-invalid={errors.siret ? 'true' : 'false'}
@@ -119,7 +114,6 @@ export function Step1Company({ form }: Step1CompanyProps) {
             <Input
               id="nafApe"
               type="text"
-              placeholder="6201Z"
               {...register('nafApe')}
               className={errors.nafApe ? 'border-red-500' : ''}
               aria-invalid={errors.nafApe ? 'true' : 'false'}
@@ -139,8 +133,6 @@ export function Step1Company({ form }: Step1CompanyProps) {
             <Input
               id="tvaIntracom"
               type="text"
-              placeholder="FR12345678901"
-              maxLength={13}
               {...register('tvaIntracom')}
               className={errors.tvaIntracom ? 'border-red-500' : ''}
               aria-invalid={errors.tvaIntracom ? 'true' : 'false'}

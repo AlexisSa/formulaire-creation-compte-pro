@@ -51,9 +51,10 @@ export function EntrepriseAutocomplete({
     selectEntreprise: selectFromHook,
     reset,
     setSelectedIndex,
+    setShowResults,
     handleKeyDown,
   } = useInseeSearch({
-    debounceMs: 300,
+    debounceMs: 600, // optimisé
     minLength: 2,
   })
 
@@ -141,17 +142,21 @@ export function EntrepriseAutocomplete({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (resultsRef.current && !resultsRef.current.contains(event.target as Node)) {
-        // Le hook gère déjà la fermeture via handleKeyDown avec Escape
-        // On peut utiliser reset() pour fermer les résultats
         if (showResults) {
-          reset()
+          setShowResults(false)
         }
       }
     }
 
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [showResults, reset])
+  }, [showResults, setShowResults])
+
+  // Filtrage tolérant par fragment côté frontend
+  const filteredResults = searchName.trim().length < 2 ? results : results.filter(ent => {
+    const lowerRaison = ent.raisonSociale.toLowerCase()
+    return searchName.trim().toLowerCase().split(/\s+/).every(fragment => lowerRaison.includes(fragment))
+  })
 
   return (
     <div className={cn('space-y-3', className)} ref={resultsRef}>
@@ -227,15 +232,25 @@ export function EntrepriseAutocomplete({
                     type="text"
                     placeholder="Tapez le nom de l'entreprise..."
                     value={searchName}
-                    onChange={(e) => setSearchName(e.target.value)}
+                    onChange={(e) => {
+                      setSearchName(e.target.value);
+                      if (e.target.value.trim().length >= 2) {
+                        setShowResults(true);
+                      } else {
+                        setShowResults(false);
+                      }
+                    }}
                     onKeyDown={onKeyDown}
+                    onFocus={() => {
+                      if (searchName.trim().length >= 2 && filteredResults.length > 0) setShowResults(true)
+                    }}
                     className="pr-10"
                     aria-label="Nom de l'entreprise à rechercher"
                     aria-describedby={error ? 'search-error' : undefined}
                   />
                   {isLoading && (
                     <Loader2
-                      className="absolute right-3 top-3 h-4 w-4 animate-spin text-muted-foreground"
+                      className="absolute right-3 inset-y-0 my-auto h-5 w-5 animate-spin text-muted-foreground"
                       aria-hidden="true"
                     />
                   )}
@@ -260,7 +275,7 @@ export function EntrepriseAutocomplete({
             </div>
 
             {/* Résultats en position absolue */}
-            {showResults && results.length > 0 && (
+            {showResults && filteredResults.length > 0 && (
               <div
                 className="absolute top-full left-0 right-0 mt-2 z-[100] border rounded-lg bg-white/95 backdrop-blur-sm shadow-xl max-h-96 overflow-auto"
                 role="listbox"
@@ -269,11 +284,11 @@ export function EntrepriseAutocomplete({
               >
                 <div className="p-2 bg-blue-50/80 backdrop-blur-sm border-b border-blue-100">
                   <p className="text-xs text-blue-700 font-medium">
-                    ✓ {results.length} résultat{results.length > 1 ? 's' : ''} trouvé
-                    {results.length > 1 ? 's' : ''}
+                    ✓ {filteredResults.length} résultat{filteredResults.length > 1 ? 's' : ''} trouvé
+                    {filteredResults.length > 1 ? 's' : ''}
                   </p>
                 </div>
-                {results.map((entreprise, index) => (
+                {filteredResults.map((entreprise, index) => (
                   <button
                     key={entreprise.siret}
                     type="button"

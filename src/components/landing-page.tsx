@@ -22,6 +22,8 @@ import {
   ChevronRight,
   ExternalLink,
   FileText,
+  ClipboardList,
+  Globe,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { googleReviewsData } from '@/data/google-reviews'
@@ -185,7 +187,8 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Votre partenaire <span className="text-blue-600">courant faible</span>
+              Ouvrez votre compte client chez{' '}
+              <span className="text-blue-600">Xeilom</span>
             </motion.h1>
 
             {/* Description centrée */}
@@ -206,9 +209,9 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <Button onClick={onStart} size="lg">
-                Créer mon compte pro
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Button onClick={onStart} size="lg" className="h-12 px-6 text-lg">
+                <Globe className="mr-3 h-5 w-5" />
+                Formulaire en ligne
               </Button>
               <Button
                 variant="outline"
@@ -219,9 +222,9 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
                   link.download = 'ouverture-compte-xeilom.pdf'
                   link.click()
                 }}
-                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                className="h-12 px-6 text-lg border-gray-300 text-gray-700 hover:bg-gray-50"
               >
-                <FileText className="mr-2 h-5 w-5" />
+                <FileText className="mr-3 h-5 w-5" />
                 Formulaire papier
               </Button>
             </motion.div>
@@ -581,7 +584,7 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
               />
               <FAQItem
                 question="Puis-je commander immédiatement après la création du compte ?"
-                answer="Oui, dès l'activation de votre compte, vous pouvez passer commande et bénéficier immédiatement de nos tarifs professionnels et des conditions de paiement à 30 jours."
+                answer="Oui, dès l'activation de votre compte, vous pouvez passer commande et bénéficier immédiatement de nos tarifs professionnels. Les conditions de paiement à 30 jours se débloquent uniquement après votre première commande."
               />
               <FAQItem
                 question="Que se passe-t-il si ma demande est refusée ?"
@@ -624,7 +627,7 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
               className="flex items-center justify-center gap-4 flex-wrap"
             >
               <Button onClick={onStart} size="lg">
-                Créer mon compte professionnel
+                Devenir client en compte
               </Button>
               <Button
                 variant="outline"

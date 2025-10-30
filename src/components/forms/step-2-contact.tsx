@@ -4,42 +4,62 @@ import { UseFormReturn } from 'react-hook-form'
 import { AccountFormData } from '@/lib/validation'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Mail, Phone, MapPin, Copy } from 'lucide-react'
+import { Mail, Phone, MapPin, Copy, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+
+function FieldError({ name, form, stepSubmitted }: { name: keyof AccountFormData, form: UseFormReturn<AccountFormData>, stepSubmitted?: boolean }) {
+  const error = form.formState.errors[name];
+  const touched = !!form.formState.touchedFields[name];
+  // utilise le stepSubmitted passé en prop
+  if (!error || (!touched && !stepSubmitted)) return null;
+  return (
+    <p className="text-sm text-red-600" role="alert">
+      {error.message}
+    </p>
+  );
+}
 
 interface Step2ContactProps {
   form: UseFormReturn<AccountFormData>
+  stepSubmitted?: boolean
 }
 
 /**
  * Étape 2 : Informations de contact et adresses
  */
-export function Step2Contact({ form }: Step2ContactProps) {
+export function Step2Contact({ form, stepSubmitted }: Step2ContactProps) {
   const {
     register,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, touchedFields, isSubmitted },
   } = form
 
+  const isMissingAddressInfo = !watch('address') || !watch('postalCode') || !watch('city')
+  const isFromInsee = !!watch('siret') || !!watch('nafApe')
+
   // Copier l'adresse de facturation vers livraison
-  const copyFacturationToLivraison = () => {
+  const copyFacturationToLivraison = async () => {
     const address = watch('address')
     const postalCode = watch('postalCode')
     const city = watch('city')
 
-    setValue('deliveryAddress', address)
-    setValue('deliveryPostalCode', postalCode)
-    setValue('deliveryCity', city)
+    setValue('deliveryAddress', address, { shouldValidate: true, shouldTouch: true })
+    setValue('deliveryPostalCode', postalCode, { shouldValidate: true, shouldTouch: true })
+    setValue('deliveryCity', city, { shouldValidate: true, shouldTouch: true })
+
+    await form.trigger(['deliveryAddress', 'deliveryPostalCode', 'deliveryCity'])
   }
 
   // Copier le responsable achat vers service compta
-  const copyAchatToCompta = () => {
+  const copyAchatToCompta = async () => {
     const email = watch('responsableAchatEmail')
     const phone = watch('responsableAchatPhone')
 
-    setValue('serviceComptaEmail', email)
-    setValue('serviceComptaPhone', phone)
+    setValue('serviceComptaEmail', email, { shouldValidate: true, shouldTouch: true })
+    setValue('serviceComptaPhone', phone, { shouldValidate: true, shouldTouch: true })
+
+    await form.trigger(['serviceComptaEmail', 'serviceComptaPhone'])
   }
 
   return (
@@ -65,23 +85,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
             <Input
               id="responsableAchatEmail"
               type="email"
-              placeholder="achat@entreprise.fr"
               {...register('responsableAchatEmail')}
-              className={errors.responsableAchatEmail ? 'border-red-500' : ''}
+              className={(errors.responsableAchatEmail && (touchedFields.responsableAchatEmail || isSubmitted)) ? 'border-red-500' : ''}
               aria-invalid={errors.responsableAchatEmail ? 'true' : 'false'}
-              aria-describedby={
-                errors.responsableAchatEmail ? 'responsableAchatEmail-error' : undefined
-              }
+              aria-describedby={errors.responsableAchatEmail ? 'responsableAchatEmail-error' : undefined}
             />
-            {errors.responsableAchatEmail && (
-              <p
-                id="responsableAchatEmail-error"
-                className="text-sm text-red-600"
-                role="alert"
-              >
-                {errors.responsableAchatEmail.message}
-              </p>
-            )}
+            <FieldError name="responsableAchatEmail" form={form} stepSubmitted={stepSubmitted} />
           </div>
 
           <div className="space-y-2">
@@ -94,23 +103,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
             <Input
               id="responsableAchatPhone"
               type="tel"
-              placeholder="01 23 45 67 89"
               {...register('responsableAchatPhone')}
-              className={errors.responsableAchatPhone ? 'border-red-500' : ''}
+              className={(errors.responsableAchatPhone && (touchedFields.responsableAchatPhone || isSubmitted)) ? 'border-red-500' : ''}
               aria-invalid={errors.responsableAchatPhone ? 'true' : 'false'}
-              aria-describedby={
-                errors.responsableAchatPhone ? 'responsableAchatPhone-error' : undefined
-              }
+              aria-describedby={errors.responsableAchatPhone ? 'responsableAchatPhone-error' : undefined}
             />
-            {errors.responsableAchatPhone && (
-              <p
-                id="responsableAchatPhone-error"
-                className="text-sm text-red-600"
-                role="alert"
-              >
-                {errors.responsableAchatPhone.message}
-              </p>
-            )}
+            <FieldError name="responsableAchatPhone" form={form} stepSubmitted={stepSubmitted} />
           </div>
         </div>
 
@@ -146,23 +144,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
             <Input
               id="serviceComptaEmail"
               type="email"
-              placeholder="compta@entreprise.fr"
               {...register('serviceComptaEmail')}
-              className={errors.serviceComptaEmail ? 'border-red-500' : ''}
+              className={(errors.serviceComptaEmail && (touchedFields.serviceComptaEmail || isSubmitted)) ? 'border-red-500' : ''}
               aria-invalid={errors.serviceComptaEmail ? 'true' : 'false'}
-              aria-describedby={
-                errors.serviceComptaEmail ? 'serviceComptaEmail-error' : undefined
-              }
+              aria-describedby={errors.serviceComptaEmail ? 'serviceComptaEmail-error' : undefined}
             />
-            {errors.serviceComptaEmail && (
-              <p
-                id="serviceComptaEmail-error"
-                className="text-sm text-red-600"
-                role="alert"
-              >
-                {errors.serviceComptaEmail.message}
-              </p>
-            )}
+            <FieldError name="serviceComptaEmail" form={form} stepSubmitted={stepSubmitted} />
           </div>
 
           <div className="space-y-2">
@@ -175,23 +162,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
             <Input
               id="serviceComptaPhone"
               type="tel"
-              placeholder="01 23 45 67 90"
               {...register('serviceComptaPhone')}
-              className={errors.serviceComptaPhone ? 'border-red-500' : ''}
+              className={(errors.serviceComptaPhone && (touchedFields.serviceComptaPhone || isSubmitted)) ? 'border-red-500' : ''}
               aria-invalid={errors.serviceComptaPhone ? 'true' : 'false'}
-              aria-describedby={
-                errors.serviceComptaPhone ? 'serviceComptaPhone-error' : undefined
-              }
+              aria-describedby={errors.serviceComptaPhone ? 'serviceComptaPhone-error' : undefined}
             />
-            {errors.serviceComptaPhone && (
-              <p
-                id="serviceComptaPhone-error"
-                className="text-sm text-red-600"
-                role="alert"
-              >
-                {errors.serviceComptaPhone.message}
-              </p>
-            )}
+            <FieldError name="serviceComptaPhone" form={form} stepSubmitted={stepSubmitted} />
           </div>
         </div>
       </div>
@@ -207,6 +183,13 @@ export function Step2Contact({ form }: Step2ContactProps) {
             </h3>
           </div>
 
+          {isFromInsee && isMissingAddressInfo && (
+            <div className="bg-blue-50 border border-blue-200 rounded-md p-3 mb-3 text-blue-700 text-sm flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 text-blue-500 flex-shrink-0" aria-hidden="true" />
+              Certaines informations d'adresse n'ont pas pu être récupérées automatiquement. Merci de compléter ces champs pour poursuivre votre inscription.
+            </div>
+          )}
+
           <div className="space-y-2">
             <Label htmlFor="address" className="text-sm font-medium text-gray-700">
               Adresse <span className="text-red-600">*</span>
@@ -214,17 +197,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
             <Input
               id="address"
               type="text"
-              placeholder="123 Rue de la République"
               {...register('address')}
-              className={errors.address ? 'border-red-500' : ''}
+              className={(errors.address && (touchedFields.address || isSubmitted)) ? 'border-red-500' : ''}
               aria-invalid={errors.address ? 'true' : 'false'}
               aria-describedby={errors.address ? 'address-error' : undefined}
             />
-            {errors.address && (
-              <p id="address-error" className="text-sm text-red-600" role="alert">
-                {errors.address.message}
-              </p>
-            )}
+            <FieldError name="address" form={form} stepSubmitted={stepSubmitted} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -235,18 +213,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
               <Input
                 id="postalCode"
                 type="text"
-                placeholder="75001"
-                maxLength={5}
                 {...register('postalCode')}
-                className={errors.postalCode ? 'border-red-500' : ''}
+                className={(errors.postalCode && (touchedFields.postalCode || isSubmitted)) ? 'border-red-500' : ''}
                 aria-invalid={errors.postalCode ? 'true' : 'false'}
                 aria-describedby={errors.postalCode ? 'postalCode-error' : undefined}
               />
-              {errors.postalCode && (
-                <p id="postalCode-error" className="text-sm text-red-600" role="alert">
-                  {errors.postalCode.message}
-                </p>
-              )}
+              <FieldError name="postalCode" form={form} stepSubmitted={stepSubmitted} />
             </div>
 
             <div className="space-y-2 md:col-span-2">
@@ -256,17 +228,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
               <Input
                 id="city"
                 type="text"
-                placeholder="Paris"
                 {...register('city')}
-                className={errors.city ? 'border-red-500' : ''}
+                className={(errors.city && (touchedFields.city || isSubmitted)) ? 'border-red-500' : ''}
                 aria-invalid={errors.city ? 'true' : 'false'}
                 aria-describedby={errors.city ? 'city-error' : undefined}
               />
-              {errors.city && (
-                <p id="city-error" className="text-sm text-red-600" role="alert">
-                  {errors.city.message}
-                </p>
-              )}
+              <FieldError name="city" form={form} stepSubmitted={stepSubmitted} />
             </div>
           </div>
         </div>
@@ -303,19 +270,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
             <Input
               id="deliveryAddress"
               type="text"
-              placeholder="123 Rue de la République"
               {...register('deliveryAddress')}
-              className={errors.deliveryAddress ? 'border-red-500' : ''}
+              className={(errors.deliveryAddress && (touchedFields.deliveryAddress || isSubmitted)) ? 'border-red-500' : ''}
               aria-invalid={errors.deliveryAddress ? 'true' : 'false'}
-              aria-describedby={
-                errors.deliveryAddress ? 'deliveryAddress-error' : undefined
-              }
+              aria-describedby={errors.deliveryAddress ? 'deliveryAddress-error' : undefined}
             />
-            {errors.deliveryAddress && (
-              <p id="deliveryAddress-error" className="text-sm text-red-600" role="alert">
-                {errors.deliveryAddress.message}
-              </p>
-            )}
+            <FieldError name="deliveryAddress" form={form} stepSubmitted={stepSubmitted} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -329,24 +289,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
               <Input
                 id="deliveryPostalCode"
                 type="text"
-                placeholder="75001"
-                maxLength={5}
                 {...register('deliveryPostalCode')}
-                className={errors.deliveryPostalCode ? 'border-red-500' : ''}
+                className={(errors.deliveryPostalCode && (touchedFields.deliveryPostalCode || isSubmitted)) ? 'border-red-500' : ''}
                 aria-invalid={errors.deliveryPostalCode ? 'true' : 'false'}
-                aria-describedby={
-                  errors.deliveryPostalCode ? 'deliveryPostalCode-error' : undefined
-                }
+                aria-describedby={errors.deliveryPostalCode ? 'deliveryPostalCode-error' : undefined}
               />
-              {errors.deliveryPostalCode && (
-                <p
-                  id="deliveryPostalCode-error"
-                  className="text-sm text-red-600"
-                  role="alert"
-                >
-                  {errors.deliveryPostalCode.message}
-                </p>
-              )}
+              <FieldError name="deliveryPostalCode" form={form} stepSubmitted={stepSubmitted} />
             </div>
 
             <div className="space-y-2 md:col-span-2">
@@ -356,17 +304,12 @@ export function Step2Contact({ form }: Step2ContactProps) {
               <Input
                 id="deliveryCity"
                 type="text"
-                placeholder="Paris"
                 {...register('deliveryCity')}
-                className={errors.deliveryCity ? 'border-red-500' : ''}
+                className={(errors.deliveryCity && (touchedFields.deliveryCity || isSubmitted)) ? 'border-red-500' : ''}
                 aria-invalid={errors.deliveryCity ? 'true' : 'false'}
                 aria-describedby={errors.deliveryCity ? 'deliveryCity-error' : undefined}
               />
-              {errors.deliveryCity && (
-                <p id="deliveryCity-error" className="text-sm text-red-600" role="alert">
-                  {errors.deliveryCity.message}
-                </p>
-              )}
+              <FieldError name="deliveryCity" form={form} stepSubmitted={stepSubmitted} />
             </div>
           </div>
         </div>

@@ -20,6 +20,7 @@ export interface UseInseeSearchReturn {
   selectEntreprise: (entreprise: EntrepriseSearchResult) => void
   reset: () => void
   setSelectedIndex: (index: number) => void
+  setShowResults: (show: boolean) => void
 
   // Navigation clavier
   handleKeyDown: (e: React.KeyboardEvent) => void
@@ -47,16 +48,42 @@ export function useInseeSearch(
   const debounceTimer = useRef<NodeJS.Timeout | null>(null)
   const currentSearchRef = useRef<string>('')
 
+  // --- Cache mémoire des réponses API INSEE (clé = mot(s) clé(s) utilisés pour la requête)
+  const apiCache = useRef<Record<string, EntrepriseSearchResult[]>>({})
+  // --- Mot-clé du dernier appel API connu (clé filtrage stricte)
+  const lastApiKeyRef = useRef<string>('')
+
   /**
    * Fonction de recherche avec validation et gestion d'erreurs
    */
   const performSearch = useCallback(
     async (name: string, postalCode?: string) => {
-      const searchName = name.trim()
-      currentSearchRef.current = searchName
+      // Extraction du "mot clé API principal" (premier mot >2 lettres)
+      const mainWord = name.trim().split(/\s+/).find(w => w.length > 2) ?? ''
+      if (mainWord.length < 3) {
+        setResults([])
+        setShowResults(false)
+        setError(null)
+        return
+      }
+      const apiKey = `${mainWord}__${postalCode || ''}`
+      currentSearchRef.current = name.trim()
+      // Si déjà appelé, on retourne le cache
+      if (apiCache.current[apiKey]) {
+        setResults(apiCache.current[apiKey])
+        setShowResults(true)
+        setError(null)
+        setSelectedIndex(-1)
+        return
+      }
+      // Ne ré-appelle que si keyword principal a changé
+      if (lastApiKeyRef.current === apiKey) {
+        return
+      }
+      lastApiKeyRef.current = apiKey
 
       // Validation minimale
-      if (searchName.length < minLength) {
+      if (currentSearchRef.current.length < minLength) {
         setResults([])
         setShowResults(false)
         setError(null)
@@ -76,7 +103,7 @@ export function useInseeSearch(
 
       try {
         // Construction des paramètres de recherche
-        const params = new URLSearchParams({ name: searchName })
+        const params = new URLSearchParams({ name: currentSearchRef.current })
         if (postalCode && postalCode.trim().length === 5) {
           params.append('postalCode', postalCode.trim())
         }
@@ -92,7 +119,7 @@ export function useInseeSearch(
         const searchResults = data.results || []
 
         // Vérifier que la recherche n'a pas été annulée par une nouvelle recherche
-        if (currentSearchRef.current !== searchName) {
+        if (currentSearchRef.current !== name.trim()) {
           return
         }
 
@@ -102,12 +129,13 @@ export function useInseeSearch(
 
         if (searchResults.length === 0) {
           setError(
-            `Aucune entreprise trouvée pour "${searchName}". Essayez de taper plus de caractères ou vérifiez l'orthographe.`
+            `Aucune entreprise trouvée pour "${name.trim()}". Essayez de taper plus de caractères ou vérifiez l'orthographe.`
           )
         }
+        // apiCache.current[apiKey] = searchResults
       } catch (err) {
         // Vérifier que la recherche n'a pas été annulée
-        if (currentSearchRef.current !== searchName) {
+        if (currentSearchRef.current !== name.trim()) {
           return
         }
 
@@ -244,6 +272,7 @@ export function useInseeSearch(
     selectEntreprise,
     reset,
     setSelectedIndex,
+    setShowResults, // <- expose la fonction pour usage parent
 
     // Navigation
     handleKeyDown,

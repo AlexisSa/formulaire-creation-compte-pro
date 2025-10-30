@@ -39,12 +39,12 @@ export async function searchEntrepriseByNameAndPostal(
   }
 
   // Construction de la requête
-  // Recherche par dénomination, optionnellement avec code postal
-  const searchName = name.trim().toUpperCase().replace(/\s+/g, ' ')
-
-  // Construction de la requête selon si code postal fourni ou non
-  // Recherche flexible sans guillemets pour permettre la recherche par préfixe
-  let query = `denominationUniteLegale:${searchName}`
+  // Recherche avancée : on extrait les fragments de 3+ lettres ou le premier mot, pour la requête API
+  const rawWords = name.trim().toUpperCase().replace(/ +/g, ' ').split(' ').filter(Boolean)
+  const apiWords = rawWords.filter(w => w.length > 2)
+  let query = apiWords.length > 0
+    ? apiWords.map(word => `denominationUniteLegale:${word}`).join(' AND ')
+    : `denominationUniteLegale:${rawWords[0]}`
   if (postalCode && postalCode.trim().length === 5) {
     query += ` AND codePostalEtablissement:${postalCode.trim()}`
   }

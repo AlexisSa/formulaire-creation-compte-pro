@@ -24,6 +24,7 @@ import { useToast } from '@/contexts/ToastContext'
 import { ConfirmationPage } from '@/components/confirmation-page'
 import { Footer } from '@/components/footer'
 import { ChevronLeft, ChevronRight, Check, Save } from 'lucide-react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 
 const STEPS = [
   { id: 1, title: 'Votre Entreprise', description: 'Identification' },
@@ -50,6 +51,9 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
   )
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [submittedCompanyName, setSubmittedCompanyName] = useState<string>('')
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [stepSubmitted, setStepSubmitted] = useState(false)
+  const [showResetDialog, setShowResetDialog] = useState(false)
 
   const { showToast } = useToast()
 
@@ -81,6 +85,11 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
     reset,
     formState: { isSubmitting },
   } = form
+
+  // Ajoute un effet pour resynchroniser RHF au submit d'étape
+  useEffect(() => {
+    if (isSubmitted) form.formState.isSubmitted = true
+  }, [isSubmitted])
 
   // Animation de progression au changement d'étape
   useEffect(() => {
@@ -132,11 +141,11 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
         'siret',
         'nafApe',
         'tvaIntracom',
+      ],
+      [
         'address',
         'postalCode',
         'city',
-      ],
-      [
         'responsableAchatEmail',
         'responsableAchatPhone',
         'serviceComptaEmail',
@@ -158,7 +167,12 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
    */
   const handleNext = async () => {
     const isValid = await validateStep(currentStep)
-    if (isValid && currentStep < STEPS.length) {
+    if (!isValid) {
+      setStepSubmitted(true)
+      return
+    }
+    setStepSubmitted(false)
+    if (currentStep < STEPS.length) {
       setTransitionDirection('forward')
       setIsTransitioning(true)
       setTimeout(() => {
@@ -336,10 +350,20 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
 
         if (!emailResponse.ok) {
           console.error("Erreur lors de l'envoi des emails")
+          showToast(
+            'error',
+            'Erreur lors de l’envoi de vos informations',
+            'Nous n’avons pas pu transmettre votre demande pour le moment. Réessayez dans quelques instants ou contactez le support si cela se reproduit.'
+          )
         }
       } catch (emailError) {
         // Ne pas bloquer la soumission si l'email échoue
         console.error('Erreur email:', emailError)
+        showToast(
+          'error',
+          'Erreur technique lors de la soumission',
+          'Une erreur est survenue lors de l’envoi de vos informations. Merci de réessayer ou de nous contacter.'
+        )
       }
 
       // Nettoyer le brouillon après soumission réussie
@@ -357,13 +381,13 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }, 1000)
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Une erreur inconnue est survenue'
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue'
       showToast(
         'error',
         'Erreur lors de la soumission',
-        `Impossible de générer le PDF : ${errorMessage}`
-      )
+        "Une erreur technique est survenue lors de la génération de votre dossier. Merci de réessayer ou de nous contacter."
+      );
+      console.error('Erreur critique soumission:', error);
     } finally {
       setIsSaving(false)
     }
@@ -493,15 +517,18 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
                   form.setValue('tvaIntracom', entreprise.tvaIntracom, {
                     shouldValidate: true,
                   })
-                  form.setValue('address', entreprise.adresse.voie, {
-                    shouldValidate: true,
-                  })
-                  form.setValue('postalCode', entreprise.adresse.codePostal, {
-                    shouldValidate: true,
-                  })
-                  form.setValue('city', entreprise.adresse.ville, {
-                    shouldValidate: true,
-                  })
+                  const isBlankOrOnlyNd = (str: string | undefined) => {
+                    if (!str) return true;
+                    // Découpe, retire crochets/espaces, majuscules, vérifie si tout est ND/N/A/NC
+                    return str.trim()
+                      .split(/\s+/)
+                      .map(tok => tok.replace(/\[|\]/g, '').toUpperCase())
+                      .every(tok => ['ND', 'N/A', 'NC', ''].includes(tok));
+                  };
+
+                  form.setValue('address', !isBlankOrOnlyNd(entreprise.adresse.voie) ? entreprise.adresse.voie : '', { shouldValidate: true })
+                  form.setValue('postalCode', !isBlankOrOnlyNd(entreprise.adresse.codePostal) ? entreprise.adresse.codePostal : '', { shouldValidate: true })
+                  form.setValue('city', !isBlankOrOnlyNd(entreprise.adresse.ville) ? entreprise.adresse.ville : '', { shouldValidate: true })
                 }}
               />
             </div>
@@ -535,6 +562,47 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
             )}
           </AnimatePresence>
 
+          {!showConfirmation && (
+            <div className="flex justify-end mb-8">
+              <Button
+                variant="secondary"
+                className="bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-300"
+                onClick={() => setShowResetDialog(true)}
+                type="button"
+              >
+                Réinitialiser le formulaire
+              </Button>
+
+              <Dialog open={showResetDialog} onOpenChange={setShowResetDialog}>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Réinitialiser le formulaire ?</DialogTitle>
+                    <DialogDescription>
+                      Toutes les données saisies seront supprimées et vous serez renvoyé à l’étape 1. Cette action est irréversible.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter className="gap-2 sm:gap-3">
+                    <Button variant="outline" type="button" onClick={() => setShowResetDialog(false)}>
+                      Annuler
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      type="button"
+                      onClick={() => {
+                        reset()
+                        setCurrentStep(1)
+                        setStepSubmitted(false)
+                        setShowResetDialog(false)
+                      }}
+                    >
+                      Confirmer la réinitialisation
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
+
           <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 rounded-xl">
             <CardContent className="p-4 sm:p-6 lg:p-8">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -551,7 +619,7 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
                     }}
                   >
                     {currentStep === 1 && <Step1Company form={form} />}
-                    {currentStep === 2 && <Step2Contact form={form} />}
+                    {currentStep === 2 && <Step2Contact form={form} stepSubmitted={stepSubmitted} />}
                     {currentStep === 3 && <Step3Documents form={form} />}
                   </motion.div>
                 </AnimatePresence>
@@ -606,7 +674,7 @@ export function AccountForm({ onBack, onLogoClick }: AccountFormProps = {}) {
                           ) : (
                             <>
                               <Check className="h-4 w-4 mr-2" />
-                              Faire ma demande de compte pro
+                              Devenir client en compte
                             </>
                           )}
                         </Button>
