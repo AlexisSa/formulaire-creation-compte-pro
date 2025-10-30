@@ -576,7 +576,7 @@ export function LandingPage({ onStart, onLogoClick }: LandingPageProps) {
               />
               <FAQItem
                 question="Quels documents sont nécessaires ?"
-                answer="Vous devez fournir votre KBIS, un justificatif d'identité du dirigeant, et un justificatif de domicile. Tous les documents doivent être récents (moins de 3 mois)."
+                answer="Aucun document n’est obligatoire pour créer votre compte. Vous pouvez fournir un KBIS à jour si vous le souhaitez (optionnel), cela peut accélérer la validation, mais ce n’est pas requis."
               />
               <FAQItem
                 question="Le compte professionnel est-il payant ?"
