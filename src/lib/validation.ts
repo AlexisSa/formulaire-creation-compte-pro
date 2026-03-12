@@ -66,17 +66,24 @@ export const accountFormSchema = z.object({
 
   deliveryCity: z.string().min(2, 'La ville de livraison doit contenir au moins 2 caractères'),
 
-  // Documents
+  // Documents (KBIS optionnel - accélère la validation du dossier)
   legalDocument: z
-    .instanceof(File, { message: 'Un document légal est requis' })
-    .refine(
-      (file) => file.size <= 10 * 1024 * 1024,
-      'Le fichier ne doit pas dépasser 10MB'
-    )
-    .refine(
-      (file) => ['application/pdf', 'image/png', 'image/jpeg'].includes(file.type),
-      'Format de fichier non supporté (PDF, PNG, JPG uniquement)'
-    ),
+    .union([
+      z.undefined(),
+      z.null(),
+      z
+        .instanceof(File)
+        .refine(
+          (file) => file.size <= 5 * 1024 * 1024,
+          'Le fichier ne doit pas dépasser 5 MB'
+        )
+        .refine(
+          (file) =>
+            ['application/pdf', 'image/png', 'image/jpeg'].includes(file.type),
+          'Format de fichier non supporté (PDF, PNG, JPG uniquement)'
+        ),
+    ])
+    .optional(),
 
   signature: z
     .string()
